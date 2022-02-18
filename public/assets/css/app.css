@@ -1,0 +1,21 @@
+.bg-blue{
+    background-color: #457B9D;
+}
+.bg-gray{
+    background-color: #F0F2F5;
+}
+
+@font-face {
+    font-family: notosan;
+    src: url('../fonts/NotoSansLaoUI-Condensed.ttf');
+}
+
+.notosanLao{
+    font-family: notosan;
+}
+
+legend {
+    
+    color: #fff;
+    padding: 3px 6px;
+}
