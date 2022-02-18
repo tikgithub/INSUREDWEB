@@ -43,6 +43,7 @@ return new class extends Migration
             $table->dateTime('payment_time')->nullable();//Payment time when customer upload slip or press for payment
             $table->dateTime('approved_time')->nullable();//When admin approve the detail
             $table->longText('contact_description')->nullable();//
+            $table->integer('sale_options_id');// FK from Sale_Option table
 
             $table->timestamps();
         });

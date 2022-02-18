@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CarBrand;
+use App\Models\District;
 use App\Models\InsuranceCompany;
 use App\Models\Level;
 use App\Models\Province;
@@ -47,10 +48,10 @@ class InsuranceFlowController extends Controller
                 break;
             case "NORMAL":
                 /** Query the package which relate to Normal package only */
-                $squery = "SELECT vp.id as Id ,ic.name as company_name, vp.name as package_name, l.name as level_name, ic.logo, vp.start_rank , vp.end_rank 
-                FROM vehicle_packages vp 
-                INNER JOIN  insurance_companies ic on vp.c_id  = ic.id 
-                INNER JOIN levels l on vp.lvl_id = l.id 
+                $squery = "SELECT vp.id as Id ,ic.name as company_name, vp.name as package_name, l.name as level_name, ic.logo, vp.start_rank , vp.end_rank
+                FROM vehicle_packages vp
+                INNER JOIN  insurance_companies ic on vp.c_id  = ic.id
+                INNER JOIN levels l on vp.lvl_id = l.id
                 WHERE  vp .lvl_id =? AND vp.status = 1";
 
                 $vehiclePackages = DB::select($squery, [$req->input('level')]);
@@ -72,8 +73,8 @@ class InsuranceFlowController extends Controller
         $level = Level::find($vehiclePackage->lvl_id);
         $company = InsuranceCompany::find($vehiclePackage->c_id);
 
-        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on 
-        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id 
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
         WHERE so.id  = ?";
         $saleOptionDetail = DB::select($query, [$sale_id]);
 
@@ -94,9 +95,9 @@ class InsuranceFlowController extends Controller
         $levelFirst = Level::find($vehiclePackageFirst->lvl_id);
         $companyFirst = InsuranceCompany::find($vehiclePackageFirst->c_id);
 
-        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price 
-        FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on 
-        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id 
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price
+        FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
         WHERE so.id  = ?";
         $saleOptionDetailFirst = DB::select($query, [$p1]);
 
@@ -109,13 +110,13 @@ class InsuranceFlowController extends Controller
         $levelSecond = Level::find($vehiclePackageSecond->lvl_id);
         $companySecond = InsuranceCompany::find($vehiclePackageSecond->c_id);
 
-        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price 
-        FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on 
-        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id 
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price
+        FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
         WHERE so.id  = ?";
         $saleOptionDetailSecond = DB::select($query, [$p2]);
         /** End Second Selection ***************************************/
-       
+
         return view('insurances.cars.showComparePackage')
 
             ->with('levelFirst', $levelFirst)
@@ -143,8 +144,8 @@ class InsuranceFlowController extends Controller
         //Car Brand data
         $carBrands = CarBrand::all();
 
-        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on 
-        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id 
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
         WHERE so.id  = ?";
         $saleOptionDetail = DB::select($query, [$sale_id]);
 
@@ -186,13 +187,10 @@ class InsuranceFlowController extends Controller
 
         //Find Sale ID
         $saleData = SaleOption::find($req->input('sale_id'));
-        //Find Vehicle Package from sale data
-        $vehiclePakage = VehiclePackage::where('vp_id','=',$saleData->vp_id);
 
-        
         //create new eqloquent object
         $newInput = new VehicleInsuranceDetail();
-        
+
         $newInput->firstname = trim($req->input('firstname'));
         $newInput->lastname = trim($req->input('lastname'));
         $newInput->sex = $req->input('sex');
@@ -215,7 +213,50 @@ class InsuranceFlowController extends Controller
         $newInput->right_image = ImageCompress::compressImage($req->file('right'),70,$uploadPath,800);
         $newInput->rear_image = ImageCompress::compressImage($req->file('rear'),70,$uploadPath,800);
         $newInput->yellow_book_image = ImageCompress::compressImage($req->file('yellow_book'),70,$uploadPath,800);
+        $newInput->sale_options_id = $req->input('sale_id');
         $newInput->save();
-   
+        //Set Session for new Input ID
+        session(['input_id'=>$newInput->id]);
+
+        return redirect()->route('InsuranceFlowController.showAgreementPage');
+    }
+
+    /** Show the agreement page after customer input the detail */
+    public function showAgreementPage(){
+        //Get session id
+        $input_id = session('input_id');
+
+        //Get Input Data after submit
+        $inputData = VehicleInsuranceDetail::find($input_id);
+        //Get Sale option data
+        $saleOption = SaleOption::find($inputData->sale_options_id);
+        $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
+        $level = Level::find($vehiclePackage->lvl_id);
+        $company = InsuranceCompany::find($vehiclePackage->c_id);
+
+        //Get the package data
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
+        WHERE so.id  = ?";
+        $saleOptionDetail = DB::select($query, [$inputData->sale_options_id]);
+
+          //Province data
+          $provinces = Province::all();
+          //District Data
+          $districts = District::where('province_id','=',$inputData->province)->get();
+          
+          //Car Brand data
+          $carBrands = CarBrand::all();
+
+        return view('insurances.cars.insuranceAgreement')
+        ->with('inputData',$inputData)
+        ->with('level', $level)
+        ->with('saleOption', $saleOption)
+        ->with('vehiclePackage', $vehiclePackage)
+        ->with('company', $company)
+        ->with('saleDetails', $saleOptionDetail)
+        ->with('Provinces',$provinces)
+        ->with('carBrands',$carBrands)
+        ->with('districts',$districts);
     }
 }

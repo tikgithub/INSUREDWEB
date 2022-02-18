@@ -81,4 +81,7 @@ Route::group(['prefix'=>'api/json'],function(){
 Route::group(['prefix'=>'insurance','middleware'=>'customerAuthentication'],function(){
     /** Route store customer input information for Normal */
     Route::post('/customer/input/store',[InsuranceFlowController::class,'storeInputFromCustomer'])->name('InsuranceFlowController.storeInputFromCustomer');
+
+    /** Route to show agreement information for Normal after customer input */
+    Route::get('/customer/agreement',[InsuranceFlowController::class,'showAgreementPage'])->name('InsuranceFlowController.showAgreementPage');
 });
