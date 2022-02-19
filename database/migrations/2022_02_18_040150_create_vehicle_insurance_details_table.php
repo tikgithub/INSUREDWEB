@@ -44,7 +44,7 @@ return new class extends Migration
             $table->dateTime('approved_time')->nullable();//When admin approve the detail
             $table->longText('contact_description')->nullable();//
             $table->integer('sale_options_id');// FK from Sale_Option table
-
+            $table->integer('user_id')->nullable();//User Id which use to buying
             $table->timestamps();
         });
     }

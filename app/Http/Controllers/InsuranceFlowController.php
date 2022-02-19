@@ -13,6 +13,7 @@ use App\Models\VehicleInsuranceDetail;
 use App\Models\VehiclePackage;
 use App\Utils\ImageCompress;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InsuranceFlowController extends Controller
@@ -206,6 +207,9 @@ class InsuranceFlowController extends Controller
         $newInput->fee_charge = $saleData->fee_charge;
         $newInput->total_price = $saleData->sale_price;
         $newInput->registered_province = $req->input('registeredProvince');
+        $newInput->user_id = Auth::user()->id;
+        $newInput->chassic_number = $req->input('chassic_number');
+        $newInput->engine_number = $req->input('engine_number');
         //Prepare to upload image for 5 items
         $uploadPath = "Insurances/Vehicles";
         $newInput->front_image =  ImageCompress::compressImage($req->file('front'),70,$uploadPath,800);

@@ -84,4 +84,7 @@ Route::group(['prefix'=>'insurance','middleware'=>'customerAuthentication'],func
 
     /** Route to show agreement information for Normal after customer input */
     Route::get('/customer/agreement',[InsuranceFlowController::class,'showAgreementPage'])->name('InsuranceFlowController.showAgreementPage');
+
+    /** Route to show user insurance list that being to customer */
+    Route::get('/customer/order',[UserController::class,'userListInsurance'])->name('UserController.userListInsurance');
 });

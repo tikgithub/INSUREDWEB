@@ -284,6 +284,26 @@
                                         value="{{ old('color') }}">
                                 </div>
                             </div>
+                            {{-- Engine Number --}}
+                            <div class="mb-3 row">
+                                <label for="color"
+                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
+                                <div class="col-sm-8 align-self-center">
+                                    <input type="text" class="form-control form-control-lg {{($errors->has('engine_number')? 'border-danger':'')}}" id="engine_number" name="engine_number"
+                                        value="{{ old('engine_number') }}">
+                                </div>
+                            </div>
+
+                            {{-- Chassic Number --}}
+                            <div class="mb-3 row">
+                                <label for="color"
+                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
+                                <div class="col-sm-8 align-self-center">
+                                    <input type="text" class="form-control form-control-lg {{($errors->has('chassic_number')? 'border-danger':'')}}" id="chassic_number" name="chassic_number"
+                                        value="{{ old('chassic_number') }}">
+                                </div>
+                            </div>
+
                             {{-- Province Registered --}}
                             <div class="mb-3 row">
                                 <label for="registeredProvince"

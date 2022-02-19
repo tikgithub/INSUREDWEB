@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     {{-- Date Picker Third Party MC Date Picker --}}
     <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
-
+    @yield('styles')
 
     <title>{{ config('app.name') }}</title>
 
 </head>
 
-<body style="padding-bottom: 100px; padding-top:40px;">
+<body style="padding-bottom: 100px; padding-top:40px; background-color: #f0f0f0">
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;">
         <div class="container">
@@ -31,8 +31,8 @@
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 notosanLao fs-6">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 notosanLao fs-5">
                     <li class="nav-item">
                         <a class="nav-link active " aria-current="page" href="{{ route('welcome') }}">ໜ້າຫຼັກ</a>
                     </li>
@@ -66,7 +66,7 @@
                             </button>
                             <ul class="dropdown-menu notosanLao">
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-person-circle"></i> ໂປຣໄຟຣ</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-list-task"></i> ລາຍການຊື້ປະກັນ</a></li>
+                                <li><a class="dropdown-item" href="{{route('UserController.userListInsurance')}}"><i class="bi bi-list-task"></i> ລາຍການຊື້ປະກັນ</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

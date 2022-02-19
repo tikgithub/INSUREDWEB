@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InsuranceCompany;
+use App\Models\SaleOption;
 use App\Models\User;
+use App\Models\VehicleInsuranceDetail;
+use App\Models\VehiclePackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -87,5 +91,17 @@ class UserController extends Controller
         }else{
             return redirect()->back()->with('erorr','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ');
         }
+    }
+    /** List all the insurance data which customer having now */
+    public function userListInsurance(){
+        //Get user Information
+        $user = Auth::user();
+
+        //Get Information of Normal insurance
+        $insuranceData = VehicleInsuranceDetail::where('user_id','=',$user->id)->get();
+      
+       
+        return view('user_view.insuranceList')
+        ->with('orderData',$insuranceData);
     }
 }
