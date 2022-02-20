@@ -72,7 +72,7 @@
                                 </li>
                                 {{-- Admin Checked --}}
                                 @if (Auth::user()->role == 'admin')
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-hdd-network-fill"></i> Go to BackEnd</a></li>
+                                    <li><a class="dropdown-item" href="{{route('AdminController.showAdminDashBoard')}}"><i class="bi bi-hdd-network-fill"></i> Go to BackEnd</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

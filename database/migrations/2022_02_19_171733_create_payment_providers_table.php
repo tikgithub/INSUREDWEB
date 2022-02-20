@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sale_options', function (Blueprint $table) {
+        Schema::create('payment_providers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');//option name
-            $table->decimal('sale_price',18,2);
-            $table->decimal('fee_charge',18,2);
-            $table->integer('vp_id');//Vehicle Package ID
-            $table->longText('terms');//Term and Condition before continue the payment
+            $table->string('name');
+            $table->longText('logo');
+            $table->string('account');
+            $table->longText('qrscan');
+            $table->longText('howto');
+            $table->boolean('status');//Avalable to customer ? 
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sale_options');
+        Schema::dropIfExists('payment_providers');
     }
 };

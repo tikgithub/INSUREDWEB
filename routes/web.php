@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InsuranceFlowController;
 use App\Http\Controllers\JSONServiceController;
@@ -82,9 +83,47 @@ Route::group(['prefix'=>'insurance','middleware'=>'customerAuthentication'],func
     /** Route store customer input information for Normal */
     Route::post('/customer/input/store',[InsuranceFlowController::class,'storeInputFromCustomer'])->name('InsuranceFlowController.storeInputFromCustomer');
 
+    /** Route update customer input information for Normal */
+    Route::post('/customer/input/update',[InsuranceFlowController::class,'updateInputData'])->name('InsuranceFlowController.updateInputData');
+
     /** Route to show agreement information for Normal after customer input */
     Route::get('/customer/agreement',[InsuranceFlowController::class,'showAgreementPage'])->name('InsuranceFlowController.showAgreementPage');
 
     /** Route to show user insurance list that being to customer */
     Route::get('/customer/order',[UserController::class,'userListInsurance'])->name('UserController.userListInsurance');
+
+    /** Route to redirect to agreement page */
+    Route::get('/redirect_to_agreement/{id}',[InsuranceFlowController::class,'redirectToAgreement'])->name('InsuranceFlowController.redirectToAgreement');
+
+    /** Route to show available PaymentProvider list */
+    Route::get('/customer/payment_provider',[InsuranceFlowController::class,'showPaymentProviderPageSelection'])->name('InsuranceFlowController.showPaymentProviderPageSelection');
+
+    /** Route to show payment submit */
+    Route::get('/customer/payment/{provider_id}',[InsuranceFlowController::class,'showFormSubmitPayment'])->name('InsuranceFlowController.showFormSubmitPayment');
+
+    /** Route update the payment detail */
+    Route::post('/customer/confirm/payment',[InsuranceFlowController::class,'updatePaymentDetail'])->name('InsuranceFlowController.updatePaymentDetail');
+
+    /** Route to show complete the payment */
+    Route::get('/customer/completed',[InsuranceFlowController::class,'showComplete'])->name('InsuranceFlowController.showComplete');
+
+    /** Route to delete the input detail by customer */
+    Route::get('/customer/delete/{id}',[InsuranceFlowController::class,'deleteTheInput'])->name('InsuranceFlowController.deleteTheInput');
+});
+
+
+/** Route Group For Admin User */
+
+Route::group(['prefix'=>'admin','middleware'=>['adminAuthentication']],function(){
+    /** Route to show admin dashboard */
+    Route::get('/welcome',[AdminController::class,'showAdminDashBoard'])->name('AdminController.showAdminDashBoard');
+
+    /** Route to allow admin to view detail of insurance customer selected */
+    Route::get('/insurance/view/{id}',[AdminController::class,'showCustomerInput'])->name('AdminController.showCustomerInput');
+
+    /** Route to show all insurance customer selected */
+    Route::get('/insurance/views',[AdminController::class,'showAllCustomerInput'])->name('AdminController.showAllCustomerInput');
+
+    /** Route to delete the input detail by admin */
+     Route::get('/delete/{id}',[AdminController::class,'deleteTheInput'])->name('AdminController.deleteTheInput');
 });

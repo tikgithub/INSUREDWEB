@@ -287,7 +287,7 @@
                             {{-- Engine Number --}}
                             <div class="mb-3 row">
                                 <label for="color"
-                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
+                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກຈັກ</label>
                                 <div class="col-sm-8 align-self-center">
                                     <input type="text" class="form-control form-control-lg {{($errors->has('engine_number')? 'border-danger':'')}}" id="engine_number" name="engine_number"
                                         value="{{ old('engine_number') }}">
@@ -297,7 +297,7 @@
                             {{-- Chassic Number --}}
                             <div class="mb-3 row">
                                 <label for="color"
-                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
+                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກຖັງ</label>
                                 <div class="col-sm-8 align-self-center">
                                     <input type="text" class="form-control form-control-lg {{($errors->has('chassic_number')? 'border-danger':'')}}" id="chassic_number" name="chassic_number"
                                         value="{{ old('chassic_number') }}">
