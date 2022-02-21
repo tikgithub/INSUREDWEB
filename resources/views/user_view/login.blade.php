@@ -14,7 +14,7 @@
                    <img class="shadow bg-blue rounded-circle" src="{{asset('assets/image/mainlogo.png')}}"  style="width: auto;height: 100px;">
                </p>
             <p>
-                @include('flashMessage')
+
                 <form action="{{route('UserController.signIn')}}" method="post">
                     @csrf
                     <div class="input-group mb-3">
@@ -34,6 +34,7 @@
                         <button type="submit" class="btn bg-blue btn-lg text-white"><i class="bi bi-key"></i> ຕົກລົງ</button>
                     </div>
                 </form>
+                @include('flashMessage')
             </p>
            </div>
        </div>

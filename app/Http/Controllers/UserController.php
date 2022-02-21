@@ -72,7 +72,7 @@ class UserController extends Controller
         if(Auth::attempt(['email'=>$req->input('email'),'password'=>$req->input('password')])){
             return redirect()->route('welcome');
         }else{
-            return redirect()->back()->with('erorr','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ');
+            return redirect()->route('UserController.showLoginPage')->with('warning','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ');
         }
     }
 
@@ -99,8 +99,8 @@ class UserController extends Controller
 
         //Get Information of Normal insurance
         $insuranceData = VehicleInsuranceDetail::where('user_id','=',$user->id)->get();
-      
-       
+
+
         return view('user_view.insuranceList')
         ->with('orderData',$insuranceData);
     }

@@ -125,5 +125,11 @@ Route::group(['prefix'=>'admin','middleware'=>['adminAuthentication']],function(
     Route::get('/insurance/views',[AdminController::class,'showAllCustomerInput'])->name('AdminController.showAllCustomerInput');
 
     /** Route to delete the input detail by admin */
-     Route::get('/delete/{id}',[AdminController::class,'deleteTheInput'])->name('AdminController.deleteTheInput');
+     Route::get('/insurance/delete/{id}',[AdminController::class,'deleteTheInput'])->name('AdminController.deleteTheInput');
+
+     /** Route to allow admin to approve, delete, edit the input data from custmer (Verify the data) */
+     Route::get('/insurance/verify/{id}',[AdminController::class,'showCustomerPaymentItem'])->name('AdminController.showCustomerPaymentItem');
+
+     /** Route to approve the insurance from customer */
+     Route::post('insurance/approv/{id}',[AdminController::class,'approveInsurance'])->name('AdminController.approveInsurance');
 });
