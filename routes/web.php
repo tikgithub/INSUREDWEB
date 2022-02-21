@@ -135,4 +135,13 @@ Route::group(['prefix'=>'admin','middleware'=>['adminAuthentication']],function(
 
      /** Route to update the insurance from customer by admin */
      Route::post('insurance/update',[AdminController::class,'updateCustomerInsuranceInformation'])->name('AdminController.updateCustomerInsuranceInformation');
+
+     /** Route to show the all payment item */
+     Route::get('insurance/view_all_payment',[AdminController::class,'showAllPaymentItem'])->name('AdminController.showAllPaymentItem');
+
+     /** Route to show all the contracts items */
+     Route::get('insurance/contracts',[AdminController::class,'showAllApprovedItem'])->name('AdminController.showAllApprovedItem');
+
+     /** Route to show insurance in contract item */
+     Route::get('insurance/contract/{id}',[AdminController::class,'showInsuranceInContract'])->name('AdminController.showInsuranceInContract');
 });

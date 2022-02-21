@@ -147,7 +147,7 @@ class AdminController extends Controller
 
         return redirect()->route('AdminController.showAdminDashBoard');
 
-       
+
     }
 
     /** Function update insurance from customer information */
@@ -192,11 +192,11 @@ class AdminController extends Controller
         $newInput->user_id = Auth::user()->id;
         $newInput->chassic_number = $req->input('chassic_number');
         $newInput->engine_number = $req->input('engine_number');
-     
+
         //Prepare to upload image for 5 items if image not upload mean do nothing
         $uploadPath = "Insurances/Vehicles";
-        
-    
+
+
         if ($req->file('front')) {
             File::delete($newInput->front_image);
             $newInput->front_image =  ImageCompress::compressImage($req->file('front'), 70, $uploadPath, 800);
@@ -224,5 +224,61 @@ class AdminController extends Controller
 
         return redirect()->route('AdminController.showCustomerPaymentItem',['id'=>$req->input('id')])->with('success','ດຳເນີນການສຳເລັດ');
     }
+
+    /** Function to show all  payment from customer () */
+    public function showAllPaymentItem(){
+        //Find new purchase order not payment
+        $paymentItems = VehicleInsuranceDetail::where('payment_confirm','=','WAIT_FOR_APPROVED')->get();
+
+        return view('admin.viewAllPayment')
+        ->with('paymentItems',$paymentItems);
+   }
+
+    /** Function to show all  approved from admin () */
+    public function showAllApprovedItem(){
+        //Find new purchase order not payment
+        $contracts = VehicleInsuranceDetail::where('payment_confirm','=','APPROVED_OK')->get();
+
+        return view('admin.viewAllInContract')
+        ->with('contracts',$contracts);
+   }
+
+   /** Function to view insurance which in contract*/
+   public function showInsuranceInContract($id){
+    //Get Input Data after submit
+    $inputData = VehicleInsuranceDetail::find($id);
+    //Get Sale option data
+
+    $saleOption = SaleOption::find($inputData->sale_options_id);
+    $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
+    $level = Level::find($vehiclePackage->lvl_id);
+    $company = InsuranceCompany::find($vehiclePackage->c_id);
+
+    //Get the package data
+    $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+    sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
+    WHERE so.id  = ?";
+    $saleOptionDetail = DB::select($query, [$inputData->sale_options_id]);
+
+    //Province data
+    $provinces = Province::all();
+    //District Data
+    $districts = District::where('province_id', '=', $inputData->province)->get();
+
+    //Car Brand data
+    $carBrands = CarBrand::all();
+
+    return view('admin.viewContractInsurance')
+        ->with('inputData', $inputData)
+        ->with('level', $level)
+        ->with('saleOption', $saleOption)
+        ->with('vehiclePackage', $vehiclePackage)
+        ->with('company', $company)
+        ->with('saleDetails', $saleOptionDetail)
+        ->with('Provinces', $provinces)
+        ->with('carBrands', $carBrands)
+        ->with('districts', $districts);
+}
+
 
 }

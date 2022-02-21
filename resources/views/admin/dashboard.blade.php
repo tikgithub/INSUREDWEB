@@ -25,7 +25,7 @@
             <div class="card border-success mb-3">
                 <div class="card-header bg-success border-success text-white text-center fs-4"><i class="bi bi-cash-coin me-2"></i> ລາຍການລໍຖ້າອານຸມັດ</div>
                 <div class="card-body text-success text-center">
-                    <a   class="btn btn-light border mb-2" style="width: 100%">
+                    <a href="{{route('AdminController.showAllPaymentItem')}}"  class="btn btn-light border mb-2" style="width: 100%">
                         ລາຍການທັງໝົດ <span class="ms-2 badge bg-danger">{{sizeof($paymentItems)}}</span>
                     </a>
                     <ul class="list-group">
@@ -41,12 +41,12 @@
             <div class="card border-primary mb-3">
                 <div class="card-header bg-primary border-primary text-white text-center fs-4"><i class="bi bi-body-text me-2"></i> ລາຍການຢູ່ໃນສັນຍາ</div>
                 <div class="card-body text-success text-center">
-                    <a type="button" class="btn btn-light border mb-2" style="width: 100%">
+                    <a href="{{route('AdminController.showAllApprovedItem')}}" class="btn btn-light border mb-2" style="width: 100%">
                         ລາຍການທັງໝົດ <span class="ms-2 badge bg-danger">{{sizeof($contracts)}}</span>
                     </a>
                     <ul class="list-group">
                         @foreach ($contracts as $item)
-                            <li class="list-group-item">ເລກທະບຽນລົດ: <a class="" href="http://">{{$item->number_plate}}</a></li>
+                            <li class="list-group-item">ເລກທະບຽນລົດ: <a class="" href="{{route('AdminController.showInsuranceInContract',['id'=>$item->id])}}">{{$item->number_plate}}</a></li>
                         @endforeach
                       </ul>
                 </div>
