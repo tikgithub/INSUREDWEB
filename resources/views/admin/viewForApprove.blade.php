@@ -89,15 +89,16 @@
                     {{-- Contronl button --}}
                     <div class="row">
                         <div class="col-md-12 text-center notosanLao">
-                            <form action="" method="post">
+                            <form action="{{route('AdminController.approveInsurance',['id'=>$inputData->id])}}" method="post">
                                 {{-- Contract no --}}
+                                @csrf
                                 <div class="mb-3 row">
                                     <label for="contract_no"
                                         class="col-sm-4 fs-4 text-center col-form-label">ເລກທີສັນຍາ</label>
                                     <div class="col-sm-8">
                                         <input type="text"
                                             class="form-control form-control-lg {{ $errors->has('contract_no') ? 'border-danger' : '' }}"
-                                            id="lastname" name="lastname" value="{{ old('contract_no') }}">
+                                            id="contract_no" name="contract_no" value="{{ old('contract_no') }}">
                                     </div>
                                 </div>
                                 {{-- Start Date --}}
@@ -106,7 +107,7 @@
                                         class="col-sm-4 fs-4 text-center col-form-label">ວັນທີເລີມສັນຍາໃໝ່</label>
                                     <div class="col-sm-8">
                                         <input onchange="addMore1Year()" type="date"
-                                            class="form-control form-control-lg {{ $errors->has('start_date') ? 'border-danger' : '' }}"
+                                            class="form-control form-control-lg"
                                             id="start_date" name="start_date" value="{{ old('start_date') }}">
                                     </div>
                                 </div>
@@ -133,8 +134,9 @@
             </div>
         </div>
         <div class="col-md-8">
+            @include('flashMessage')
             <h3 class="text-center notosanLao">ກວດສອບຂໍ້ມູນປະກັນໄພ</h3>
-            <form autocomplete="off" method="POST" action="{{ route('InsuranceFlowController.updateInputData') }}"
+            <form autocomplete="off" method="POST" action="{{ route('AdminController.updateCustomerInsuranceInformation') }}"
                 enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="sale_id" value="{{ $saleOption->id }}">

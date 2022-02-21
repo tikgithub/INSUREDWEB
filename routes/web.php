@@ -131,5 +131,8 @@ Route::group(['prefix'=>'admin','middleware'=>['adminAuthentication']],function(
      Route::get('/insurance/verify/{id}',[AdminController::class,'showCustomerPaymentItem'])->name('AdminController.showCustomerPaymentItem');
 
      /** Route to approve the insurance from customer */
-     Route::post('insurance/approv/{id}',[AdminController::class,'approveInsurance'])->name('AdminController.approveInsurance');
+     Route::post('insurance/approve/{id}',[AdminController::class,'approveInsurance'])->name('AdminController.approveInsurance');
+
+     /** Route to update the insurance from customer by admin */
+     Route::post('insurance/update',[AdminController::class,'updateCustomerInsuranceInformation'])->name('AdminController.updateCustomerInsuranceInformation');
 });

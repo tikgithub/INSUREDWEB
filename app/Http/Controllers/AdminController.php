@@ -10,9 +10,13 @@ use App\Models\Province;
 use App\Models\SaleOption;
 use App\Models\VehicleInsuranceDetail;
 use App\Models\VehiclePackage;
+use App\Utils\ImageCompress;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+
 
 class AdminController extends Controller
 {
@@ -125,11 +129,100 @@ class AdminController extends Controller
 
     /** Function Aprrove insurance from customer */
     public function approveInsurance(Request $req, $id){
+        $req->validate([
+            'start_date'=>'required',
+            'contract_no' =>'required'
+        ]);
+
         $package = VehicleInsuranceDetail::find($id);
         $package->contract_no = $req->input('contract_no');
         $package->start_date = $req->input('start_date');
         //Add more 1 year
         $package->end_date = Carbon::parse($req->input('start_date'))->addYear(1);
+
+        $package->contract_status = "IN_CONTRACT";
+        $package->approved_time = now();
+        $package->payment_confirm = "APPROVED_OK";
+        $package->save();
+
+        return redirect()->route('AdminController.showAdminDashBoard');
+
+       
+    }
+
+    /** Function update insurance from customer information */
+    public function updateCustomerInsuranceInformation(Request $req){
+        $req->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'tel' => 'required',
+            'sex' => 'required',
+            'dob' => 'required',
+            'identity' => 'required',
+            'province' => 'required',
+            'district' => 'required',
+            'vehicleBrand' => 'required',
+            'registeredProvince' => 'required',
+            'number_plate' => 'required',
+            'color' => 'required',
+            'address' => 'required',
+            'sale_id' => 'required'
+        ]);
+
+        //Find Sale ID
+        $saleData = SaleOption::find($req->input('sale_id'));
+        //Find eqloquent object for perform the update operation
+        $newInput = VehicleInsuranceDetail::find($req->input('id'));
+
+        $newInput->firstname = trim($req->input('firstname'));
+        $newInput->lastname = trim($req->input('lastname'));
+        $newInput->sex = $req->input('sex');
+        $newInput->dob = $req->input('dob');
+        $newInput->tel = $req->input('tel');
+        $newInput->identity = trim($req->input('identity'));
+        $newInput->province = $req->input('province');
+        $newInput->district = $req->input('district');
+        $newInput->address = trim($req->input('address'));
+        $newInput->vehicle_brand = $req->input('vehicleBrand');
+        $newInput->number_plate = trim($req->number_plate);
+        $newInput->color = trim($req->input('color'));
+        $newInput->fee_charge = $saleData->fee_charge;
+        $newInput->total_price = $saleData->sale_price;
+        $newInput->registered_province = $req->input('registeredProvince');
+        $newInput->user_id = Auth::user()->id;
+        $newInput->chassic_number = $req->input('chassic_number');
+        $newInput->engine_number = $req->input('engine_number');
+     
+        //Prepare to upload image for 5 items if image not upload mean do nothing
+        $uploadPath = "Insurances/Vehicles";
+        
+    
+        if ($req->file('front')) {
+            File::delete($newInput->front_image);
+            $newInput->front_image =  ImageCompress::compressImage($req->file('front'), 70, $uploadPath, 800);
+        }
+        if ($req->file('left')) {
+            File::delete($newInput->left_image);
+            $newInput->left_image = ImageCompress::compressImage($req->file('left'), 70, $uploadPath, 800);
+        }
+        if ($req->file('right')) {
+            error_log('update here rigth');
+            File::delete($newInput->right_image);
+            $newInput->right_image = ImageCompress::compressImage($req->file('right'), 70, $uploadPath, 800);
+        }
+        if ($req->file('rear')) {
+            File::delete($newInput->rear_image);
+            $newInput->rear_image = ImageCompress::compressImage($req->file('rear'), 70, $uploadPath, 800);
+        }
+        if ($req->file('yellow_book_image')) {
+            File::delete($newInput->yellow_book_image);
+            $newInput->yellow_book_image = ImageCompress::compressImage($req->file('yellow_book'), 70, $uploadPath, 800);
+        }
+
+        $newInput->sale_options_id = $req->input('sale_id');
+        $newInput->save();
+
+        return redirect()->route('AdminController.showCustomerPaymentItem',['id'=>$req->input('id')])->with('success','ດຳເນີນການສຳເລັດ');
     }
 
 }
