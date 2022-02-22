@@ -12,7 +12,7 @@
     {{-- Image Profile Update --}}
     <div class="row">
         <div class="col-md-4">
-            
+
         </div>
     </div>
     {{-- End of Image Profile Update --}}
@@ -51,7 +51,7 @@
                     <span class="input-group-text"><i class="bi bi-telephone"></i></span>
                     <input type="text"
                         class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger shadow' : '' }}"
-                        placeholder="ເບີໂທຕິດຕໍ່" aria-label="telephone" name="tel" value="{{ old('tel') }}">
+                        placeholder="ເບີໂທຕິດຕໍ່" aria-label="telephone" name="tel" value="{{$user->tel}}">
                 </div>
                 {{-- Password --}}
                 {{-- <div class="input-group mb-3">
