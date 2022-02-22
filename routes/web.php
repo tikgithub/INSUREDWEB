@@ -109,6 +109,9 @@ Route::group(['prefix'=>'insurance','middleware'=>'customerAuthentication'],func
 
     /** Route to delete the input detail by customer */
     Route::get('/customer/delete/{id}',[InsuranceFlowController::class,'deleteTheInput'])->name('InsuranceFlowController.deleteTheInput');
+
+    /** Route to show the insurance detail page */
+    Route::get('/customer/insurance_detail/{id}',[InsuranceFlowController::class,'showInsuranceDetailByCustomer'])->name('InsuranceFlowController.showInsuranceDetailByCustomer');
 });
 
 

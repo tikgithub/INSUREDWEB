@@ -10,9 +10,8 @@
             <li class="breadcrumb-item"><a href="{{ route('welcome') }}">ໜ້າຫຼັກ</a></li>
             <li class="breadcrumb-item"><a
                 href="{{ route('InsuranceFlowController.showInsuranceTypeSelection') }}">ຊື້ປະກັນໄພ</a></li>
-            <li class="breadcrumb-item"><a
-                    href="{{ route('InsuranceFlowController.showCarInsuranceSelectionMenu') }}">ເລືອກຮູບແບບປະກັນໄພ</a></li>
-            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">{{ $level->name }}</a></li>
+                <li class="breadcrumb-item"><a
+                    href="{{ route('UserController.userListInsurance') }}">ລາຍການຊື້ປະກັນໄພ</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ $company->name }} {{ $level->name }}
                 {{ $saleOption->name }}</li>
         </ol>
@@ -39,14 +38,14 @@
     <div class="row">
         <div class="col-md-12">
             {{-- Summary Page --}}
-         
+
                 <div  class="d-flex justify-content-start notosanLao">
                    <b>
                     <span class="fs-4">{{ 'ລວມຄ່າທຳນຽມທີ່ຕ້ອງຈ່າຍ : ' }} </span>
                     <span class="fs-4 text-danger">{{ number_format($saleOption->sale_price, 0) }} ₭</span>
                    </b>
                 </div>
-         
+
         </div>
     </div>
     <div class="row">
@@ -61,7 +60,7 @@
                 <tbody>
                     @php
                         $group_id = 0;
-                        
+
                     @endphp
                     @foreach ($saleDetails as $item)
                         {{-- start tr --}}
@@ -83,9 +82,9 @@
                     @endphp
                     </tr>
                     {{-- End tr --}}
-                   
+
                     @endforeach
-                    
+
                 </tbody>
             </table>
 

@@ -214,7 +214,7 @@ class InsuranceFlowController extends Controller
         $newInput->user_id = Auth::user()->id;
         $newInput->chassic_number = $req->input('chassic_number');
         $newInput->engine_number = $req->input('engine_number');
-       
+
         //Prepare to upload image for 5 items
         $uploadPath = "Insurances/Vehicles";
         $newInput->front_image =  ImageCompress::compressImage($req->file('front'), 70, $uploadPath, 800);
@@ -322,7 +322,7 @@ class InsuranceFlowController extends Controller
         $newInput->user_id = Auth::user()->id;
         $newInput->chassic_number = $req->input('chassic_number');
         $newInput->engine_number = $req->input('engine_number');
-     
+
         //Prepare to upload image for 5 items if image not upload mean do nothing
         $uploadPath = "Insurances/Vehicles";
 
@@ -432,6 +432,23 @@ class InsuranceFlowController extends Controller
 
     /** Function show insurance detail by customer*/
     public function showInsuranceDetailByCustomer($id){
-        return view('');
+
+        $saleOption = SaleOption::find($id);
+
+        $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
+        $level = Level::find($vehiclePackage->lvl_id);
+        $company = InsuranceCompany::find($vehiclePackage->c_id);
+
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
+        WHERE so.id  = ?";
+        $saleOptionDetail = DB::select($query, [$id]);
+
+        return view('user_view.showInsuranceDetail')
+            ->with('level', $level)
+            ->with('saleOption', $saleOption)
+            ->with('vehiclePackage', $vehiclePackage)
+            ->with('company', $company)
+            ->with('saleDetails', $saleOptionDetail);
     }
 }

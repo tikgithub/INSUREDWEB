@@ -61,17 +61,24 @@ use App\Models\Province;
                     </div>
 
                     <div class="row pt-2">
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center notosanLao">
                             <span>
                                 @switch($item->payment_confirm)
                                     @case(null)
-                                        <span
-                                            class="badge rounded-pill notosanLao fs-6 bg-primary">ລໍຖ້າຢັງຢືນການຈ່າຍເງິນ</span>
+                                        <span class="badge rounded-pill notosanLao fs-6 bg-primary">ລໍຖ້າຢັງຢືນການຈ່າຍເງິນ</span>
                                     @break
+
                                     @case('WAIT_FOR_APPROVED')
-                                    <span
-                                    class="badge rounded-pill notosanLao fs-6 bg-warning text-dark">ລໍຖ້າຢັງຢືນການອານຸມັດ</span>
+                                        <span
+                                            class="badge rounded-pill notosanLao fs-6 bg-warning text-dark">ລໍຖ້າຢັງຢືນການອານຸມັດ</span>
                                     @break
+
+                                    @case('APPROVED_OK')
+                                        @if ($item->end_date < Carbon\Carbon::now())
+                                            <a class="btn-danger btn btn-sm ">ໝົດສັນຍາແລ້ວ ກົດເພື່ອຕໍ່ສັນຍາ</a>
+                                        @endif
+                                    @break
+
                                     @default
                                 @endswitch
                             </span>
@@ -82,80 +89,87 @@ use App\Models\Province;
                     <hr>
                     {{-- Insurance Content --}}
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="d-flex justify-conent-between fs-6">
-                                <img class="car-image rounded" src="{{ asset($item->front_image) }}" alt="" srcset="">
-                                <span class="ms-2 notosanLao">
-                                    @php
-                                        $vehicleBrand = CarBrand::find($item->vehicle_brand);
-                                    @endphp
+                        <div class="col-md-2 text-center">
+                            {{-- Image --}}
+                            <img class="car-image rounded" src="{{ asset($item->front_image) }}" alt="" srcset="">
+                            {{-- End Image --}}
+                        </div>
+                        <div class="col-md-5">
+                            <div class="ms-2 notosanLao mb-5">
+                                @php
+                                    $vehicleBrand = CarBrand::find($item->vehicle_brand);
+                                @endphp
 
-                                    <table>
-                                        <tr>
-                                            <td width="100" class="fw-bold">ຍີ່ຫໍ້ລົດ</td>
-                                            <td>{{ $vehicleBrand->name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">ເລກທະບຽນ</td>
-                                            <td>{{ Province::find($item->registered_province)->province_name }}
-                                                {{ $item->number_plate }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">ເລກຈັກ</td>
-                                            <td>{{ $item->engine_number }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">ເລກຖັງ</td>
-                                            <td>{{ $item->chassic_number }}</td>
-                                        </tr>
-                                    </table>
-                                    <table>
-                                        <tr>
+                                <table>
+                                    <tr>
+                                        <td width="100" class="fw-bold">ຍີ່ຫໍ້ລົດ</td>
+                                        <td>{{ $vehicleBrand->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">ເລກທະບຽນ</td>
+                                        <td>{{ Province::find($item->registered_province)->province_name }}
+                                            {{ $item->number_plate }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">ເລກຈັກ</td>
+                                        <td>{{ $item->engine_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">ເລກຖັງ</td>
+                                        <td>{{ $item->chassic_number }}</td>
+                                    </tr>
+                                </table>
 
-                                            <td><a href="http://" class="btn btn-sm btn-primary"><i
-                                                        class="bi bi-info-circle"></i> ລາຍລະອຽດການຄຸ້ມຄອງ</a></td>
-                                            @if ($item->payment_confirm == 'WAIT_FOR_APPROVED')
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-warning ms-1"><i
-                                                            class="bi bi-clock-history"></i> ລໍຖ້າການອານຸມັດ</button>
-                                                </td>
-                                            @elseif($item->payment_confirm == 'APPROVED_OK')
-                                                ລາຍລະອຽດການອານຸມັດ ແລະ ວັນທີເລີມສັນຍາຕ່າງໆ
-                                            @else
-                                                <td><a href="{{ route('InsuranceFlowController.redirectToAgreement', ['id' => $item->id]) }}"
-                                                        class="btn btn-sm btn-success"><i class="bi bi-cash-stack"></i>
-                                                        ຈ່າຍເງິນ</a></td>
-                                                <td><a data-bs-toggle="modal" onclick="showDeleteModal({{$item->id}})" data-bs-target="#deleteModal" class="btn btn-sm btn-danger"><i
-                                                            class="bi bi-x-square"></i> ຍົກເລີກ</a></td>
-                                            @endif
-
-                                        </tr>
-                                    </table>
-                                </span>
-                                @if ($item->payment_confirm)
-                                    <span class="ms-5">
-                                        <table class="notosanLao">
-                                            <tr>
-                                                <td width="100">ວັນທີຈ່າຍເງິນ</td>
-                                                <td>{{ date('d/m/Y H:i:A', strtotime($item->payment_time)) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>
-                                                    <img id="slip-{{ $item->id }}"
-                                                        onclick="showImageFullScreen('slip-{{ $item->id }}')"
-                                                        src="{{ $item->slip_confirmed }}" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal"
-                                                        style="width: auto; height: 120px; cursor: pointer;">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </span>
-                                @endif
                             </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            @if ($item->payment_confirm)
+                                <h4 class="notosanLao">ວັນທີຈ່າຍເງິນ
+                                    {{ date('d/m/Y H:i:A', strtotime($item->payment_time)) }}</h4>
+
+                                <img id="slip-{{ $item->id }}"
+                                    onclick="showImageFullScreen('slip-{{ $item->id }}')"
+                                    src="{{ $item->slip_confirmed }}" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" style="width: auto; height: 120px; cursor: pointer;">
+                            @endif
+                        </div>
+
+                    </div>
+                    {{-- End Col --}}
+
+                    <div class="row notosanLao pt-3">
+                        <div class="col-md-12 text-center">
+                            <table>
+                                <tr class="text-center">
+                                    <td><a href="{{ route('InsuranceFlowController.showInsuranceDetailByCustomer', ['id' => $item->sale_options_id]) }}"
+                                            class="btn btn-sm btn-primary"><i class="bi bi-info-circle"></i>
+                                            ການຄຸ້ມຄອງ</a></td>
+                                    @if ($item->payment_confirm == 'WAIT_FOR_APPROVED')
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning ms-1"><i
+                                                    class="bi bi-clock-history"></i> ລໍຖ້າການອານຸມັດ</button>
+                                        </td>
+                                    @elseif($item->payment_confirm == 'APPROVED_OK')
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-success ms-1"><i
+                                                    class="bi bi-journal-check"></i>
+                                                ເລກທີ່ສັນຍາ {{ $item->contract_no }}</button>
+                                        </td>
+                                       
+                                    @else
+                                        <td><a href="{{ route('InsuranceFlowController.redirectToAgreement', ['id' => $item->id]) }}"
+                                                class="btn btn-sm btn-success"><i class="bi bi-cash-stack"></i>
+                                                ຈ່າຍເງິນ</a></td>
+                                        <td><a data-bs-toggle="modal" onclick="showDeleteModal({{ $item->id }})"
+                                                data-bs-target="#deleteModal" class="btn btn-sm btn-danger"><i
+                                                    class="bi bi-x-square"></i> ຍົກເລີກ</a></td>
+                                    @endif
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
+
                 <div class="pt-3"></div>
             @endforeach
         </div>
@@ -178,27 +192,27 @@ use App\Models\Province;
         </div>
     </div>
 
-{{-- Delete Modal --}}
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog notosanLao">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-center" id="exampleModalLabel">ແຈ້ງເຕືອນ</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    {{-- Delete Modal --}}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog notosanLao">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">ແຈ້ງເຕືອນ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ">
+                    <p class="fs-4"> ຕ້ອງການລຶບລາຍການແມ່ນບໍ່?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" action="" method="get" class="notosanLao">
+                        @csrf
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ອອກ</button>
+                        <button type="submit" class="btn btn-success">ຕົກລົງ</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="modal-body ">
-         <p class="fs-4"> ຕ້ອງການລຶບລາຍການແມ່ນບໍ່?</p>
-        </div>
-        <div class="modal-footer">
-         <form id="deleteForm" action="" method="get" class="notosanLao">
-             @csrf
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ອອກ</button>
-            <button type="submit" class="btn btn-success">ຕົກລົງ</button>
-         </form>
-        </div>
-      </div>
     </div>
-  </div>
 
     <div class="fixed-bottom">
         @include('layouts.footer')
@@ -216,17 +230,18 @@ use App\Models\Province;
         function download() {
             var image = new Image();
             image.onload = function() {
-                console.log(image.width); // image is loaded and we have image width 
+                console.log(image.width); // image is loaded and we have image width
             }
             var previewImage = document.getElementById('previewImage');
             image.src = previewImage.getAttribute('src');
             document.body.appendChild(image);
         }
-        function showDeleteModal(id){
+
+        function showDeleteModal(id) {
             var formDelete = document.getElementById('deleteForm');
-            var url = "{{route('InsuranceFlowController.deleteTheInput',['id'=>':id'])}}";
-            url = url.replace(':id',id);
-            formDelete.setAttribute('action',url);
+            var url = "{{ route('InsuranceFlowController.deleteTheInput', ['id' => ':id']) }}";
+            url = url.replace(':id', id);
+            formDelete.setAttribute('action', url);
         }
     </script>
 @endsection
@@ -251,3 +266,35 @@ use App\Models\Province;
 
     </style>
 @endsection
+
+
+{{-- <table>
+    <tr>
+
+        <td><a href="{{ route('InsuranceFlowController.showInsuranceDetailByCustomer', ['id' => $item->id]) }}"
+                class="btn btn-sm btn-primary"><i class="bi bi-info-circle"></i>
+                ລາຍລະອຽດການຄຸ້ມຄອງ</a></td>
+        @if ($item->payment_confirm == 'WAIT_FOR_APPROVED')
+            <td>
+                <button type="button" class="btn btn-sm btn-warning ms-1"><i
+                        class="bi bi-clock-history"></i> ລໍຖ້າການອານຸມັດ</button>
+            </td>
+        @elseif($item->payment_confirm == 'APPROVED_OK')
+            <td>
+                <button type="button" class="btn btn-sm btn-success ms-1"><i
+                        class="bi bi-journal-check"></i>
+                    {{ $item->contract_no }}</button>
+
+            </td>
+        @else
+            <td><a href="{{ route('InsuranceFlowController.redirectToAgreement', ['id' => $item->id]) }}"
+                    class="btn btn-sm btn-success"><i class="bi bi-cash-stack"></i>
+                    ຈ່າຍເງິນ</a></td>
+            <td><a data-bs-toggle="modal"
+                    onclick="showDeleteModal({{ $item->id }})"
+                    data-bs-target="#deleteModal" class="btn btn-sm btn-danger"><i
+                        class="bi bi-x-square"></i> ຍົກເລີກ</a></td>
+        @endif
+
+    </tr>
+</table> --}}
