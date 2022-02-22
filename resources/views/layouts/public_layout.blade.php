@@ -65,7 +65,7 @@
                                 {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
                             </button>
                             <ul class="dropdown-menu notosanLao">
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-person-circle"></i> ໂປຣໄຟຣ</a></li>
+                                <li><a class="dropdown-item" href="{{route('UserController.showUserProfilePage')}}"><i class="bi bi-person-circle"></i> ໂປຣໄຟຣ</a></li>
                                 <li><a class="dropdown-item" href="{{route('UserController.userListInsurance')}}"><i class="bi bi-list-task"></i> ລາຍການຊື້ປະກັນ</a></li>
                                 <li>
                                     <hr class="dropdown-divider">

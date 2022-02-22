@@ -104,4 +104,11 @@ class UserController extends Controller
         return view('user_view.insuranceList')
         ->with('orderData',$insuranceData);
     }
+
+    /** User Profile viewer */
+    public function showUserProfilePage(){
+        //Get User ID from Auth Facades
+        $user = Auth::user();        
+        return view('user_view.profile')->with('user',$user);
+    }
 }

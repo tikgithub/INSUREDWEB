@@ -92,6 +92,9 @@ Route::group(['prefix'=>'insurance','middleware'=>'customerAuthentication'],func
     /** Route to show user insurance list that being to customer */
     Route::get('/customer/order',[UserController::class,'userListInsurance'])->name('UserController.userListInsurance');
 
+    /** Route to show user profile page */
+    Route::get('/customer/profile',[UserController::class,'showUserProfilePage'])->name('UserController.showUserProfilePage');
+
     /** Route to redirect to agreement page */
     Route::get('/redirect_to_agreement/{id}',[InsuranceFlowController::class,'redirectToAgreement'])->name('InsuranceFlowController.redirectToAgreement');
 
