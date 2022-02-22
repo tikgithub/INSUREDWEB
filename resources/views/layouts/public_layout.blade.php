@@ -21,8 +21,8 @@
 
 <body style="padding-bottom: 100px; padding-top:40px; background-color: #f0f0f0">
     {{-- Navbar --}}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;" >
+        <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('assets/image/mainlogo.png') }}" width="auto" height="64" class="d-inline-block ">
             </a>
@@ -31,7 +31,7 @@
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 notosanLao fs-5">
                     <li class="nav-item">
                         <a class="nav-link active " aria-current="page" href="{{ route('welcome') }}">ໜ້າຫຼັກ</a>
@@ -61,7 +61,7 @@
                             <button type="button" class="text-white btn btn-lg bg-blue dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ Auth::user()->profile_photo ? asset(Auth::user->profile_photo) : asset('assets/image/user_thumnail.png') }}"
-                                    class="rounded-circle border" style="width: auto;height: 60px; object-fit: cover">
+                                    class="rounded-circle border" style="width: auto;height: 40px; object-fit: cover">
                                 {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
                             </button>
                             <ul class="dropdown-menu notosanLao">
