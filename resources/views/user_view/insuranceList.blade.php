@@ -266,35 +266,3 @@ use App\Models\Province;
 
     </style>
 @endsection
-
-
-{{-- <table>
-    <tr>
-
-        <td><a href="{{ route('InsuranceFlowController.showInsuranceDetailByCustomer', ['id' => $item->id]) }}"
-                class="btn btn-sm btn-primary"><i class="bi bi-info-circle"></i>
-                ລາຍລະອຽດການຄຸ້ມຄອງ</a></td>
-        @if ($item->payment_confirm == 'WAIT_FOR_APPROVED')
-            <td>
-                <button type="button" class="btn btn-sm btn-warning ms-1"><i
-                        class="bi bi-clock-history"></i> ລໍຖ້າການອານຸມັດ</button>
-            </td>
-        @elseif($item->payment_confirm == 'APPROVED_OK')
-            <td>
-                <button type="button" class="btn btn-sm btn-success ms-1"><i
-                        class="bi bi-journal-check"></i>
-                    {{ $item->contract_no }}</button>
-
-            </td>
-        @else
-            <td><a href="{{ route('InsuranceFlowController.redirectToAgreement', ['id' => $item->id]) }}"
-                    class="btn btn-sm btn-success"><i class="bi bi-cash-stack"></i>
-                    ຈ່າຍເງິນ</a></td>
-            <td><a data-bs-toggle="modal"
-                    onclick="showDeleteModal({{ $item->id }})"
-                    data-bs-target="#deleteModal" class="btn btn-sm btn-danger"><i
-                        class="bi bi-x-square"></i> ຍົກເລີກ</a></td>
-        @endif
-
-    </tr>
-</table> --}}
