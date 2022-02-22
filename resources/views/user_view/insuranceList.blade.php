@@ -151,11 +151,11 @@ use App\Models\Province;
                                         </td>
                                     @elseif($item->payment_confirm == 'APPROVED_OK')
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-success ms-1"><i
+                                            <a target="_blank" href="{{asset('tmpfolder/sample.pdf')}}" type="button" class="btn btn-sm btn-success ms-1"><i
                                                     class="bi bi-journal-check"></i>
-                                                ເລກທີ່ສັນຍາ {{ $item->contract_no }}</button>
+                                                ເລກທີ່ສັນຍາ {{ $item->contract_no }}</a>
                                         </td>
-                                       
+
                                     @else
                                         <td><a href="{{ route('InsuranceFlowController.redirectToAgreement', ['id' => $item->id]) }}"
                                                 class="btn btn-sm btn-success"><i class="bi bi-cash-stack"></i>
