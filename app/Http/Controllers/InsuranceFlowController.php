@@ -429,4 +429,9 @@ class InsuranceFlowController extends Controller
         VehicleInsuranceDetail::find($id)->delete();
         return redirect()->route('UserController.userListInsurance')->with('success','ດຳເນີນການສຳເລັດ');
     }
+
+    /** Function show insurance detail by customer*/
+    public function showInsuranceDetailByCustomer($id){
+        return view('');
+    }
 }

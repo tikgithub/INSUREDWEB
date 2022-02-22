@@ -21,23 +21,31 @@ use Illuminate\Support\Facades\File;
 class AdminController extends Controller
 {
     /** Function to show Admin Dashboard */
-    public function showAdminDashBoard(){
+    public function showAdminDashBoard()
+    {
         //Find new purchase order not payment
-        $newPurchase = VehicleInsuranceDetail::where('payment_confirm','=',null)->get();
+        $newPurchase = VehicleInsuranceDetail::where('payment_confirm', '=', null)->get();
         //Find purchase data with paymented
-        $paymentItems = VehicleInsuranceDetail::where('payment_confirm','=','WAIT_FOR_APPROVED')->get();
+        $paymentItems = VehicleInsuranceDetail::where('payment_confirm', '=', 'WAIT_FOR_APPROVED')->get();
 
         //Find Insurance within contract
-        $contracts =VehicleInsuranceDetail::where('contract_status','!=',null)->get();
+        $contracts = VehicleInsuranceDetail::where('contract_status', '!=', null)->get();
+
+        //Find Insurance within contract
+        $outOfContracts = VehicleInsuranceDetail::where('contract_status', '=', 'IN_CONTRACT', 'AND')
+            ->where(DB::raw('now()'), '>=', DB::raw("DATE_SUB(end_date,INTERVAL 7 DAY)"), 'AND')
+            ->where(DB::raw('now()'), '<=', DB::raw("DATE_ADD(end_date,INTERVAL 7 DAY)"))->get();
 
         return view('admin.dashboard')
-        ->with('newPurchase',$newPurchase)
-        ->with('paymentItems',$paymentItems)
-        ->with('contracts',$contracts);
+            ->with('newPurchase', $newPurchase)
+            ->with('paymentItems', $paymentItems)
+            ->with('contracts', $contracts)
+            ->with('outOfContracts', $outOfContracts);
     }
 
     /** Function to allow admin to view input data from customer (readonly customer can edit only) */
-    public function showCustomerInput($id){
+    public function showCustomerInput($id)
+    {
         //Get Input Data after submit
         $inputData = VehicleInsuranceDetail::find($id);
         //Get Sale option data
@@ -74,24 +82,27 @@ class AdminController extends Controller
     }
 
     /** Function to show all  input data from customer (readonly customer can edit only) */
-    public function showAllCustomerInput(){
-         //Find new purchase order not payment
-         $newPurchase = VehicleInsuranceDetail::where('payment_confirm','=',null)->get();
+    public function showAllCustomerInput()
+    {
+        //Find new purchase order not payment
+        $newPurchase = VehicleInsuranceDetail::where('payment_confirm', '=', null)->get();
 
-         return view('admin.viewAllInsurance')
-         ->with('newPurchases',$newPurchase);
+        return view('admin.viewAllInsurance')
+            ->with('newPurchases', $newPurchase);
     }
 
 
     /** Function to delete the input data */
-    public function deleteTheInput($id){
+    public function deleteTheInput($id)
+    {
         VehicleInsuranceDetail::find($id)->delete();
-        return redirect()->route('AdminController.showAdminDashBoard')->with('success','ດຳເນີນການສຳເລັດ');
+        return redirect()->route('AdminController.showAdminDashBoard')->with('success', 'ດຳເນີນການສຳເລັດ');
     }
 
 
     /** Function to allow admin to view input data from customer (editable) */
-    public function showCustomerPaymentItem($id){
+    public function showCustomerPaymentItem($id)
+    {
         //Get Input Data after submit
         $inputData = VehicleInsuranceDetail::find($id);
         //Get Sale option data
@@ -128,10 +139,11 @@ class AdminController extends Controller
     }
 
     /** Function Aprrove insurance from customer */
-    public function approveInsurance(Request $req, $id){
+    public function approveInsurance(Request $req, $id)
+    {
         $req->validate([
-            'start_date'=>'required',
-            'contract_no' =>'required'
+            'start_date' => 'required',
+            'contract_no' => 'required'
         ]);
 
         $package = VehicleInsuranceDetail::find($id);
@@ -146,12 +158,11 @@ class AdminController extends Controller
         $package->save();
 
         return redirect()->route('AdminController.showAdminDashBoard');
-
-
     }
 
     /** Function update insurance from customer information */
-    public function updateCustomerInsuranceInformation(Request $req){
+    public function updateCustomerInsuranceInformation(Request $req)
+    {
         $req->validate([
             'firstname' => 'required',
             'lastname' => 'required',
@@ -222,63 +233,119 @@ class AdminController extends Controller
         $newInput->sale_options_id = $req->input('sale_id');
         $newInput->save();
 
-        return redirect()->route('AdminController.showCustomerPaymentItem',['id'=>$req->input('id')])->with('success','ດຳເນີນການສຳເລັດ');
+        return redirect()->route('AdminController.showCustomerPaymentItem', ['id' => $req->input('id')])->with('success', 'ດຳເນີນການສຳເລັດ');
     }
 
     /** Function to show all  payment from customer () */
-    public function showAllPaymentItem(){
+    public function showAllPaymentItem()
+    {
         //Find new purchase order not payment
-        $paymentItems = VehicleInsuranceDetail::where('payment_confirm','=','WAIT_FOR_APPROVED')->get();
+        $paymentItems = VehicleInsuranceDetail::where('payment_confirm', '=', 'WAIT_FOR_APPROVED')->get();
 
         return view('admin.viewAllPayment')
-        ->with('paymentItems',$paymentItems);
-   }
+            ->with('paymentItems', $paymentItems);
+    }
 
     /** Function to show all  approved from admin () */
-    public function showAllApprovedItem(){
+    public function showAllApprovedItem()
+    {
         //Find new purchase order not payment
-        $contracts = VehicleInsuranceDetail::where('payment_confirm','=','APPROVED_OK')->get();
+        //Find where approved and not out of contract
+        $contracts = VehicleInsuranceDetail::where('payment_confirm', '=', 'APPROVED_OK', 'AND')->where('end_date', '>', now())->get();
 
         return view('admin.viewAllInContract')
-        ->with('contracts',$contracts);
-   }
+            ->with('contracts', $contracts);
+    }
 
-   /** Function to view insurance which in contract*/
-   public function showInsuranceInContract($id){
-    //Get Input Data after submit
-    $inputData = VehicleInsuranceDetail::find($id);
-    //Get Sale option data
+    /** Function to view insurance which in contract*/
+    public function showInsuranceInContract($id)
+    {
+        //Get Input Data after submit
+        $inputData = VehicleInsuranceDetail::find($id);
+        //Get Sale option data
 
-    $saleOption = SaleOption::find($inputData->sale_options_id);
-    $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
-    $level = Level::find($vehiclePackage->lvl_id);
-    $company = InsuranceCompany::find($vehiclePackage->c_id);
+        $saleOption = SaleOption::find($inputData->sale_options_id);
+        $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
+        $level = Level::find($vehiclePackage->lvl_id);
+        $company = InsuranceCompany::find($vehiclePackage->c_id);
 
-    //Get the package data
-    $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+        //Get the package data
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
     sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
     WHERE so.id  = ?";
-    $saleOptionDetail = DB::select($query, [$inputData->sale_options_id]);
+        $saleOptionDetail = DB::select($query, [$inputData->sale_options_id]);
 
-    //Province data
-    $provinces = Province::all();
-    //District Data
-    $districts = District::where('province_id', '=', $inputData->province)->get();
+        //Province data
+        $provinces = Province::all();
+        //District Data
+        $districts = District::where('province_id', '=', $inputData->province)->get();
 
-    //Car Brand data
-    $carBrands = CarBrand::all();
+        //Car Brand data
+        $carBrands = CarBrand::all();
 
-    return view('admin.viewContractInsurance')
-        ->with('inputData', $inputData)
-        ->with('level', $level)
-        ->with('saleOption', $saleOption)
-        ->with('vehiclePackage', $vehiclePackage)
-        ->with('company', $company)
-        ->with('saleDetails', $saleOptionDetail)
-        ->with('Provinces', $provinces)
-        ->with('carBrands', $carBrands)
-        ->with('districts', $districts);
-}
+        return view('admin.viewContractInsurance')
+            ->with('inputData', $inputData)
+            ->with('level', $level)
+            ->with('saleOption', $saleOption)
+            ->with('vehiclePackage', $vehiclePackage)
+            ->with('company', $company)
+            ->with('saleDetails', $saleOptionDetail)
+            ->with('Provinces', $provinces)
+            ->with('carBrands', $carBrands)
+            ->with('districts', $districts);
+    }
 
+    /** Function to view Out of contract data */
+    public function viewOutOfContract($id)
+    {
 
+        //Get Input Data after submit
+        $inputData = VehicleInsuranceDetail::find($id);
+        //Get Sale option data
+
+        $saleOption = SaleOption::find($inputData->sale_options_id);
+        $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
+        $level = Level::find($vehiclePackage->lvl_id);
+        $company = InsuranceCompany::find($vehiclePackage->c_id);
+
+        //Get the package data
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+    sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
+    WHERE so.id  = ?";
+        $saleOptionDetail = DB::select($query, [$inputData->sale_options_id]);
+
+        //Province data
+        $provinces = Province::all();
+        //District Data
+        $districts = District::where('province_id', '=', $inputData->province)->get();
+
+        //Car Brand data
+        $carBrands = CarBrand::all();
+
+        return view('admin.viewOutOfContract')
+            ->with('inputData', $inputData)
+            ->with('level', $level)
+            ->with('saleOption', $saleOption)
+            ->with('vehiclePackage', $vehiclePackage)
+            ->with('company', $company)
+            ->with('saleDetails', $saleOptionDetail)
+            ->with('Provinces', $provinces)
+            ->with('carBrands', $carBrands)
+            ->with('districts', $districts);
+    }
+
+     /** Function to show all  out of contract () */
+     public function showAllOutOfContract()
+     {
+         //Find new purchase order not payment
+         //Find where approved and not out of contract
+         $outOfContracts = VehicleInsuranceDetail::where('contract_status', '=', 'IN_CONTRACT', 'AND')
+            ->where(DB::raw('now()'), '>=', DB::raw("DATE_SUB(end_date,INTERVAL 7 DAY)"), 'AND')
+            ->where(DB::raw('now()'), '<=', DB::raw("DATE_ADD(end_date,INTERVAL 7 DAY)"))->get();
+
+         //$outOfContracts = VehicleInsuranceDetail::where('payment_confirm', '=', 'APPROVED_OK', 'AND')->where('end_date', '>', now())->get();
+ 
+         return view('admin.viewAllOutOfContracts')
+             ->with('outOfContracts', $outOfContracts);
+     }
 }

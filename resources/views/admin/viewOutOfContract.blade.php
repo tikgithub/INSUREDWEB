@@ -8,14 +8,14 @@
     <div class="pt-5"></div>
     <div class="row">
         <div class="col-md-12 text-center notosanLao">
-            <h2>ລາຍການທີ່ຢູ່ໃນສັນຍາ</h2>
+            <h2>ລາຍການທີ່ໃກ້ໝົດສັນຍາ</h2>
         </div>
     </div>
     {{-- Navigation --}}
     <nav aria-label="breadcrumb ">
         <ol class="breadcrumb notosanLao">
           <li class="breadcrumb-item"><a href="{{route('AdminController.showAdminDashBoard')}}">Dashboard</a></li>
-          <li class="breadcrumb-item active" aria-current="page">ລາຍການທີ່ຢູ່ໃນສັນຍາ</li>
+          <li class="breadcrumb-item active" aria-current="page">ລາຍການໃກ້ໝົດສັນຍາ</li>
         </ol>
       </nav>
       <hr>
@@ -118,13 +118,13 @@
                         </div>
                     </div>
                     {{-- Contronl button --}}
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-md-12 text-center">
                             <a href="{{route('AdminController.deleteTheInput',['id'=>$inputData->id])}}" class="notosanLao btn-lg btn btn-danger" onclick="return confirm('Are you sure, you want to delete it?')">
                                 <i class="bi bi-trash3-fill me-2"></i> ຍົກເລີກສັນຍາ
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>

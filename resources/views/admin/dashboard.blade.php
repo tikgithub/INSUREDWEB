@@ -58,12 +58,12 @@
             <div class="card border-danger mb-3">
                 <div class="card-header bg-danger border-danger text-white text-center fs-4"><i class="bi bi-exclamation-diamond-fill me-2"></i> ລາຍການທີ່ໃກ້ໝົດສັນຍາພາຍໃນ 14 ວັນ</div>
                 <div class="card-body text-success text-center">
-                    <a type="button" class="btn btn-light border mb-2" style="width: 100%">
-                        ລາຍການທັງໝົດ <span class="ms-2 badge bg-danger">{{sizeof($contracts)}}</span>
+                    <a href="{{route('AdminController.showAllOutOfContract')}}" class="btn btn-light border mb-2" style="width: 100%">
+                        ລາຍການທັງໝົດ <span class="ms-2 badge bg-danger">{{sizeof($outOfContracts)}}</span>
                     </a>
                     <ul class="list-group">
-                        @foreach ($contracts as $item)
-                            <li class="list-group-item">ເລກທະບຽນລົດ: <a class="" href="http://">{{$item->number_plate}}</a></li>
+                        @foreach ($outOfContracts as $item)
+                            <li class="list-group-item">ເລກທະບຽນລົດ: <a class="" href="{{route('AdminController.viewOutOfContract',['id'=>$item->id])}}">{{$item->number_plate}}</a></li>
                         @endforeach
                       </ul>
                 </div>

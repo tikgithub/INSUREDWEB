@@ -144,4 +144,10 @@ Route::group(['prefix'=>'admin','middleware'=>['adminAuthentication']],function(
 
      /** Route to show insurance in contract item */
      Route::get('insurance/contract/{id}',[AdminController::class,'showInsuranceInContract'])->name('AdminController.showInsuranceInContract');
+
+     /** Route to show insurance has been out of contract */
+     Route::get('/insurance/outOfContract/{id}',[AdminController::class,'viewOutOfContract'])->name('AdminController.viewOutOfContract');
+
+     /** Route to show insurance has been out of contracts as list */
+     Route::get('/insurance/outOfContracts',[AdminController::class,'showAllOutOfContract'])->name('AdminController.showAllOutOfContract');
 });

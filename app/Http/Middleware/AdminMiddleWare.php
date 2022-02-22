@@ -22,11 +22,11 @@ class AdminMiddleWare
                 return $next($request);
             }else{
                 //Redirect When Not OK
-                return redirect()->back()->with('error','Authenticate Failed');
+                return redirect()->route('welcome')->with('error','Authenticate Failed');
             }
         }
         //Redirect When Not OK
-        return redirect()->back()->with('error','Authenticate Failed');
+        return redirect()->route('welcome')->with('error','Authenticate Failed');
         
     }
 }

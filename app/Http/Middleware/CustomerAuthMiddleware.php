@@ -23,7 +23,7 @@ class CustomerAuthMiddleware
             return $next($request);
         }
         //Redirect When Not OK
-        return redirect()->back()->with('error','Authenticate Failed');
+        return redirect()->route('welcome')->with('error','Authenticate Failed');
         
     }
 }

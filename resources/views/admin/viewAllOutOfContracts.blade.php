@@ -15,7 +15,7 @@
  <nav aria-label="breadcrumb ">
     <ol class="breadcrumb notosanLao">
       <li class="breadcrumb-item"><a href="{{route('AdminController.showAdminDashBoard')}}">ໜ້າຫຼັກ</a></li>
-      <li class="breadcrumb-item active" aria-current="page">ລາຍການທີ່ຢູ່ໃນສັນຍາ</li>
+      <li class="breadcrumb-item active" aria-current="page">ລາຍການໝົດໃກ້ປະກັນ</li>
     </ol>
   </nav>
 <hr>
@@ -32,7 +32,7 @@
             <th>ວັນທີໝົດປະກັນ</th>
         </thead>
         <tbody class="notosanLao">
-            @foreach ($contracts as $item)
+            @foreach ($outOfContracts as $item)
                 <tr style="cursor: pointer" onclick="show({{$item->id}})">
                     <td>{{$loop->index + 1 }}</td>
                     <td>
@@ -73,7 +73,8 @@
 @section('scripting')
     <script>
         function show(id){
-            var url = "{{route('AdminController.showInsuranceInContract',['id'=>':id'])}}";
+            console.log(tt);
+            var url = "{{route('AdminController.viewOutOfContract',['id'=>':id'])}}";
             url = url.replace(':id',id);
             window.location = url;
         }
