@@ -1,3 +1,9 @@
+@php
+
+use App\Utils\ImageCompress;
+
+@endphp
+
 @extends('layouts.public_layout')
 @section('content')
     {{-- Padding --}}
@@ -282,7 +288,7 @@
                         {{-- Car Side Front Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{asset($inputData->front_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->front_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="front" id="front" class="form-control-file border {{($errors->has('front')? 'border-danger':'')}}" style="width: 100%">
@@ -292,7 +298,7 @@
                          {{-- Car Side left Image --}}
                          <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{asset($inputData->left_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->left_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="left" id="left" class="form-control-file border {{($errors->has('left')? 'border-danger':'')}}" style="width: 100%">
@@ -303,7 +309,7 @@
                          {{-- Car Side right Image --}}
                          <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{asset($inputData->right_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->right_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="right" id="right" class="form-control-file border {{($errors->has('right')? 'border-danger':'')}}" style="width: 100%">
@@ -313,7 +319,7 @@
                          {{-- Car Side rear Image --}}
                          <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{asset($inputData->rear_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->rear_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="rear" id="rear" class="form-control-file border {{($errors->has('rear')? 'border-danger':'')}}" style="width: 100%">
@@ -323,7 +329,8 @@
                         {{-- Car Book Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2 rounded" src="{{asset($inputData->yellow_book_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+
+                                <img class="ms-2 rounded" src="{{ImageCompress::getThumnailImage($inputData->yellow_book_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="yellow_book" id="yellow_book" class="form-control-file border {{($errors->has('yellow_book')? 'border-danger':'')}}" style="width: 100%">

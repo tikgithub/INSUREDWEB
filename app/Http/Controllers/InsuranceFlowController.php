@@ -217,11 +217,11 @@ class InsuranceFlowController extends Controller
 
         //Prepare to upload image for 5 items
         $uploadPath = "Insurances/Vehicles";
-        $newInput->front_image =  ImageCompress::compressImage($req->file('front'), 70, $uploadPath, 800);
-        $newInput->left_image = ImageCompress::compressImage($req->file('left'), 70, $uploadPath, 800);
-        $newInput->right_image = ImageCompress::compressImage($req->file('right'), 70, $uploadPath, 800);
-        $newInput->rear_image = ImageCompress::compressImage($req->file('rear'), 70, $uploadPath, 800);
-        $newInput->yellow_book_image = ImageCompress::compressImage($req->file('yellow_book'), 70, $uploadPath, 800);
+        $newInput->front_image =  ImageCompress::notCompressImage($req->file('front'), $uploadPath);
+        $newInput->left_image = ImageCompress::notCompressImage($req->file('left'), $uploadPath);
+        $newInput->right_image = ImageCompress::notCompressImage($req->file('right'), $uploadPath);
+        $newInput->rear_image = ImageCompress::notCompressImage($req->file('rear'), $uploadPath);
+        $newInput->yellow_book_image = ImageCompress::notCompressImage($req->file('yellow_book'), $uploadPath);
         $newInput->sale_options_id = $req->input('sale_id');
         $newInput->save();
         //Set Session for new Input ID

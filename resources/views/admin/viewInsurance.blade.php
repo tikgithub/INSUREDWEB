@@ -1,3 +1,9 @@
+@php
+
+use App\Utils\ImageCompress;
+
+@endphp
+
 @extends('layouts.admin_layout')
 @section('content')
     {{-- Padding --}}
@@ -58,7 +64,7 @@
                             <tbody>
                                 @php
                                     $group_id = 0;
-                                    
+
                                 @endphp
                                 @foreach ($saleDetails as $item)
                                     {{-- start tr --}}
@@ -298,48 +304,46 @@
                         {{-- Car Side Front Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ asset($inputData->front_image) }}"
+                               <a href="{{asset($inputData->front_image)}}" target="_blank">
+                                    <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->front_image)}}"
                                     style="width: auto; height: 100px;" alt="" srcset="">
+                                </a>
                             </div>
                             <div class="col-sm-6 align-self-center">
-                                <img class="ms-2" src="{{ asset($inputData->left_image) }}"
-                                style="width: auto; height: 100px;" alt="" srcset="">
+                                <a href="{{asset($inputData->left_image)}}" target="_blank" rel="noopener noreferrer">
+                                    <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->left_image)}}"
+                                    style="width: auto; height: 100px;" alt="" srcset="">
+                                </a>
                             </div>
                         </div>
 
                         {{-- Car Side left Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ asset($inputData->right_image) }}"
-                                style="width: auto; height: 100px;" alt="" srcset="">
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-                                <img class="ms-2 rounded" src="{{ asset($inputData->yellow_book_image) }}"
+                                <a href="{{asset($inputData->right_image)}}" target="_blank" rel="noopener noreferrer">
+                                    <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->right_image)}}"
                                     style="width: auto; height: 100px;" alt="" srcset="">
-                            </div>
-
-                        </div>
-
-                        {{-- Car Side right Image --}}
-                        <div class="mb-3 row">
-                            <div class="col-sm-6 text-center">
-                                
+                                </a>
                             </div>
                             <div class="col-sm-6 align-self-center">
+                                <a href="{{asset($inputData->rear_image)}}" target="_blank" rel="noopener noreferrer">
+                                    <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->rear_image)}}"
+                                    style="width: auto; height: 100px;" alt="" srcset="">
+                                </a>
                             </div>
                         </div>
 
-                    
-
-                        {{-- Car Book Image --}}
-                        <div class="mb-3 row">
+                         {{-- Car Side left Image --}}
+                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-
+                                <a href="{{asset($inputData->yellow_book_image)}}" target="_blank" rel="noopener noreferrer">
+                                    <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->yellow_book_image)}}"
+                                    style="width: auto; height: 100px;" alt="" srcset="">
+                                </a>
                             </div>
                         </div>
+
+
                         <hr>
 
                     </div>
