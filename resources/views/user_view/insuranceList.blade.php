@@ -151,7 +151,7 @@ use App\Models\Province;
                                         </td>
                                     @elseif($item->payment_confirm == 'APPROVED_OK')
                                         <td>
-                                            <a target="_blank" href="{{asset('tmpfolder/sample.pdf')}}" class="btn btn-sm btn-success ms-1"><i
+                                            <a target="_blank" href="{{asset('tmpfolder/simple.jpeg')}}" class="btn btn-sm btn-success ms-1"><i
                                                     class="bi bi-journal-check"></i>
                                                 ເລກທີ່ສັນຍາ {{ $item->contract_no }}</a>
                                         </td>
