@@ -112,7 +112,7 @@
     <div class="sidenav notosanLao">
         <a href="#about" ><i class="bi bi-pie-chart-fill me-2"></i> ໜ້າຫຼັກ</a>
         <hr style="color: #fff">
-        <a href="#services" ><i class="bi bi-hdd-fill me-2"></i> ຈັດການຂ້ໍມູນ</a>
+        <a href="{{route('AdminController.indexDataManager')}}" ><i class="bi bi-hdd-fill me-2"></i> ຈັດການຂ້ໍມູນ</a>
         <a href="#clients" ><i class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
         <hr style="color: #fff">
         <a href="#contact" ><i class="bi bi-file-earmark-text-fill me-2"></i> ລາຍງານລະບົບ</a>

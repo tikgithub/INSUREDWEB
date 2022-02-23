@@ -19,150 +19,166 @@ use Illuminate\Support\Facades\Route;
 */
 
 /** Route Call Index Of Web APP */
-Route::get('/',[IndexController::class,'index'])->name('welcome');
+Route::get('/', [IndexController::class, 'index'])->name('welcome');
 
 /** Group route for user operation */
-Route::group(['prefix'=>'user'],function(){
+Route::group(['prefix' => 'user'], function () {
     /** Route Call Login Page */
-    Route::get('/login',[UserController::class,'showLoginPage'])->name('UserController.showLoginPage');
+    Route::get('/login', [UserController::class, 'showLoginPage'])->name('UserController.showLoginPage');
 
     /** Route Call Register Page */
-    Route::get('/register',[UserController::class,'showRegisterPage'])->name('UserController.showRegisterPage');
+    Route::get('/register', [UserController::class, 'showRegisterPage'])->name('UserController.showRegisterPage');
 
     /** Route for Store User Information */
-    Route::post('/store',[UserController::class,'storeUserInformation'])->name('UserController.storeUserInformation');
+    Route::post('/store', [UserController::class, 'storeUserInformation'])->name('UserController.storeUserInformation');
 
     /** Route for User Logout */
-    Route::get('/logout',[UserController::class,'logOut'])->name('UserController.logOut');
+    Route::get('/logout', [UserController::class, 'logOut'])->name('UserController.logOut');
 
     /** Route for Sign In User (Welcome Page) */
-    Route::post('/login',[UserController::class,'signIn'])->name("UserController.signIn");
+    Route::post('/login', [UserController::class, 'signIn'])->name("UserController.signIn");
 
     /** Route for validate User before buying insurance (During make transactionx ) */
-    Route::post('/validate',[UserController::class,'validateUserBeforeBuying'])->name('UserController.validateUserBeforeBuying');
+    Route::post('/validate', [UserController::class, 'validateUserBeforeBuying'])->name('UserController.validateUserBeforeBuying');
 });
 
 /** Group route for insurance buying */
-Route::group(['prefix'=>'insurance'],function(){
+Route::group(['prefix' => 'insurance'], function () {
 
     /** Route show the insurance type selection */
-    Route::get('/select',[InsuranceFlowController::class,'showInsuranceTypeSelection'])->name('InsuranceFlowController.showInsuranceTypeSelection');
+    Route::get('/select', [InsuranceFlowController::class, 'showInsuranceTypeSelection'])->name('InsuranceFlowController.showInsuranceTypeSelection');
 
     /** Route show the car insured select menu page */
-    Route::get('/car',[InsuranceFlowController::class,'showCarInsuranceSelectionMenu'])->name('InsuranceFlowController.showCarInsuranceSelectionMenu');
+    Route::get('/car', [InsuranceFlowController::class, 'showCarInsuranceSelectionMenu'])->name('InsuranceFlowController.showCarInsuranceSelectionMenu');
 
     /** Route searching package of vehicle insurance */
-    Route::get('/search',[InsuranceFlowController::class,'vehicleSearchForInsurancePackage'])->name('InsuranceFlowController.vehicleSearchForInsurancePackage');
+    Route::get('/search', [InsuranceFlowController::class, 'vehicleSearchForInsurancePackage'])->name('InsuranceFlowController.vehicleSearchForInsurancePackage');
 
     /** Route for show Option Detail of Normal level */
-    Route::get('/detail/{sale_id}',[InsuranceFlowController::class,'showNormalPackageDetail'])->name('InsuranceFlowController.showNormalPackageDetail');
+    Route::get('/detail/{sale_id}', [InsuranceFlowController::class, 'showNormalPackageDetail'])->name('InsuranceFlowController.showNormalPackageDetail');
 
     /** Route for show the compare view of Normal package */
-    Route::get('/compare/option/{p1}/{p2}',[InsuranceFlowController::class,'normalPackageCompare'])->name('InsuranceFlowController.normalPackageCompare');
+    Route::get('/compare/option/{p1}/{p2}', [InsuranceFlowController::class, 'normalPackageCompare'])->name('InsuranceFlowController.normalPackageCompare');
 
     /** Route for show buy now page with input menu */
-    Route::get('/buy/{sale_id}',[InsuranceFlowController::class,'showBuyNowPage'])->name('InsuranceFlowController.showBuyNowPage');
+    Route::get('/buy/{sale_id}', [InsuranceFlowController::class, 'showBuyNowPage'])->name('InsuranceFlowController.showBuyNowPage');
 });
 
 /** JsonResponse Route Group */
-Route::group(['prefix'=>'api/json'],function(){
+Route::group(['prefix' => 'api/json'], function () {
 
     /** Route to response ThirdPartyOption */
-    Route::get('/thirdpartyoption/{level_id}',[JSONServiceController::class,'jsonThridPartyOption']);
+    Route::get('/thirdpartyoption/{level_id}', [JSONServiceController::class, 'jsonThridPartyOption']);
 
     /** Route to response Vehicle Detail By Vehicle Type */
-    Route::get('/vehicledetail/{v_id}',[JSONServiceController::class,'jsonVehicleDetail']);
+    Route::get('/vehicledetail/{v_id}', [JSONServiceController::class, 'jsonVehicleDetail']);
 
     /** Route to response District detail By Province */
-    Route::get('/district/{province_id}',[JSONServiceController::class,'jsonDistrict']);
-
+    Route::get('/district/{province_id}', [JSONServiceController::class, 'jsonDistrict']);
 });
 
 /** Route Group for customer who already the member or Route which require to SignIn First */
-Route::group(['prefix'=>'insurance','middleware'=>'customerAuthentication'],function(){
+Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication'], function () {
     /** Route store customer input information for Normal */
-    Route::post('/customer/input/store',[InsuranceFlowController::class,'storeInputFromCustomer'])->name('InsuranceFlowController.storeInputFromCustomer');
+    Route::post('/customer/input/store', [InsuranceFlowController::class, 'storeInputFromCustomer'])->name('InsuranceFlowController.storeInputFromCustomer');
 
     /** Route update customer input information for Normal */
-    Route::post('/customer/input/update',[InsuranceFlowController::class,'updateInputData'])->name('InsuranceFlowController.updateInputData');
+    Route::post('/customer/input/update', [InsuranceFlowController::class, 'updateInputData'])->name('InsuranceFlowController.updateInputData');
 
     /** Route to show agreement information for Normal after customer input */
-    Route::get('/customer/agreement',[InsuranceFlowController::class,'showAgreementPage'])->name('InsuranceFlowController.showAgreementPage');
+    Route::get('/customer/agreement', [InsuranceFlowController::class, 'showAgreementPage'])->name('InsuranceFlowController.showAgreementPage');
 
     /** Route to show user insurance list that being to customer */
-    Route::get('/customer/order',[UserController::class,'userListInsurance'])->name('UserController.userListInsurance');
+    Route::get('/customer/order', [UserController::class, 'userListInsurance'])->name('UserController.userListInsurance');
 
     /** Route to show user profile page */
-    Route::get('/customer/profile',[UserController::class,'showUserProfilePage'])->name('UserController.showUserProfilePage');
+    Route::get('/customer/profile', [UserController::class, 'showUserProfilePage'])->name('UserController.showUserProfilePage');
 
     /** Route to redirect to agreement page */
-    Route::get('/redirect_to_agreement/{id}',[InsuranceFlowController::class,'redirectToAgreement'])->name('InsuranceFlowController.redirectToAgreement');
+    Route::get('/redirect_to_agreement/{id}', [InsuranceFlowController::class, 'redirectToAgreement'])->name('InsuranceFlowController.redirectToAgreement');
 
     /** Route to show available PaymentProvider list */
-    Route::get('/customer/payment_provider',[InsuranceFlowController::class,'showPaymentProviderPageSelection'])->name('InsuranceFlowController.showPaymentProviderPageSelection');
+    Route::get('/customer/payment_provider', [InsuranceFlowController::class, 'showPaymentProviderPageSelection'])->name('InsuranceFlowController.showPaymentProviderPageSelection');
 
     /** Route to show payment submit */
-    Route::get('/customer/payment/{provider_id}',[InsuranceFlowController::class,'showFormSubmitPayment'])->name('InsuranceFlowController.showFormSubmitPayment');
+    Route::get('/customer/payment/{provider_id}', [InsuranceFlowController::class, 'showFormSubmitPayment'])->name('InsuranceFlowController.showFormSubmitPayment');
 
     /** Route update the payment detail */
-    Route::post('/customer/confirm/payment',[InsuranceFlowController::class,'updatePaymentDetail'])->name('InsuranceFlowController.updatePaymentDetail');
+    Route::post('/customer/confirm/payment', [InsuranceFlowController::class, 'updatePaymentDetail'])->name('InsuranceFlowController.updatePaymentDetail');
 
     /** Route to show complete the payment */
-    Route::get('/customer/completed',[InsuranceFlowController::class,'showComplete'])->name('InsuranceFlowController.showComplete');
+    Route::get('/customer/completed', [InsuranceFlowController::class, 'showComplete'])->name('InsuranceFlowController.showComplete');
 
     /** Route to delete the input detail by customer */
-    Route::get('/customer/delete/{id}',[InsuranceFlowController::class,'deleteTheInput'])->name('InsuranceFlowController.deleteTheInput');
+    Route::get('/customer/delete/{id}', [InsuranceFlowController::class, 'deleteTheInput'])->name('InsuranceFlowController.deleteTheInput');
 
     /** Route to show the insurance detail page */
-    Route::get('/customer/insurance_detail/{id}',[InsuranceFlowController::class,'showInsuranceDetailByCustomer'])->name('InsuranceFlowController.showInsuranceDetailByCustomer');
+    Route::get('/customer/insurance_detail/{id}', [InsuranceFlowController::class, 'showInsuranceDetailByCustomer'])->name('InsuranceFlowController.showInsuranceDetailByCustomer');
 
     /** Route to update profile user */
-    Route::post('/customer/update_photo',[UserController::class,'changeProfilePhoto'])->name('UserController.changeProfilePhoto');
+    Route::post('/customer/update_photo', [UserController::class, 'changeProfilePhoto'])->name('UserController.changeProfilePhoto');
 
     /** Route to update basic user information */
-    Route::post('/cusotmer/update/basicinfo',[UserController::class,'updateBasicInformation'])->name('UserController.updateBasicInformation');
+    Route::post('/cusotmer/update/basicinfo', [UserController::class, 'updateBasicInformation'])->name('UserController.updateBasicInformation');
 
     /** Route to update or change user password */
-    Route::post('/customer/changepassword',[UserController::class,'changeUserPassword'])->name('UserController.changeUserPassword');
+    Route::post('/customer/changepassword', [UserController::class, 'changeUserPassword'])->name('UserController.changeUserPassword');
 });
 
 
 /** Route Group For Admin User */
 
-Route::group(['prefix'=>'admin','middleware'=>['adminAuthentication']],function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], function () {
     /** Route to show admin dashboard */
-    Route::get('/welcome',[AdminController::class,'showAdminDashBoard'])->name('AdminController.showAdminDashBoard');
+    Route::get('/welcome', [AdminController::class, 'showAdminDashBoard'])->name('AdminController.showAdminDashBoard');
 
     /** Route to allow admin to view detail of insurance customer selected */
-    Route::get('/insurance/view/{id}',[AdminController::class,'showCustomerInput'])->name('AdminController.showCustomerInput');
+    Route::get('/insurance/view/{id}', [AdminController::class, 'showCustomerInput'])->name('AdminController.showCustomerInput');
 
     /** Route to show all insurance customer selected */
-    Route::get('/insurance/views',[AdminController::class,'showAllCustomerInput'])->name('AdminController.showAllCustomerInput');
+    Route::get('/insurance/views', [AdminController::class, 'showAllCustomerInput'])->name('AdminController.showAllCustomerInput');
 
     /** Route to delete the input detail by admin */
-     Route::get('/insurance/delete/{id}',[AdminController::class,'deleteTheInput'])->name('AdminController.deleteTheInput');
+    Route::get('/insurance/delete/{id}', [AdminController::class, 'deleteTheInput'])->name('AdminController.deleteTheInput');
 
-     /** Route to allow admin to approve, delete, edit the input data from custmer (Verify the data) */
-     Route::get('/insurance/verify/{id}',[AdminController::class,'showCustomerPaymentItem'])->name('AdminController.showCustomerPaymentItem');
+    /** Route to allow admin to approve, delete, edit the input data from custmer (Verify the data) */
+    Route::get('/insurance/verify/{id}', [AdminController::class, 'showCustomerPaymentItem'])->name('AdminController.showCustomerPaymentItem');
 
-     /** Route to approve the insurance from customer */
-     Route::post('insurance/approve/{id}',[AdminController::class,'approveInsurance'])->name('AdminController.approveInsurance');
+    /** Route to approve the insurance from customer */
+    Route::post('insurance/approve/{id}', [AdminController::class, 'approveInsurance'])->name('AdminController.approveInsurance');
 
-     /** Route to update the insurance from customer by admin */
-     Route::post('insurance/update',[AdminController::class,'updateCustomerInsuranceInformation'])->name('AdminController.updateCustomerInsuranceInformation');
+    /** Route to update the insurance from customer by admin */
+    Route::post('insurance/update', [AdminController::class, 'updateCustomerInsuranceInformation'])->name('AdminController.updateCustomerInsuranceInformation');
 
-     /** Route to show the all payment item */
-     Route::get('insurance/view_all_payment',[AdminController::class,'showAllPaymentItem'])->name('AdminController.showAllPaymentItem');
+    /** Route to show the all payment item */
+    Route::get('insurance/view_all_payment', [AdminController::class, 'showAllPaymentItem'])->name('AdminController.showAllPaymentItem');
 
-     /** Route to show all the contracts items */
-     Route::get('insurance/contracts',[AdminController::class,'showAllApprovedItem'])->name('AdminController.showAllApprovedItem');
+    /** Route to show all the contracts items */
+    Route::get('insurance/contracts', [AdminController::class, 'showAllApprovedItem'])->name('AdminController.showAllApprovedItem');
 
-     /** Route to show insurance in contract item */
-     Route::get('insurance/contract/{id}',[AdminController::class,'showInsuranceInContract'])->name('AdminController.showInsuranceInContract');
+    /** Route to show insurance in contract item */
+    Route::get('insurance/contract/{id}', [AdminController::class, 'showInsuranceInContract'])->name('AdminController.showInsuranceInContract');
 
-     /** Route to show insurance has been out of contract */
-     Route::get('/insurance/outOfContract/{id}',[AdminController::class,'viewOutOfContract'])->name('AdminController.viewOutOfContract');
+    /** Route to show insurance has been out of contract */
+    Route::get('/insurance/outOfContract/{id}', [AdminController::class, 'viewOutOfContract'])->name('AdminController.viewOutOfContract');
 
-     /** Route to show insurance has been out of contracts as list */
-     Route::get('/insurance/outOfContracts',[AdminController::class,'showAllOutOfContract'])->name('AdminController.showAllOutOfContract');
+    /** Route to show insurance has been out of contracts as list */
+    Route::get('/insurance/outOfContracts', [AdminController::class, 'showAllOutOfContract'])->name('AdminController.showAllOutOfContract');
+
+    /************************************************ Data Manager **************************************/
+    
+    /** Route Show index page of Datamanager */
+    Route::get('/datamanager/index', [AdminController::class, 'indexDataManager'])->name('AdminController.indexDataManager');
+    /** ROute show index of CarBrand */
+    Route::get('/datamanager/carbrand', [AdminController::class, 'indexCarbrand'])->name('AdminController.indexCarbrand');
+    /** Route to store carbrand */
+    Route::post('/datamanager/carbrand/store', [AdminController::class, 'storeCarbrand'])->name('AdminController.storeCarbrand');
+    /** Route to update carbrand */
+    Route::post('/datamanager/carbrand/update',[AdminController::class,'updateCarbrand'])->name('AdminController.updateCarbrand');
+
+    /** Route to show index page of Insurance Company */
+    Route::get('/datamanager/insurance_company',[AdminController::class,'indexInsuranceCompany'])->name('AdminController.indexInsuranceCompany');
+
+
+    /************************************************ End Data Manager **************************************/
 });

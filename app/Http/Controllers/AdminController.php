@@ -348,4 +348,51 @@ class AdminController extends Controller
          return view('admin.viewAllOutOfContracts')
              ->with('outOfContracts', $outOfContracts);
      }
+
+     /** Show Index Page of Datamanager */
+     public function indexDataManager(){
+         return view('admin.curd.index');
+     }
+
+     /** Show Index of CarBrand */
+     public function indexCarbrand(){
+         $carbrands = CarBrand::paginate(10);
+         return view('admin.curd.carbrand.index')
+         ->with('carbrand',$carbrands);
+     }
+
+     /** Store Carbrand */
+     public function storeCarbrand(Request $req){
+         $req->validate([
+             'carbrand'=>'required|unique:carbrands,name'
+        ]);
+
+         $carbrand = new CarBrand();
+         $carbrand->name = $req->input('carbrand');
+         if($carbrand->save()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+         }
+         return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+     }
+
+     /** Update Carbrand */
+     public function updateCarbrand(Request $req){
+         $carbrand = CarBrand::find($req->input('editId'));
+         $req->validate([
+             'editName'=>'required'
+        ]);
+        $carbrand->name = $req->input('editName');
+
+        if($carbrand->save()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+         }
+         return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+     }
+
+     /** Show Insurance Company index page */
+     public function indexInsuranceCompany(){
+         $companies = InsuranceCompany::paginate(10);
+         return view('admin.curd.insuranceCompany.index')
+         ->with('companies',$companies);
+     }
 }
