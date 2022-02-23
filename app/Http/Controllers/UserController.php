@@ -77,7 +77,7 @@ class UserController extends Controller
             return redirect()->route('UserController.showLoginPage')->with('warning','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ');
         }
     }
-
+//ືົດ
     /** public function validate user before buying */
     public function validateUserBeforeBuying(Request $req){
         $req->validate([
