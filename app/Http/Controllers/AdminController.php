@@ -29,7 +29,7 @@ class AdminController extends Controller
         $paymentItems = VehicleInsuranceDetail::where('payment_confirm', '=', 'WAIT_FOR_APPROVED')->get();
 
         //Find Insurance within contract
-        $contracts = VehicleInsuranceDetail::where('contract_status', '!=', null)->get();
+        $contracts = VehicleInsuranceDetail::where('payment_confirm', '=', 'APPROVED_OK', 'AND')->where('end_date', '>', now())->get();
 
         //Find Insurance within contract
         $outOfContracts = VehicleInsuranceDetail::where('contract_status', '=', 'IN_CONTRACT', 'AND')
@@ -344,7 +344,7 @@ class AdminController extends Controller
             ->where(DB::raw('now()'), '<=', DB::raw("DATE_ADD(end_date,INTERVAL 7 DAY)"))->get();
 
          //$outOfContracts = VehicleInsuranceDetail::where('payment_confirm', '=', 'APPROVED_OK', 'AND')->where('end_date', '>', now())->get();
- 
+
          return view('admin.viewAllOutOfContracts')
              ->with('outOfContracts', $outOfContracts);
      }
