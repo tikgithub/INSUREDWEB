@@ -111,4 +111,11 @@ class UserController extends Controller
         $user = Auth::user();        
         return view('user_view.profile')->with('user',$user);
     }
+
+    /** Functino Profile change */
+    public function changeProfilePhoto(Request $req){
+        $user = Auth::user();
+        $req->validate(['profile_photo'=>'required']);
+
+    }
 }
