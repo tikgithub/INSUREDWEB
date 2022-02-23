@@ -115,6 +115,15 @@ Route::group(['prefix'=>'insurance','middleware'=>'customerAuthentication'],func
 
     /** Route to show the insurance detail page */
     Route::get('/customer/insurance_detail/{id}',[InsuranceFlowController::class,'showInsuranceDetailByCustomer'])->name('InsuranceFlowController.showInsuranceDetailByCustomer');
+
+    /** Route to update profile user */
+    Route::post('/customer/update_photo',[UserController::class,'changeProfilePhoto'])->name('UserController.changeProfilePhoto');
+
+    /** Route to update basic user information */
+    Route::post('/cusotmer/update/basicinfo',[UserController::class,'updateBasicInformation'])->name('UserController.updateBasicInformation');
+
+    /** Route to update or change user password */
+    Route::post('/customer/changepassword',[UserController::class,'changeUserPassword'])->name('UserController.changeUserPassword');
 });
 
 

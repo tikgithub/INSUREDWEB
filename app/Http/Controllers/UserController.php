@@ -7,9 +7,11 @@ use App\Models\SaleOption;
 use App\Models\User;
 use App\Models\VehicleInsuranceDetail;
 use App\Models\VehiclePackage;
+use App\Utils\ImageCompress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class UserController extends Controller
 {
@@ -89,7 +91,7 @@ class UserController extends Controller
         if(Auth::attempt(['email'=>$req->input('email'),'password'=>$req->input('password')])){
             return redirect()->back();
         }else{
-            return redirect()->back()->with('erorr','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ');
+            return redirect()->back()->with('erorr','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ')->withInput();
         }
     }
     /** List all the insurance data which customer having now */
@@ -108,7 +110,7 @@ class UserController extends Controller
     /** User Profile viewer */
     public function showUserProfilePage(){
         //Get User ID from Auth Facades
-        $user = Auth::user();        
+        $user = Auth::user();
         return view('user_view.profile')->with('user',$user);
     }
 
@@ -116,6 +118,64 @@ class UserController extends Controller
     public function changeProfilePhoto(Request $req){
         $user = Auth::user();
         $req->validate(['profile_photo'=>'required']);
+        //Compress image and store to Folder
+        $userDB = User::find($user->id);
+        //Delete old image
+        if($userDB->profile_photo){
+            \Illuminate\Support\Facades\File::delete($userDB->profile_Photo);
+        }
+        $photo_path = ImageCompress::compressImage($req->file('profile_photo'),30,'UserImages',300);
+        $userDB->profile_photo = $photo_path;
+        $userDB->save();
+        return redirect()->route('UserController.showUserProfilePage')->with('success','ດຳເນີນການສຳເລັດ');
 
     }
+
+    /** Function to update basic information */
+    public function updateBasicInformation(Request $req){
+        $user = User::find(Auth::user()->id);
+        $req->validate([
+            'firstname' => 'required',
+            'lastname'=>'required',
+            'email' => 'required',
+            'tel' => 'required'
+        ]);
+
+        $user->firstname = $req->input('firstname');
+        $user->lastname = $req->input('lastname');
+        $user->email = $req->input('email');
+        $user->tel = $req->input('tel');
+        $user->save();
+        return redirect()->route('UserController.showUserProfilePage')->with('success','ດຳເນີນການສຳເລັດ');
+    }
+
+    /** Function to changePassword of User */
+    public function changeUserPassword(Request $req){
+        $user = User::find(Auth::user()->id);
+
+        $req->validate([
+            'oldPassword'=>'required',
+            'confirmedPassword1'=>'required|min:6|required_with:confirmedPassword2|same:confirmedPassword2',
+            'confirmedPassword1'=>'required|min:6'
+        ],[
+            'oldPassword.required' => 'ກາລຸນາລະບຸລະຫັດຜ່ານ',
+            'confirmedPassword1.required' => 'ກາລຸນາຢືນຢັນລະຫັດຜ່ານ',
+            'confirmedPassword1.same' => 'ລະຫັດຜ່ານາບໍ່ກົງກັນກາລຸນາກວດສອບອີກຄັ້ງ',
+            'confirmedPassword1.min' => 'ລະຫັດຜ່ານຕ້ອງຫຼາຍກວ່າ 6 ໂຕ'
+        ]);
+
+        if(!Auth::attempt(['email'=>$user->email,'password'=>$req->input('oldPassword')])){
+            return redirect()->route('UserController.showUserProfilePage')->with('error','ລະຫັດຜ່ານເກົ່າບໍ່ຖືກຕ້ອງ');
+        }
+
+
+
+        $user->password = Hash::make($req->input('confirmedPassword1'));
+
+        $user->save();
+        Auth::attempt(['email'=>$user->email,'password'=> $user->password]);
+        return redirect()->route('UserController.showUserProfilePage')->with('success','ດຳເນີນການສຳເລັດ');
+    }
+
+
 }
