@@ -44,7 +44,7 @@
 
         .main {
             margin-left: 260px;
-   
+
             /* Increased text to enable scrolling */
             padding: 0px 8px;
         }
@@ -92,7 +92,7 @@
                     <div class="btn-group ">
                         <button type="button" class="text-white btn btn-lg bg-blue dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ Auth::user()->profile_photo ? asset(Auth::user->profile_photo) : asset('assets/image/user_thumnail.png') }}"
+                            <img src="{{ Auth::user()->profile_photo ? asset(Auth::user()->profile_photo) : asset('assets/image/user_thumnail.png') }}"
                                 class="rounded-circle border" style="width: auto;height: 50px; object-fit: cover">
                             {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
                         </button>
