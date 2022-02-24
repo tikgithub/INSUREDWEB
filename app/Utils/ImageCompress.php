@@ -50,4 +50,6 @@ class ImageCompress
         //Resize Image
         return (string) $image->encode('data-url');
     }
+
+ 
 }

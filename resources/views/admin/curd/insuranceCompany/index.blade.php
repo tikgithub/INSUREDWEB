@@ -21,10 +21,11 @@
 {{-- End Navigator bar --}}
 <hr>
 {{-- Body --}}
-<div class="row">
+<div class="row mb-3">
     <div class="col-md-4 offset-md-4">
+        @include('flashMessage')
         {{-- Form --}}
-        <form action="" method="post" class="notosanLao">
+        <form action="" method="post" class="notosanLao" autocomplete="off" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <input type="text" name="name" id="name" class="form-control" placeholder="ຊື່ບໍລິສັດ">
@@ -48,6 +49,42 @@
         {{-- End Form --}}
     </div>
 </div>
+{{-- Table  display information --}}
+<div class="row mb-3 notosanLao">
+    <div class="col-md-6 offset-md-3">
+        <table class="table table-sm table-hover">
+            <thead>
+                <th>#</th>
+                <th>ຊື່</th>
+                <th>ຂໍ້ມູນ</th>
+                <th>ທີ່ຢູ່</th>
+                <th>ເບີຕິດຕໍ່</th>
+                <th>Logo</th>
+                <th><i class="bi bi-gear-fill"></i></th>
+            </thead>
+            <tbody>
+                @foreach ($companies as $item)
+                <tr class="align-middle">
+                    <td>{{$companies->firstItem()+$loop->index}}</td>
+                    <td>{{$item->name}}</td>
+                    <td>{{$item->info}}</td>
+                    <td>{{$item->address}}</td>
+                    <td>{{$item->contact}}</td>
+                    <td>
+                        <img src="{{asset($item->logo)}}" style="width: auto;height: 50px;">
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-warning"><i class="bi bi-pencil-fill"></i></a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{-- Page Navigator --}}
+        {{$companies->links('pagination::bootstrap-5')}}
+    </div>
+</div>
+{{-- Table show information --}}
 {{-- End body --}}
 @endsection
 
@@ -59,5 +96,6 @@
         function onLogoGetImage(event){
             document.getElementById('logoPreview').src = URL.createObjectURL(event.target.files[0]);
         }
+        
     </script>
 @endsection
