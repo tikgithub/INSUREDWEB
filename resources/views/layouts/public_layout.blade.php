@@ -22,7 +22,7 @@
 <body style="padding-bottom: 100px; padding-top:40px; background-color: #f0f0f0">
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;" >
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('assets/image/mainlogo.png') }}" width="auto" height="64" class="d-inline-block ">
             </a>
@@ -40,16 +40,16 @@
                         <a class="nav-link active" href="{{route('InsuranceFlowController.showInsuranceTypeSelection')}}">ຊື້ປະກັນໄພ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">ຮູບແບບປະກັນໄພ</a>
+                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#category" @else href="{{route('welcome')}}/#category" @endif  >ຮູບແບບປະກັນໄພ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">ຂັ້ນຕອນການຊື້ປະກັນໄພ</a>
+                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#howToBuy" @else href="{{route('welcome')}}/#howToBuy" @endif>ຂັ້ນຕອນການຊື້ປະກັນໄພ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">ຄູ່ຮ່ວມປະກັນໄພ</a>
+                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#partner" @else href="{{route('welcome')}}/#partner" @endif>ຄູ່ຮ່ວມປະກັນໄພ</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">ຕິດຕໍ່ພວກເຮົາ</a>
+                    <li class="nav-item"> 
+                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#contact" @else href="{{route('welcome')}}/#contact" @endif>ຕິດຕໍ່ພວກເຮົາ</a>
                     </li>
                 </ul>
                 <div class="d-flex  notosanLao">

@@ -39,15 +39,16 @@
 @endsection
 @section('content')
     {{-- Padding --}}
-    <div class="pt-3"></div>
+    <div class="pt-5"id="category"></div>
     {{-- ******************************  Insurance Type   ******************************** --}}
-    <div class="row">
+    <div class="row" >
         <div class="col-md-12 text-center notosanLao">
             <h3>ຮູບແບບປະກັນໄພ</h3>
         </div>
     </div>
     {{-- padding --}}
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="pt-4"></div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white shadow rounded" >
         <div class="col h-100">
             <div class="card">
                 <div class="card-body">
@@ -114,7 +115,7 @@
             <h3>ວິທີການຈ່າຍເງິນ</h3>
         </div>
     </div>
-    <div class="row">
+    <div class="row pt-3 bg-white p-3 shadow rounded">
         <div class="col-md-12">
 
             <div id="howToPayCarosuel" class="carousel slide" data-bs-ride="carousel">
@@ -151,14 +152,15 @@
     {{-- ********************************************************************* --}}
 
     {{-- ******************************  Insurance Partner   ******************************** --}}
-    <div class="pt-5"></div>
+    <div class="pt-5" id="partner"></div>
     <div class="row">
         <div class="col-md-12 text-center notosanLao">
             <h3>ຄູ່ຮ່ວມປະກັນໄພ</h3>
         </div>
     </div>
+    <div class="pt-4"></div>
     {{-- padding --}}
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white shadow rounded">
         <div class="col h-100">
             <div class="card">
                 <div class="card-body">
@@ -218,7 +220,7 @@
     {{-- ********************************************************************* --}}
 
     {{-- ******************************  Insurance Partner   ******************************** --}}
-    <div class="pt-5"></div>
+    <div class="pt-5" id="howToBuy"></div>
     <div class="row">
         <div class="col-md-12 text-center notosanLao">
             <h3>ຄວາມຄິດເຫັນຂອງລູກຄ້າ</h3>
@@ -226,7 +228,7 @@
     </div>
     {{-- Padding --}}
     <div class="pt-3"></div>
-    <div id="commentSlider" class="carousel slide" data-bs-ride="carousel">
+    <div id="commentSlider" class="carousel slide bg-white p-3 rounded shadow" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#commentSlider" data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>
@@ -464,7 +466,7 @@
         </div>
     </div>
     <div class="pt-3"></div>
-    <div class="row bg-white p-3 rounded">
+    <div class="row bg-white p-3 rounded shadow">
         <div class="col-md-12 notosanLao">
             <form action="">
                 <div class="mb-3 row">
@@ -478,7 +480,7 @@
                     <div class="col-md-6 offset-md-3 text-center">
                         <h5>ໃຫ້ຄະແນນ</h5>
                         <div class="rating">
-                       
+
                             <label>
                                 <input type="radio" name="stars" value="1" />
                                 <span class="icon">★</span>
@@ -522,30 +524,88 @@
         </div>
     </div>
     {{-- End Comment Submit From Customer --}}
+
+    {{-- Contact Us --}}
+    <div class="pt-5" id="contact"></div>
+    <div class="row">
+        <div class="col-md-12 text-center notosanLao">
+            <h3>ຕິດຕໍ່ພວກເຮົາ</h3>
+        </div>
+    </div>
+    <div class="pt-3"></div>
+    <div class="row pt-5 bg-white p-3 rounded shadow">
+        {{-- Contact us Form --}}
+        <div class="col-md-6">
+            <form id="contactForm" class="notosanLao">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="ຊື່" required
+                                data-error="Please enter your name">
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <input type="text" placeholder="ອີເມວ" id="email" class="form-control" name="email" required
+                                data-error="Please enter your email">
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <input type="text" placeholder="ຫົວຂໍ້" id="msg_subject" class="form-control" required
+                                data-error="Please enter your subject">
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <textarea class="form-control notosanLao" id="message" placeholder="ຂໍ້ຄວາມ" rows="7"
+                                data-error="Write your message" required></textarea>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="submit-button text-left">
+                            <button class="btn bg-blue fs-4 text-white" id="form-submit" type="submit">ສົ່ງຂໍ້ຄວາມ</button>
+                            <div id="msgSubmit" class="h3 text-center hidden"></div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {{-- End Contact us form --}}
+        {{-- Website Information --}}
+        <div class="col-md-6">
+            <div style="border:0; height: 280px; width: 100%;" class="notosanLao">
+                <p>
+                    <img src="{{ asset('images/footerlogo.png') }}" class=""
+                        style="object-fit: cover; width: auto; height: 70px;">
+                </p>
+                <br>
+                <p><b class="fs-3 notosanLao"></b>
+                </p><br>
+                <p class="notosanLao fs-4">
+                    ອີເມວຕິດຕໍ່: 
+                </p>
+                <p class="notosanLao fs-4">
+                    ເບີໂທ: 
+                </p>
+                <p class="notosanLao fs-4">
+                    ທີ່ຢູ່: 
+                </p>
+            </div>
+        </div>
+        {{-- End Website Information --}}
+    </div>
+    {{-- End Contact Us --}}
+
+
     <div class="mb-5"></div>
 @endsection
 
 @section('footer')
-    <nav class=" bg-blue" style="margin-bottom: -150px;">
-        <div class="container-fluid">
-            <div class="row" style="padding-bottom: 100px;">
-                <div class="col-md-12 pt-2 d-flex justify-content-end align-self-center">
-                    <span class="col-md-6">
-                        <h4 class="text-white">{{ config('app.name') }}</h4>
-                    </span>
-                    <span class="col-md-6 d-flex justify-content-end align-self-center">
-                        <img class="ms-2" src="{{ asset('assets/image/facebook.png') }}"
-                            style="width: auto;height: 30px;">
-                        <img class="ms-2" src="{{ asset('assets/image/instragram.png') }}"
-                            style="width: auto;height: 30px;">
-                        <img class="ms-2" src="{{ asset('assets/image/linkined.png') }}"
-                            style="width: auto;height: 30px;">
-                    </span>
-                </div>
-
-            </div>
-        </div>
-    </nav>
+    @include('layouts.higher_footer')
 @endsection
 
 @section('styles')
