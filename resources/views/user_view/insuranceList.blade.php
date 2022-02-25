@@ -6,6 +6,7 @@ use App\Models\SaleOption;
 use App\Models\Level;
 use App\Models\CarBrand;
 use App\Models\Province;
+use App\Utils\ImageCompress;
 
 @endphp
 
@@ -91,15 +92,15 @@ use App\Models\Province;
                     <div class="row">
                         <div class="col-md-2 text-center">
                             {{-- Image --}}
-                            <img class="car-image rounded" src="{{ asset($item->front_image) }}" alt="" srcset="">
+                            <img class="car-image rounded" src="{{ ImageCompress::getThumnailImage(($item->front_image)) }}" alt="" srcset="">
                             {{-- End Image --}}
                         </div>
                         <div class="col-md-5">
                             <div class="ms-2 notosanLao mb-5">
+                              
                                 @php
                                     $vehicleBrand = CarBrand::find($item->vehicle_brand);
                                 @endphp
-
                                 <table>
                                     <tr>
                                         <td width="100" class="fw-bold">ຍີ່ຫໍ້ລົດ</td>
@@ -214,9 +215,12 @@ use App\Models\Province;
         </div>
     </div>
 
-    <div class="fixed-bottom">
-        @include('layouts.footer')
-    </div>
+
+@endsection
+@section('footer')
+<div class="">
+    @include('layouts.footer')
+</div>
 @endsection
 @section('scripting')
     <script>
