@@ -371,6 +371,12 @@ use App\Utils\ImageCompress;
         </div>
 
     </div>
+
+@endsection
+@section('footer')
+<div class="">
+    @include('layouts.footer')
+</div>
 @endsection
 @section('scripting')
     <script>

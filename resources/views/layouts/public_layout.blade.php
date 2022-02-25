@@ -19,7 +19,7 @@
 
 </head>
 
-<body style="padding-bottom: 100px; padding-top:40px; background-color: #f0f0f0">
+<body style=" padding-top:40px; background-color: #f0f0f0">
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;" >
         <div class="container">

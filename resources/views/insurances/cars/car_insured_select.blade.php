@@ -21,7 +21,7 @@
         {{-- Padding --}}
         <div class="pt-3"></div>
         {{-- Show Menu Selection --}}
-        <div class="row">
+        <div class="row" style="padding-bottom: 150px;">
             <div class="col-md-6 offset-md-3">
                 <div class="card shadow notosanLao">
                     <div class="card-body">
@@ -68,9 +68,11 @@
             </div>
         </div>
     </div>
-    <div class="fixed-bottom">
-        @include('layouts.footer')
-    </div>
+@endsection
+@section('footer')
+<div class="">
+    @include('layouts.footer')
+</div>
 @endsection
 @section('scripting')
     <script>

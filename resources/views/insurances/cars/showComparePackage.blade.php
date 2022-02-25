@@ -158,7 +158,10 @@
         </table>
     </div>
 </div>
-<div class="fixed-bottom">
+
+@endsection
+@section('footer')
+<div class="">
     @include('layouts.footer')
 </div>
 @endsection

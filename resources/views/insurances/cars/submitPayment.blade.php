@@ -49,10 +49,13 @@
     </div>
     <div class="pt-3"></div>
 
-    <div class="fixed-bottom">
-        @include('layouts.footer')
-    </div>
 @endsection
+@section('footer')
+<div class="">
+    @include('layouts.footer')
+</div>
+@endsection
+
 @section('styles')
     <style>
         .provider-logo {

@@ -11,7 +11,7 @@
     </div>
     <div class="pt-5"></div>
     {{-- Card data --}}
-    <div class="row">
+    <div class="row" style="padding-bottom: 150px;">
         <div class="col-md-6 d-flex justify-content-center">
             <div class="card shadow notosanLao pt-2" style="width: 19.8rem">
                 <div class="card-body text-center">
@@ -37,7 +37,10 @@
             </div>
         </div>
     </div>
-    <div class="fixed-bottom">
-        @include('layouts.footer')
-    </div>
+    
+@endsection
+@section('footer')
+<div class="">
+    @include('layouts.footer')
+</div>
 @endsection

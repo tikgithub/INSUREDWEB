@@ -392,7 +392,7 @@
             @endif
         </div>
     </div>
-    <div class="fixed-bottom">
+    <div class="">
         @include('layouts.footer')
     </div>
 @endsection

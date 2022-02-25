@@ -169,9 +169,12 @@ use App\Models\SaleOption;
             @endforeach
         </div>
     </div>
-    <div class="fixed-bottom">
-        @include('layouts.footer')
-    </div>
+
+@endsection
+@section('footer')
+<div class="">
+    @include('layouts.footer')
+</div>
 @endsection
 @section('scripting')
     <script>

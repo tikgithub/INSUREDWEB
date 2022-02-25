@@ -17,7 +17,7 @@
 </nav> --}}
 
 <!-- Remove the container if you want to extend the Footer to full width. -->
-<div>
+<div class="pt-5">
     <!-- Footer -->
     <footer class="text-center text-lg-start text-white bg-blue">
         <!-- Grid container -->
