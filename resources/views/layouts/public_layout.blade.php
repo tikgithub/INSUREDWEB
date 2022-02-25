@@ -108,6 +108,9 @@
             </div>
         </div>
     </nav>
+    <div class="">
+        @yield('nav-content')
+    </div>
     <div class="container">
         @yield('content')
     </div>
