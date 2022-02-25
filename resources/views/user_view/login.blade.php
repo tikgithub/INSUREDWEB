@@ -11,7 +11,7 @@
            </div>
            <div class="card-body notosanLao">
                <p>
-                   <img class="shadow bg-blue rounded-circle" src="{{asset('assets/image/mainlogo.png')}}"  style="width: auto;height: 100px;">
+                   <img class="shadow bg-blue rounded p-2" src="{{asset('assets/image/mainlogo.png')}}"  style="width: auto;height: 100px;">
                </p>
             <p>
 
