@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\InsuranceCompanyController;
 use App\Http\Controllers\InsuranceFlowController;
 use App\Http\Controllers\JSONServiceController;
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -179,6 +181,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     /** Route to show index page of Insurance Company */
     Route::get('/datamanager/insurance_company',[AdminController::class,'indexInsuranceCompany'])->name('AdminController.indexInsuranceCompany');
 
+    /** Route to store Insurance Company */
+    Route::post('/datamanager/insurance_company/store',[InsuranceCompanyController::class,'store'])->name('InsuranceCompanyController.store');
+
+    /** Route to update Insurance Company */
+    Route::post('/datamanager/insurance_company/update',[InsuranceCompanyController::class,'update'])->name('InsuranceCompanyController.update');
+
+    /** Route to show the Index page of Level */
+    Route::get('/datamanager/level',[AdminController::class,'indexInsuranceLevel'])->name('AdminController.indexInsuranceLevel');
+
+    /** Route to store the Level */
+    Route::post('/datamanger/level/store',[LevelController::class,'store'])->name('LevelController.store');
+
+    /** Route to update the Level */
+    Route::post('/datamanager/level/update',[LevelController::class,'update'])->name('LevelController.update');
 
     /************************************************ End Data Manager **************************************/
 });

@@ -395,4 +395,11 @@ class AdminController extends Controller
          return view('admin.curd.insuranceCompany.index')
          ->with('companies',$companies);
      }
+
+     /** Show Insurance Level index page */
+     public function indexInsuranceLevel(){
+         $levels = Level::orderBy('name','asc')->paginate(10);
+         return view('admin.curd.level.index')
+         ->with('levels',$levels);
+     }
 }

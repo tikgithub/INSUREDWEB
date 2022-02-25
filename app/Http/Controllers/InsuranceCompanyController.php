@@ -34,13 +34,15 @@ class InsuranceCompanyController extends Controller
     public function update(Request $req){
         $req->validate([
             'name'=>'required',
-            'info'=>'requried',
+            'info'=>'required',
             'address'=>'required',
+            'contact'=>'required'
         ]);
         //find the object
         $company = InsuranceCompany::find($req->input('editId'));
         $company->name = $req->input('name');
         $company->info = $req->input('info');
+        $company->contact = $req->input('contact');
         $company->address = $req->input('address');
         //When logo has been upload
         if($req->file('logo')){

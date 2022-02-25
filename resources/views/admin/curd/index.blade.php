@@ -36,6 +36,13 @@
                         </div>
                         {{-- End Insurance Company Link --}}
 
+                        {{-- Insurance Level Link --}}
+                        <div class="col-md-3 text-center">
+                            <a href="{{route('AdminController.indexInsuranceLevel')}}"><img src="{{ asset('assets/image/level.png') }}" class="menu_image">
+                                ຊັ້ນປະກັນໄພ</a>
+                        </div>
+                        {{-- End Insurance Level Link --}}
+
                     </div>
                 </div>
             </div>
