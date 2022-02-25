@@ -48,8 +48,8 @@
 </div>
 {{-- padding --}}
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col">
-      <div class="car">
+    <div class="col h-100">
+      <div class="card">
         <div class="card-body">
             <a href="http://">
                 <img src="{{asset('assets/image/example1.jpeg')}}" class="card-img-top shadow" alt="...">
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="col">
-        <div class="car">
+        <div class="card">
           <div class="card-body">
               <a href="http://">
                   <img src="{{asset('assets/image/example1.jpeg')}}" class="card-img-top shadow" alt="...">
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="car">
+        <div class="card">
           <div class="card-body">
               <a href="http://">
                   <img src="{{asset('assets/image/example1.jpeg')}}" class="card-img-top shadow" alt="...">
@@ -76,7 +76,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="car">
+        <div class="card">
           <div class="card-body">
               <a href="http://">
                   <img src="{{asset('assets/image/example1.jpeg')}}" class="card-img-top shadow" alt="...">
@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="car">
+        <div class="card">
           <div class="card-body">
               <a href="http://">
                   <img src="{{asset('assets/image/example1.jpeg')}}" class="card-img-top shadow" alt="...">
@@ -94,7 +94,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="car">
+        <div class="card">
           <div class="card-body">
               <a href="http://">
                   <img src="{{asset('assets/image/example1.jpeg')}}" class="card-img-top shadow" alt="...">
@@ -108,14 +108,45 @@
 
 
 {{-- ****************************** HOW TO PAY *************************** --}}
+<div class="pt-5"></div>
+<div class="row">
+    <div class="col-md-12 notosanLao text-center">
+        <h3>ວິທີການຈ່າຍເງິນ</h3>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
-        <a href="http://">
-            <img src="{{asset('assets/image/example1.jpeg')}}" class="card-img-top shadow" alt="...">
-        </a>
+        
+        <div id="howToPayCarosuel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#howToPayCarosuel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#howToPayCarosuel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#howToPayCarosuel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="{{asset('assets/image/example1.jpeg')}}" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="{{asset('assets/image/example1.jpeg')}}" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="{{asset('assets/image/example1.jpeg')}}" class="d-block w-100" alt="...">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#howToPayCarosuel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#howToPayCarosuel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
     </div>
 </div>
 {{-- ********************************************************************* --}}
+<div class="mb-5"></div>
 @endsection
 
 @section('footer')
