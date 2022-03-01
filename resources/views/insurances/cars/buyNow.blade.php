@@ -74,7 +74,7 @@
                             <tbody>
                                 @php
                                     $group_id = 0;
-                                    
+
                                 @endphp
                                 @foreach ($saleDetails as $item)
                                     {{-- start tr --}}
@@ -226,7 +226,7 @@
                                         onchange="onSelectInsuredProvince()" onfocus="this.selectedIndex = -1">
                                         @foreach ($Provinces as $item)
                                             <option value="{{ $item->id }}">{{ $item->province_name }}</option>
-                                        @endforeach 
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -265,7 +265,7 @@
                                     </select>
                                 </div>
                             </div>
-                            
+
                             {{-- Number plate --}}
                             <div class="mb-3 row">
                                 <label for="number_plate"
@@ -363,7 +363,7 @@
                                     <img class="ms-2" src="{{asset('assets\image\car_rear.png')}}" style="width: 50px; height: 50px;" alt="" srcset="">
                                 </div>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="file" name="rear" id="rear" class="form-control-file border {{($errors->has('rear')? 'border-danger':'')}}" style="width: 100%"> 
+                                    <input type="file" name="rear" id="rear" class="form-control-file border {{($errors->has('rear')? 'border-danger':'')}}" style="width: 100%">
                                 </div>
                             </div>
 
@@ -374,7 +374,7 @@
                                     <img class="ms-2 rounded" src="{{asset('assets\image\yellow_book.png')}}" style="width: auto; height: 50px;" alt="" srcset="">
                                 </div>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="file" name="yellow_book" id="yellow_book" class="form-control-file border {{($errors->has('yellow_book')? 'border-danger':'')}}" style="width: 100%"> 
+                                    <input type="file" name="yellow_book" id="yellow_book" class="form-control-file border {{($errors->has('yellow_book')? 'border-danger':'')}}" style="width: 100%">
                                 </div>
                             </div>
 
@@ -385,21 +385,24 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </fieldset>
-                    
+
                 </form>
             @endif
         </div>
     </div>
-    <div class="">
-        @include('layouts.footer')
-    </div>
+
+@endsection
+@section('footer')
+<div class="">
+    @include('layouts.footer')
+</div>
 @endsection
 @section('scripting')
     <script>
         var baseURL = "{{ env('BASE_ROUTE') }}";
-       
+
         //When Selected the Province of Insured
         function onSelectInsuredProvince() {
             var provinceInsuredSelect = document.getElementById('province');
