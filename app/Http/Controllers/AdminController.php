@@ -8,6 +8,7 @@ use App\Models\InsuranceCompany;
 use App\Models\Level;
 use App\Models\Province;
 use App\Models\SaleOption;
+use App\Models\Vehicle_Type;
 use App\Models\VehicleInsuranceDetail;
 use App\Models\VehiclePackage;
 use App\Utils\ImageCompress;
@@ -401,5 +402,19 @@ class AdminController extends Controller
          $levels = Level::orderBy('name','asc')->paginate(10);
          return view('admin.curd.level.index')
          ->with('levels',$levels);
+     }
+
+     /** Show Vehicle Type Index Page */
+     public function indexVehicleType(){
+         $vehicleTypes = Vehicle_Type::paginate(10);
+         return view('admin.curd.vehicle_type.index')
+         ->with('vehicleTypes',$vehicleTypes);
+     }
+
+     /** Show Vehicle Detail Index page */
+     public function indexVehicleDetail(){
+         $vehicleTypes = Vehicle_Type::all();
+         return view('admin.curd.vehicle_detail.index')
+         ->with('vehicleTypes',$vehicleTypes);
      }
 }

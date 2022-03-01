@@ -7,6 +7,8 @@ use App\Http\Controllers\InsuranceFlowController;
 use App\Http\Controllers\JSONServiceController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleTypeController;
+use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -168,7 +170,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/insurance/outOfContracts', [AdminController::class, 'showAllOutOfContract'])->name('AdminController.showAllOutOfContract');
 
     /************************************************ Data Manager **************************************/
-    
+
     /** Route Show index page of Datamanager */
     Route::get('/datamanager/index', [AdminController::class, 'indexDataManager'])->name('AdminController.indexDataManager');
     /** ROute show index of CarBrand */
@@ -195,6 +197,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Route to update the Level */
     Route::post('/datamanager/level/update',[LevelController::class,'update'])->name('LevelController.update');
+
+    /** Route to show the index page of Vehicle Type */
+    Route::get('/datamanager/vehicletype/',[AdminController::class,'indexVehicleType'])->name('AdminController.indexVehicleType');
+
+    /** Route to store the Vehicle Type to DB */
+    Route::post('/datamanager/vehicletype/store',[VehicleTypeController::class,'store'])->name('VehicleTypeController.store');
+
+    /** Route to edit the Vehicle Type to DB */
+    Route::post('/datamanager/vehicletype/edit',[VehicleTypeController::class,'update'])->name('VehicleTypeController.update');
+
+    /** Route to show the index page of Vehicle Detail */
+    Route::get('/datamanager/vehicledetails',[AdminController::class,'indexVehicleDetail'])->name('AdminController.indexVehicleDetail');
 
     /************************************************ End Data Manager **************************************/
 });
