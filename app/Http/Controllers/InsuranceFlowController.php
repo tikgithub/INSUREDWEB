@@ -29,7 +29,7 @@ class InsuranceFlowController extends Controller
     public function showCarInsuranceSelectionMenu()
     {
         /** Get Level Information to Show at page */
-        $levels = Level::all();
+        $levels = Level::orderBy('name','asc')->get();
         /** Get Vehicle Type information to page */
         $vehicleTypes = Vehicle_Type::all();
 

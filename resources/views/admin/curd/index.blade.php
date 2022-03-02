@@ -11,14 +11,13 @@
     </div>
     {{-- End Header Title --}}
 
-    {{-- Car Category --}}
-
-    <div class="row">
+    {{-- Basic Information Categories --}}
+    <div class="row p-3">
         <hr>
         <div class="col-md-12">
-            <div class="card notosanLao">
+            <div class="card notosanLao shadow">
                 <div class="card-header bg-white">
-                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i> ຂໍ້ມູນຍານພາຫະນະ</h5>
+                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i> ຂໍ້ມູນພື້ນຖານ</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -61,8 +60,41 @@
             </div>
         </div>
     </div>
+    {{-- Basic Information Category --}}
 
-    {{-- End Car Category --}}
+    <div class="pt-2"></div>
+
+    {{-- Package and Insurance Categories --}}
+    <div class="row p-3">
+        <div class="col-md-12 ">
+            <div class="card notosanLao shadow">
+                <div class="card-header bg-white">
+                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i> ຮູບແບບປະກັນໄພ</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {{-- Create New Insurance Info Link --}}
+                        <div class="col-md-3 mb-5">
+                            <a href="{{route('AdminController.createVehiclePackage')}}" class="text-decoration-none"><img src="{{ asset('assets/image/new.png') }}" class="menu_image">
+                                ສ້າງຮູບແບບປະກັນໄພອັນໃໝ່</a>
+                        </div>
+                        {{-- End Create New Insurance Info Link --}}
+
+                        <div class="col-md-3 mb-5">
+                            <a href="{{route('AdminController.createVehiclePackage')}}" class="text-decoration-none"><img src="{{ asset('assets/image/insurance_info.png') }}" class="menu_image">
+                                ຮູບແບບປະກັນໄພ</a>
+                        </div>
+                        {{-- End  Insurance Info Link --}}
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Package and Insurance Categories --}}
+
 @endsection
 
 @section('styles')

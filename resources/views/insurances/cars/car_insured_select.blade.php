@@ -26,7 +26,7 @@
                 <div class="card shadow notosanLao">
                     <div class="card-body">
                         <form action="{{route('InsuranceFlowController.vehicleSearchForInsurancePackage')}}" method="get">
-                        
+
                             {{-- Level Selection Container --}}
                             <div class=" mb-3">
                                 <label for="level_select" class="form-label fs-4">ເລືອກແບບປະກັນໄພ</label>
@@ -50,12 +50,12 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- Vehicle Detail --}}
+                                {{-- Vehicle Detail
                                 <div class="mb-3">
                                     <label for="vehicle_detail" class="form-label fs-4">ຕົວເລືອກ</label>
                                     <select name="vehicle_detail" id="vehicle_detail" class="form-control" disabled>
                                     </select>
-                                </div>
+                                </div> --}}
 
                             </div>
                             {{-- Button Submit --}}
@@ -84,7 +84,7 @@
             var selectMenuType = levelSelect.options[levelSelect.selectedIndex].getAttribute('menu-type');
             var selectMenuId = levelSelect.options[levelSelect.selectedIndex].value;
             var thirdPartyOption = document.getElementById('vehicle_type');
-            
+
             var thirdPartyContainer = document.getElementById('thirdPartyContainer');
             thirdPartyContainer.style.display = "none";
 

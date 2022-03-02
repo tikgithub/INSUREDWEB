@@ -8,6 +8,7 @@ use App\Http\Controllers\JSONServiceController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleDetailController;
+use App\Http\Controllers\VehiclePackageController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -215,7 +216,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::post('/datamanager/vehicledetail/store',[VehicleDetailController::class,'store'])->name('VehicleDetailController.store');
 
     /** Route to search Vehicle Detail by Type ID */
-    Route::get('/datamanager/vehicledetail/search',[VehicleDetailController::class,'searchByType'])->name('VehicleDetailController.searchByType');
+    Route::get('/datamanager/vehicledetail/search/{type_id}',[VehicleDetailController::class,'searchByType'])->name('VehicleDetailController.searchByType');
+
+    /** Route to update Vehicle Detail */
+    Route::post('/datamanager/vehicledetail/update',[VehicleDetailController::class,'update'])->name('VehicleDetailController.update');
+
+    /** Route to show VehiclePackage create page */
+    Route::get('/datamanger/vehiclepackage/',[AdminController::class,'createVehiclePackage'])->name('AdminController.createVehiclePackage');
+
+    /** Route to create VehiclePackage */
+    Route::post('/datamanager/vehiclepackage/store',[VehiclePackageController::class,'store'])->name('VehiclePacakgeController.store');
 
     /************************************************ End Data Manager **************************************/
 });

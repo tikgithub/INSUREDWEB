@@ -417,4 +417,16 @@ class AdminController extends Controller
          return view('admin.curd.vehicle_detail.index')
          ->with('vehicleTypes',$vehicleTypes);
      }
+
+     /** Show VehiclePackage Information */
+     public function createVehiclePackage(){
+
+         $levels = Level::orderBy('name','asc')->get();
+         $companies = InsuranceCompany::all();
+         $vehicleTypes = Vehicle_Type::all();
+
+         return view('admin.curd.vehicleInsurancePackage.create')->with('levels',$levels)
+         ->with('companies',$companies)
+         ->with('vehicleTypes',$vehicleTypes);
+     }
 }

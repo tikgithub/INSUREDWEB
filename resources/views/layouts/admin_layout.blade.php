@@ -59,11 +59,12 @@
             }
         }
 
-        .side-nav-item{
-            padding-top: 20px;padding-bottom: 20px;
+        .side-nav-item {
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
 
-        .sidehover{
+        .sidehover {
             background-color: #f0f0f0;
         }
 
@@ -75,7 +76,7 @@
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{route('welcome')}}">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
                 <img src="{{ asset('assets/image/mainlogo.png') }}" width="auto" height="64" class="d-inline-block ">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -86,8 +87,8 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 notosanLao fs-5">
                     <li class="nav-item">
-                        <a class="nav-link active " aria-current="page"
-                            href="{{ route('welcome') }}">ລະບົບບໍລີຫານຈັດ {{config('app.name')}}</a>
+                        <a class="nav-link active " aria-current="page" href="{{ route('welcome') }}">ລະບົບບໍລີຫານຈັດ
+                            {{ config('app.name') }}</a>
                     </li>
 
                 </ul>
@@ -114,13 +115,37 @@
     </nav>
 
     <div class="sidenav notosanLao">
+        {{-- Menu Index DashBoard --}}
+        <a href="{{ route('AdminController.showAdminDashBoard') }}" @php
+            if (Request::url() == route('AdminController.showAdminDashBoard')) {
+                echo "class='text-dark bg-white'";
+            }
+        @endphp>
+            <i class="bi bi-pie-chart-fill me-2"></i> ໜ້າຫຼັກ</a>
+        {{-- End Menu Index DashBoard --}}
 
-        <a href="{{route('AdminController.showAdminDashBoard')}}" {{Request::url()==route('AdminController.showAdminDashBoard')? "class='text-dark bg-white'":""}}><i class="bi bi-pie-chart-fill me-2"></i> ໜ້າຫຼັກ</a>
+        {{-- Padding HR --}}
         <hr style="color: #fff">
-        <a href="{{route('AdminController.indexDataManager')}}" ><i class="bi bi-hdd-fill me-2"></i> ຈັດການຂ້ໍມູນ</a>
-        <a href="#clients" ><i class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
+
+        {{-- Menu Index Datamanager --}}
+        <a href="{{ route('AdminController.indexDataManager') }}" @php
+            if(strpos(Request::url(),"datamanager")){
+                echo "class='text-dark bg-white'";
+            }
+        @endphp>
+            <i class="bi bi-hdd-fill me-2"></i> ຈັດການຂ້ໍມູນ</a>
+        {{-- End Menu Index DataMananger --}}
+
+        {{-- Menu Index Of Website Information --}}
+        <a href="#clients"><i class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
+        {{-- End Menu Index Of Website Information --}}
+
+        {{-- Padding HR --}}
         <hr style="color: #fff">
-        <a href="#contact" ><i class="bi bi-file-earmark-text-fill me-2"></i> ລາຍງານລະບົບ</a>
+
+        {{-- Menu Index Of Reporting System --}}
+        <a href="#contact"><i class="bi bi-file-earmark-text-fill me-2"></i> ລາຍງານລະບົບ</a>
+        {{-- End Menu Reporting System --}}
     </div>
     <div class="main">
         @yield('content')
