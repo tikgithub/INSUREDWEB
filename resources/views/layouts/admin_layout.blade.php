@@ -63,11 +63,15 @@
             padding-top: 20px;padding-bottom: 20px;
         }
 
+        .sidehover{
+            background-color: #f0f0f0;
+        }
+
     </style>
 
 </head>
 
-<body style="padding-bottom: 100px; padding-top:40px; background-color: #f0f0f0">
+<body style="padding-bottom: 100px; padding-top:40px; background-color: white">
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;">
         <div class="container-fluid">
@@ -110,7 +114,8 @@
     </nav>
 
     <div class="sidenav notosanLao">
-        <a href="#about" ><i class="bi bi-pie-chart-fill me-2"></i> ໜ້າຫຼັກ</a>
+
+        <a href="{{route('AdminController.showAdminDashBoard')}}" {{Request::url()==route('AdminController.showAdminDashBoard')? "class='text-dark bg-white'":""}}><i class="bi bi-pie-chart-fill me-2"></i> ໜ້າຫຼັກ</a>
         <hr style="color: #fff">
         <a href="{{route('AdminController.indexDataManager')}}" ><i class="bi bi-hdd-fill me-2"></i> ຈັດການຂ້ໍມູນ</a>
         <a href="#clients" ><i class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
