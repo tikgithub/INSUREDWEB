@@ -27,6 +27,6 @@ class AdminMiddleWare
         }
         //Redirect When Not OK
         return redirect()->route('welcome')->with('error','Authenticate Failed');
-        
+
     }
 }

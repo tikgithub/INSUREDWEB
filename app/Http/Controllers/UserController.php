@@ -16,27 +16,30 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 class UserController extends Controller
 {
     /** Function to login page */
-    public function showLoginPage(){
+    public function showLoginPage()
+    {
         return view('user_view.login');
     }
 
     /** Function to show the register page */
-    public function showRegisterPage(){
+    public function showRegisterPage()
+    {
 
         return view('user_view.register');
     }
 
     /** Function to store the user register information to DB (Default role by 'user') */
-    public function storeUserInformation(Request $req){
+    public function storeUserInformation(Request $req)
+    {
         /** Validate User input */
         $req->validate([
             'firstname' => 'required',
-            'lastname'=>'required',
+            'lastname' => 'required',
             'email' => 'required',
             'tel' => 'required',
-            'password'=>'required|min:6|required_with:confirmedPassword|same:confirmedPassword',
-            'confirmedPassword'=>'required|min:6'
-        ],[
+            'password' => 'required|min:6|required_with:confirmedPassword|same:confirmedPassword',
+            'confirmedPassword' => 'required|min:6'
+        ], [
             'password.required' => 'ກາລຸນາລະບຸລະຫັດຜ່ານ',
             'confirmedPassword.required' => 'ກາລຸນາຢືນຢັນລະຫັດຜ່ານ',
             'password.same' => 'ລະຫັດຜ່ານາບໍ່ກົງກັນກາລຸນາກວດສອບອີກຄັ້ງ',
@@ -51,92 +54,102 @@ class UserController extends Controller
         $user->role = "user";
         $user->save();
 
-        Auth::attempt(['email'=>$user->email,'password'=>$req->password]);
+        Auth::attempt(['email' => $user->email, 'password' => $req->password]);
 
-        return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
     }
     /** Function to logout the user  */
-    public function logOut(){
+    public function logOut()
+    {
         Auth::logout();
         return redirect()->route('welcome');
     }
 
     /** Function to SigIn User (For Welcome Page) */
-    public function signIn(Request $req){
+    public function signIn(Request $req)
+    {
         $req->validate([
-            'email'=>'required',
-            'password'=>'required|min:6'
-        ],[
-            'password.required'=>'ກາລຸນາລະບຸລະຫັດຜ່ານ',
-            'password.min'=>'ລະຫັດຜ່ານຫຼາຍກວ່າ 6'
+            'email' => 'required',
+            'password' => 'required|min:6'
+        ], [
+            'password.required' => 'ກາລຸນາລະບຸລະຫັດຜ່ານ',
+            'password.min' => 'ລະຫັດຜ່ານຫຼາຍກວ່າ 6'
         ]);
         /** Send to Laravel Sign */
-        if(Auth::attempt(['email'=>$req->input('email'),'password'=>$req->input('password')])){
-            return redirect()->route('welcome');
-        }else{
-            return redirect()->route('UserController.showLoginPage')->with('warning','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ');
+        if (Auth::attempt(['email' => $req->input('email'), 'password' => $req->input('password')])) {
+            if (Auth::user()->role == 'admin') {
+                return redirect()->route('AdminController.showAdminDashBoard');
+            } else {
+                return redirect()->route('welcome');
+            }
+        } else {
+            return redirect()->route('UserController.showLoginPage')->with('warning', 'ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ');
         }
     }
-//ືົດ
+    //ືົດ
     /** public function validate user before buying */
-    public function validateUserBeforeBuying(Request $req){
+    public function validateUserBeforeBuying(Request $req)
+    {
         $req->validate([
-            'email'=>'required',
-            'password'=>'required|min:6'
-        ],[
-            'password.required'=>'ກາລຸນາລະບຸລະຫັດຜ່ານ',
-            'password.min'=>'ລະຫັດຜ່ານຫຼາຍກວ່າ 6'
+            'email' => 'required',
+            'password' => 'required|min:6'
+        ], [
+            'password.required' => 'ກາລຸນາລະບຸລະຫັດຜ່ານ',
+            'password.min' => 'ລະຫັດຜ່ານຫຼາຍກວ່າ 6'
         ]);
         /** Send to Laravel Sign */
-        if(Auth::attempt(['email'=>$req->input('email'),'password'=>$req->input('password')])){
+        if (Auth::attempt(['email' => $req->input('email'), 'password' => $req->input('password')])) {
             return redirect()->back();
-        }else{
-            return redirect()->back()->with('erorr','ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ')->withInput();
+        } else {
+            return redirect()->back()->with('erorr', 'ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້ກາລຸນາກວດສອບ email ແລະ ລະຫັດຜ່ານອີກຄັ້ງ')->withInput();
         }
     }
     /** List all the insurance data which customer having now */
-    public function userListInsurance(){
+    public function userListInsurance()
+    {
         //Get user Information
         $user = Auth::user();
 
         //Get Information of Normal insurance
-        $insuranceData = VehicleInsuranceDetail::where('user_id','=',$user->id)->get();
+        $insuranceData = VehicleInsuranceDetail::where('user_id', '=', $user->id)->get();
 
 
         return view('user_view.insuranceList')
-        ->with('orderData',$insuranceData);
+            ->with('orderData', $insuranceData);
     }
 
     /** User Profile viewer */
-    public function showUserProfilePage(){
+    public function showUserProfilePage()
+    {
         //Get User ID from Auth Facades
         $user = Auth::user();
-        return view('user_view.profile')->with('user',$user);
+        return view('user_view.profile')->with('user', $user);
     }
 
     /** Functino Profile change */
-    public function changeProfilePhoto(Request $req){
+    public function changeProfilePhoto(Request $req)
+    {
         $user = Auth::user();
-        $req->validate(['profile_photo'=>'required']);
+        $req->validate(['profile_photo' => 'required']);
         //Compress image and store to Folder
         $userDB = User::find($user->id);
         //Delete old image
-        if($userDB->profile_photo){
+        if ($userDB->profile_photo) {
             \Illuminate\Support\Facades\File::delete($userDB->profile_Photo);
         }
-        $photo_path = ImageCompress::compressImage($req->file('profile_photo'),30,'UserImages',300);
+        $photo_path = ImageCompress::compressImage($req->file('profile_photo'), 30, 'UserImages', 300);
         $userDB->profile_photo = $photo_path;
         $userDB->save();
-        return redirect()->route('UserController.showUserProfilePage')->with('success','ດຳເນີນການສຳເລັດ');
-
+        return redirect()->route('UserController.showUserProfilePage')->with('success', 'ດຳເນີນການສຳເລັດ');
     }
 
     /** Function to update basic information */
-    public function updateBasicInformation(Request $req){
+    public function updateBasicInformation(Request $req)
+    {
         $user = User::find(Auth::user()->id);
         $req->validate([
             'firstname' => 'required',
-            'lastname'=>'required',
+            'lastname' => 'required',
             'email' => 'required',
             'tel' => 'required'
         ]);
@@ -146,26 +159,27 @@ class UserController extends Controller
         $user->email = $req->input('email');
         $user->tel = $req->input('tel');
         $user->save();
-        return redirect()->route('UserController.showUserProfilePage')->with('success','ດຳເນີນການສຳເລັດ');
+        return redirect()->route('UserController.showUserProfilePage')->with('success', 'ດຳເນີນການສຳເລັດ');
     }
 
     /** Function to changePassword of User */
-    public function changeUserPassword(Request $req){
+    public function changeUserPassword(Request $req)
+    {
         $user = User::find(Auth::user()->id);
 
         $req->validate([
-            'oldPassword'=>'required',
-            'confirmedPassword1'=>'required|min:6|required_with:confirmedPassword2|same:confirmedPassword2',
-            'confirmedPassword1'=>'required|min:6'
-        ],[
+            'oldPassword' => 'required',
+            'confirmedPassword1' => 'required|min:6|required_with:confirmedPassword2|same:confirmedPassword2',
+            'confirmedPassword1' => 'required|min:6'
+        ], [
             'oldPassword.required' => 'ກາລຸນາລະບຸລະຫັດຜ່ານ',
             'confirmedPassword1.required' => 'ກາລຸນາຢືນຢັນລະຫັດຜ່ານ',
             'confirmedPassword1.same' => 'ລະຫັດຜ່ານາບໍ່ກົງກັນກາລຸນາກວດສອບອີກຄັ້ງ',
             'confirmedPassword1.min' => 'ລະຫັດຜ່ານຕ້ອງຫຼາຍກວ່າ 6 ໂຕ'
         ]);
 
-        if(!Auth::attempt(['email'=>$user->email,'password'=>$req->input('oldPassword')])){
-            return redirect()->route('UserController.showUserProfilePage')->with('error','ລະຫັດຜ່ານເກົ່າບໍ່ຖືກຕ້ອງ');
+        if (!Auth::attempt(['email' => $user->email, 'password' => $req->input('oldPassword')])) {
+            return redirect()->route('UserController.showUserProfilePage')->with('error', 'ລະຫັດຜ່ານເກົ່າບໍ່ຖືກຕ້ອງ');
         }
 
 
@@ -173,9 +187,7 @@ class UserController extends Controller
         $user->password = Hash::make($req->input('confirmedPassword1'));
 
         $user->save();
-        Auth::attempt(['email'=>$user->email,'password'=> $user->password]);
-        return redirect()->route('UserController.showUserProfilePage')->with('success','ດຳເນີນການສຳເລັດ');
+        Auth::attempt(['email' => $user->email, 'password' => $user->password]);
+        return redirect()->route('UserController.showUserProfilePage')->with('success', 'ດຳເນີນການສຳເລັດ');
     }
-
-
 }
