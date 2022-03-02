@@ -7,6 +7,7 @@ use App\Http\Controllers\InsuranceFlowController;
 use App\Http\Controllers\JSONServiceController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleDetailController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -209,6 +210,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Route to show the index page of Vehicle Detail */
     Route::get('/datamanager/vehicledetails',[AdminController::class,'indexVehicleDetail'])->name('AdminController.indexVehicleDetail');
+
+    /** Route to store Vehicle Detail */
+    Route::post('/datamanager/vehicledetail/store',[VehicleDetailController::class,'store'])->name('VehicleDetailController.store');
+
+    /** Route to search Vehicle Detail by Type ID */
+    Route::get('/datamanager/vehicledetail/search',[VehicleDetailController::class,'searchByType'])->name('VehicleDetailController.searchByType');
 
     /************************************************ End Data Manager **************************************/
 });
