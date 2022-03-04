@@ -7,10 +7,12 @@ use App\Http\Controllers\InsuranceFlowController;
 use App\Http\Controllers\JSONServiceController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\ThirdPartyInsuranceController;
+use App\Http\Controllers\ThirdParyCoverController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleDetailController;
 use App\Http\Controllers\VehiclePackageController;
 use App\Http\Controllers\VehicleTypeController;
+use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
 
@@ -245,6 +247,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Route to update status of package */
     Route::get('/datamanager/thirdparty/edit/{id}', [ThirdPartyInsuranceController::class, 'edit'])->name('ThirdPartyInsuranceController.edit');
+
+    /** Route to update the information of ThirdPartyPackage */
+    Route::post('/datamanager/thirdparty/update',[ThirdPartyInsuranceController::class,'update'])->name('ThirdPartyInsuranceController.update');
+
+    /** Route to store Third Party Cover Item */
+    Route::post('/datamanager/thirdpartycover/store',[ThirdParyCoverController::class,'store'])->name('ThirPartyCoverController.store');
+
+    /** Route to update Thrid Party Item */
+    Route::post('/datamanager/thirdpartycover/update',[ThirdParyCoverController::class,'update'])->name('ThirdPartyCoverController.update');
+
+    /** Route to remove Third Party Item */
+    Route::get('/datamanager/thirdpartycover/delete/{id}',[ThirdParyCoverController::class,'destroy'])->name('ThirdPartyCoverController.destroy');
 
 
     /************************************************ End Data Manager **************************************/
