@@ -421,7 +421,7 @@ class AdminController extends Controller
      /** Show VehiclePackage Information */
      public function createVehiclePackage(){
 
-         $levels = Level::orderBy('name','asc')->get();
+         $levels = Level::where('menu_type','!=','THIRD_PARTY')->orderBy('name','asc')->get();
          $companies = InsuranceCompany::all();
          $vehicleTypes = Vehicle_Type::all();
 

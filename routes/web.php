@@ -6,6 +6,7 @@ use App\Http\Controllers\InsuranceCompanyController;
 use App\Http\Controllers\InsuranceFlowController;
 use App\Http\Controllers\JSONServiceController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\ThirdPartyInsuranceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleDetailController;
 use App\Http\Controllers\VehiclePackageController;
@@ -180,52 +181,71 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     /** Route to store carbrand */
     Route::post('/datamanager/carbrand/store', [AdminController::class, 'storeCarbrand'])->name('AdminController.storeCarbrand');
     /** Route to update carbrand */
-    Route::post('/datamanager/carbrand/update',[AdminController::class,'updateCarbrand'])->name('AdminController.updateCarbrand');
+    Route::post('/datamanager/carbrand/update', [AdminController::class, 'updateCarbrand'])->name('AdminController.updateCarbrand');
 
     /** Route to show index page of Insurance Company */
-    Route::get('/datamanager/insurance_company',[AdminController::class,'indexInsuranceCompany'])->name('AdminController.indexInsuranceCompany');
+    Route::get('/datamanager/insurance_company', [AdminController::class, 'indexInsuranceCompany'])->name('AdminController.indexInsuranceCompany');
 
     /** Route to store Insurance Company */
-    Route::post('/datamanager/insurance_company/store',[InsuranceCompanyController::class,'store'])->name('InsuranceCompanyController.store');
+    Route::post('/datamanager/insurance_company/store', [InsuranceCompanyController::class, 'store'])->name('InsuranceCompanyController.store');
 
     /** Route to update Insurance Company */
-    Route::post('/datamanager/insurance_company/update',[InsuranceCompanyController::class,'update'])->name('InsuranceCompanyController.update');
+    Route::post('/datamanager/insurance_company/update', [InsuranceCompanyController::class, 'update'])->name('InsuranceCompanyController.update');
 
     /** Route to show the Index page of Level */
-    Route::get('/datamanager/level',[AdminController::class,'indexInsuranceLevel'])->name('AdminController.indexInsuranceLevel');
+    Route::get('/datamanager/level', [AdminController::class, 'indexInsuranceLevel'])->name('AdminController.indexInsuranceLevel');
 
     /** Route to store the Level */
-    Route::post('/datamanger/level/store',[LevelController::class,'store'])->name('LevelController.store');
+    Route::post('/datamanger/level/store', [LevelController::class, 'store'])->name('LevelController.store');
 
     /** Route to update the Level */
-    Route::post('/datamanager/level/update',[LevelController::class,'update'])->name('LevelController.update');
+    Route::post('/datamanager/level/update', [LevelController::class, 'update'])->name('LevelController.update');
 
     /** Route to show the index page of Vehicle Type */
-    Route::get('/datamanager/vehicletype/',[AdminController::class,'indexVehicleType'])->name('AdminController.indexVehicleType');
+    Route::get('/datamanager/vehicletype/', [AdminController::class, 'indexVehicleType'])->name('AdminController.indexVehicleType');
 
     /** Route to store the Vehicle Type to DB */
-    Route::post('/datamanager/vehicletype/store',[VehicleTypeController::class,'store'])->name('VehicleTypeController.store');
+    Route::post('/datamanager/vehicletype/store', [VehicleTypeController::class, 'store'])->name('VehicleTypeController.store');
 
     /** Route to edit the Vehicle Type to DB */
-    Route::post('/datamanager/vehicletype/edit',[VehicleTypeController::class,'update'])->name('VehicleTypeController.update');
+    Route::post('/datamanager/vehicletype/edit', [VehicleTypeController::class, 'update'])->name('VehicleTypeController.update');
 
     /** Route to show the index page of Vehicle Detail */
-    Route::get('/datamanager/vehicledetails',[AdminController::class,'indexVehicleDetail'])->name('AdminController.indexVehicleDetail');
+    Route::get('/datamanager/vehicledetails', [AdminController::class, 'indexVehicleDetail'])->name('AdminController.indexVehicleDetail');
 
     /** Route to store Vehicle Detail */
-    Route::post('/datamanager/vehicledetail/store',[VehicleDetailController::class,'store'])->name('VehicleDetailController.store');
+    Route::post('/datamanager/vehicledetail/store', [VehicleDetailController::class, 'store'])->name('VehicleDetailController.store');
 
     /** Route to search Vehicle Detail by Type ID */
-    Route::get('/datamanager/vehicledetail/search/{type_id}',[VehicleDetailController::class,'searchByType'])->name('VehicleDetailController.searchByType');
+    Route::get('/datamanager/vehicledetail/search/{type_id}', [VehicleDetailController::class, 'searchByType'])->name('VehicleDetailController.searchByType');
 
     /** Route to update Vehicle Detail */
-    Route::post('/datamanager/vehicledetail/update',[VehicleDetailController::class,'update'])->name('VehicleDetailController.update');
+    Route::post('/datamanager/vehicledetail/update', [VehicleDetailController::class, 'update'])->name('VehicleDetailController.update');
 
     /** Route to show VehiclePackage create page */
-    Route::get('/datamanger/vehiclepackage/',[AdminController::class,'createVehiclePackage'])->name('AdminController.createVehiclePackage');
+    Route::get('/datamanger/vehiclepackage/', [AdminController::class, 'createVehiclePackage'])->name('AdminController.createVehiclePackage');
 
     /** Route to create VehiclePackage */
-    Route::post('/datamanager/vehiclepackage/store',[VehiclePackageController::class,'store'])->name('VehiclePacakgeController.store');
+    Route::post('/datamanager/vehiclepackage/store', [VehiclePackageController::class, 'store'])->name('VehiclePacakgeController.store');
+
+    /** Route to create Third Party Insurance */
+    Route::get('/datamanager/thirdparty/create', [ThirdPartyInsuranceController::class, 'create'])->name('ThirdPartyInsuranceController.create');
+
+    /** Route to store Third Party Insurance */
+    Route::post('/datamanager/thirdparty/store', [ThirdPartyInsuranceController::class, 'store'])->name('ThirPartyInsuranceController.store');
+
+    /** Rote to show list of Third Party Insurance */
+    Route::get('/datamanager/thirdparty', [ThirdPartyInsuranceController::class, 'index'])->name('ThirdPartyInsuranceController.index');
+
+    /** Route to update status of package */
+    Route::get('/datamanager/thirdparty/update_status/{id}', [ThirdPartyInsuranceController::class, 'updateAvailableStatus'])->name('ThirdPartyInsuranceController.updateAvailableStatus');
+
+    /** Route to update status of package */
+    Route::get('/datamanager/thirdparty/update_not_status/{id}', [ThirdPartyInsuranceController::class, 'updateNotAvailableStatus'])->name('ThirdPartyInsuranceController.updateNotAvailableStatus');
+
+    /** Route to update status of package */
+    Route::get('/datamanager/thirdparty/edit/{id}', [ThirdPartyInsuranceController::class, 'edit'])->name('ThirdPartyInsuranceController.edit');
+
 
     /************************************************ End Data Manager **************************************/
 });
