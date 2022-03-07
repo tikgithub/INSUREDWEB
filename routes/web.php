@@ -53,7 +53,6 @@ Route::group(['prefix' => 'user'], function () {
 
 /** Group route for insurance buying */
 Route::group(['prefix' => 'insurance'], function () {
-
     /** Route show the insurance type selection */
     Route::get('/select', [InsuranceFlowController::class, 'showInsuranceTypeSelection'])->name('InsuranceFlowController.showInsuranceTypeSelection');
 
@@ -71,6 +70,15 @@ Route::group(['prefix' => 'insurance'], function () {
 
     /** Route for show buy now page with input menu */
     Route::get('/buy/{sale_id}', [InsuranceFlowController::class, 'showBuyNowPage'])->name('InsuranceFlowController.showBuyNowPage');
+
+    /** Route to show third party insurance cover item page */
+    Route::get('/customer/thirdparty/coveritem/{id}', [InsuranceFlowController::class, 'showThirdPartyInsuranceCoverItem'])->name('InsuranceFlowController.showThirdPartyInsuranceCoverItem');
+
+    /** ROute to show the compare view of the third party insurance */
+    Route::get('/customer/thirdparty/compare/{id1}/{id2}', [InsuranceFlowController::class, 'showCompareViewThirdPartyInsurance'])->name('InsuranceFlowController.showCompareViewThirdPartyInsurance');
+
+    /** Route to show input data of third party insurance */
+    Route::get('/customer/thirdparty/fillform/{id}', [InsuranceFlowController::class, 'showInputPageThirdPartyInsurance'])->name('InsuranceFlowController.showInputPageThirdPartyInsurance');
 });
 
 /** JsonResponse Route Group */
@@ -132,6 +140,27 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
 
     /** Route to update or change user password */
     Route::post('/customer/changepassword', [UserController::class, 'changeUserPassword'])->name('UserController.changeUserPassword');
+
+    /** Route to store user information of third party package */
+    Route::post('/customer/thirdparty/information',[InsuranceFlowController::class,'thirdPartyStoreInput'])->name('InsuranceFlowController.thirdPartyStoreInput');
+
+    /** Route to show user information agreement before submit */
+    Route::get('/customer/thirdparty/agreement/{package_id}',[InsuranceFlowController::class,'showThirdPartyAgreement'])->name('InsuranceFlowController.showThirdPartyAgreement');
+
+    /** Route to confirm the user information agreement */
+    Route::post('/customer/thirdparty/confirm',[InsuranceFlowController::class,'updateConfirmThirdParty'])->name('InsuranceFlowController.updateConfirmThirdParty');
+
+    /** Route to show payment provider for third party insurnace */
+    Route::get('/customer/thirdparty/paymentprovider}',[InsuranceFlowController::class,'showPaymentProviderForThirdPartyPackage'])->name('InsuranceFlowController.showPaymentProviderForThirdPartyPackage');
+
+    /** Route to select payment provider and show how to pay */
+    Route::get('/customer/thirdparty/howtopay/{provider_id}',[InsuranceFlowController::class,'showSubmitPaymentForThirdPartyPackage'])->name('InsuranceFlowController.showSubmitPaymentForThirdPartyPackage');
+
+    /** Route to update payment detail of third party insurnace */
+    Route::post('/customer/thirparty/paymentconfirm',[InsuranceFlowController::class,'updatePaymentDetailOfThirdParty'])->name('InsuranceFlowController.updatePaymentDetailOfThirdParty');
+
+
+
 });
 
 
@@ -249,17 +278,34 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/datamanager/thirdparty/edit/{id}', [ThirdPartyInsuranceController::class, 'edit'])->name('ThirdPartyInsuranceController.edit');
 
     /** Route to update the information of ThirdPartyPackage */
-    Route::post('/datamanager/thirdparty/update',[ThirdPartyInsuranceController::class,'update'])->name('ThirdPartyInsuranceController.update');
+    Route::post('/datamanager/thirdparty/update', [ThirdPartyInsuranceController::class, 'update'])->name('ThirdPartyInsuranceController.update');
 
     /** Route to store Third Party Cover Item */
-    Route::post('/datamanager/thirdpartycover/store',[ThirdParyCoverController::class,'store'])->name('ThirPartyCoverController.store');
+    Route::post('/datamanager/thirdpartycover/store', [ThirdParyCoverController::class, 'store'])->name('ThirPartyCoverController.store');
 
     /** Route to update Thrid Party Item */
-    Route::post('/datamanager/thirdpartycover/update',[ThirdParyCoverController::class,'update'])->name('ThirdPartyCoverController.update');
+    Route::post('/datamanager/thirdpartycover/update', [ThirdParyCoverController::class, 'update'])->name('ThirdPartyCoverController.update');
 
     /** Route to remove Third Party Item */
-    Route::get('/datamanager/thirdpartycover/delete/{id}',[ThirdParyCoverController::class,'destroy'])->name('ThirdPartyCoverController.destroy');
+    Route::get('/datamanager/thirdpartycover/delete/{id}', [ThirdParyCoverController::class, 'destroy'])->name('ThirdPartyCoverController.destroy');
 
+    /** Route to show Third Party Insurance */
+    Route::get('/insurance/thirdpartyinsurance/{id}',[AdminController::class,'thirdPartyWaitForPaymentDetail'])->name('AdminController.thirdPartyWaitForPaymentDetail');
 
+    /** Route to delete the Third Party Insurance by Admin */
+    Route::get('/insurance/thirdparty/delete/{id}',[AdminController::class,'deleteThirdPartyInsurance'])->name('AdminController.deleteThirdPartyInsurance');
+
+    /** Route for display third party insruance link which not payment yet */
+    Route::get('/insurance/thirdparty/waitforpayment',[AdminController::class,'listOfThirdPartyInsuranceWaitForPayment'])->name('AdminController.listOfThirdPartyInsuranceWaitForPayment');
+
+    /** Route for show wait for approve view */
+    Route::get('/insurance/thirdparty/waitforapprove/{id}',[AdminController::class,'thirdPartyWaitForApproveDetail'])->name('AdminController.thirdPartyWaitForApproveDetail');
+
+    /** Route for update the data for admin update user information */
+    Route::post('/insurance/thirdparty/waitforapprove/update',[AdminController::class,'updateThirdPartyInformationForCustomer'])->name('AdminController.updateThirdPartyInformationForCustomer');
+
+    /** Route for update the approve insurance for third party insurnace */
+    Route::post('/insurance/thirdparty/approve',[AdminController::class,'approveThirdPartyInsurance'])->name('AdminController.approveThirdPartyInsurance');
+    
     /************************************************ End Data Manager **************************************/
 });

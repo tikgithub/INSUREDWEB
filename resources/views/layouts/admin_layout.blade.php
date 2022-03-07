@@ -148,7 +148,9 @@
         {{-- End Menu Reporting System --}}
     </div>
     <div class="main">
+       <div class="container-fluid">
         @yield('content')
+       </div>
     </div>
     {{-- End NavBar --}}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"

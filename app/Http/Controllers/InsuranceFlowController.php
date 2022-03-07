@@ -9,6 +9,10 @@ use App\Models\Level;
 use App\Models\PaymentProvider;
 use App\Models\Province;
 use App\Models\SaleOption;
+use App\Models\ThirdPartyCoverItem;
+use App\Models\ThirdPartyCustomerInput;
+use App\Models\ThirdPartyPackage;
+use App\Models\Vehicle_Detail;
 use App\Models\Vehicle_Type;
 use App\Models\VehicleInsuranceDetail;
 use App\Models\VehiclePackage;
@@ -17,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class InsuranceFlowController extends Controller
 {
@@ -29,7 +34,7 @@ class InsuranceFlowController extends Controller
     public function showCarInsuranceSelectionMenu()
     {
         /** Get Level Information to Show at page */
-        $levels = Level::orderBy('name','asc')->get();
+        $levels = Level::orderBy('name', 'asc')->get();
         /** Get Vehicle Type information to page */
         $vehicleTypes = Vehicle_Type::all();
 
@@ -47,6 +52,20 @@ class InsuranceFlowController extends Controller
         switch ($insuranceType->menu_type) {
             case "THIRD_PARTY":
                 /** Query the package which relate to Third party only */
+                $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+                tpp.fee, tpp.final_price, ic.logo 
+                FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
+                INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+                INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+                INNER JOIN levels l on l.id = tpp.`level` 
+                AND vt.id = ? AND  tpp.status = 1 AND l.id = ?";
+
+                $thirdPartyPackage = DB::select($query, [$req->input('vehicle_type'), $req->input('level')]);
+                //Get Vehicle Detail from Vehicle Type ID
+                $vehicleDetail = Vehicle_Detail::where('v_id', '=', $req->input('vehicle_type'))->get();
+
+                return view('insurances.thirdParty.showSelectResult')->with('vehicleDetail', $vehicleDetail)
+                    ->with('thirdPartyPackage', $thirdPartyPackage);
 
                 break;
             case "NORMAL":
@@ -169,25 +188,25 @@ class InsuranceFlowController extends Controller
         //Validate input
         //Image Validate with maximun
         $req->validate([
-            'front'=>'required',
-            'left'=>'required',
-            'right'=>'required',
-            'rear'=>'required',
-            'yellow_book'=>'required',
-            'firstname'=>'required',
-            'lastname'=>'required',
-            'tel'=>'required',
-            'sex'=>'required',
-            'dob'=>'required',
-            'identity'=>'required',
-            'province'=>'required',
-            'district'=>'required',
-            'vehicleBrand'=>'required',
-            'registeredProvince'=>'required',
-            'number_plate'=>'required',
-            'color'=>'required',
-            'address'=>'required',
-             'sale_id'=>'required'
+            'front' => 'required',
+            'left' => 'required',
+            'right' => 'required',
+            'rear' => 'required',
+            'yellow_book' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'tel' => 'required',
+            'sex' => 'required',
+            'dob' => 'required',
+            'identity' => 'required',
+            'province' => 'required',
+            'district' => 'required',
+            'vehicleBrand' => 'required',
+            'registeredProvince' => 'required',
+            'number_plate' => 'required',
+            'color' => 'required',
+            'address' => 'required',
+            'sale_id' => 'required'
         ]);
 
         //Find Sale ID
@@ -425,13 +444,15 @@ class InsuranceFlowController extends Controller
     }
 
     /** Function to delete the input data */
-    public function deleteTheInput($id){
+    public function deleteTheInput($id)
+    {
         VehicleInsuranceDetail::find($id)->delete();
-        return redirect()->route('UserController.userListInsurance')->with('success','ດຳເນີນການສຳເລັດ');
+        return redirect()->route('UserController.userListInsurance')->with('success', 'ດຳເນີນການສຳເລັດ');
     }
 
     /** Function show insurance detail by customer*/
-    public function showInsuranceDetailByCustomer($id){
+    public function showInsuranceDetailByCustomer($id)
+    {
 
         $saleOption = SaleOption::find($id);
 
@@ -450,5 +471,307 @@ class InsuranceFlowController extends Controller
             ->with('vehiclePackage', $vehiclePackage)
             ->with('company', $company)
             ->with('saleDetails', $saleOptionDetail);
+    }
+
+    /** Function to show the Third Party insurance cover item */
+    public function showThirdPartyInsuranceCoverItem($id)
+    {
+        $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+        tpp.fee, tpp.final_price, ic.logo 
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+        INNER JOIN levels l on l.id = tpp.`level` 
+        AND tpp.id =?";
+        //Get Package Detail
+        $packageDetail = collect(DB::select($query, [$id]))->first();
+
+        //Get cover item detail
+        $coverDetail = ThirdPartyCoverItem::where('third_package_id', '=', $id)->get();
+
+        return view('insurances.thirdParty.showCoverItem')->with('packageDetail', $packageDetail)
+            ->with('coverDetails', $coverDetail);
+    }
+
+    /** Function to show the compare view of third party insurance */
+    public function showCompareViewThirdPartyInsurance($id1, $id2)
+    {
+
+        $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+        tpp.fee, tpp.final_price, ic.logo 
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+        INNER JOIN levels l on l.id = tpp.`level` 
+        AND tpp.id =?";
+
+        //Get Package Detail
+        $packageDetail1 = collect(DB::select($query, [$id1]))->first();
+        //Get cover item detail1
+        $coverDetail1 = ThirdPartyCoverItem::where('third_package_id', '=', $id1)->get();
+
+        //Get cover item detail2
+        $coverDetail2 = (ThirdPartyCoverItem::where('third_package_id', '=', $id2))->get();
+        //Get Package Detail
+        $packageDetail2 = collect(DB::select($query, [$id2]))->first();
+
+        return view('insurances.thirdParty.showCompareView')
+            ->with('coverDetail1', $coverDetail1)
+            ->with('coverDetail2', $coverDetail2)
+            ->with('packageDetail1', $packageDetail1)
+            ->with('packageDetail2', $packageDetail2);
+    }
+
+    /** Function to show the input data page of Third Party Insurance */
+    public function showInputPageThirdPartyInsurance($id)
+    {
+        //session(['third_id'=>$id]);
+        $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+        tpp.fee, tpp.final_price, ic.logo 
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+        INNER JOIN levels l on l.id = tpp.`level` 
+        AND tpp.id =?";
+
+        $thirdPartyPackage = collect(DB::select($query, [$id]))->first();
+
+        //Get cover item detail
+        $coverDetail = ThirdPartyCoverItem::where('third_package_id', '=', $id)->get();
+
+        //Province information
+        $provinces = Province::all();
+        //Vehicle Brand
+        $vehicleBrand = CarBrand::all();
+
+
+        return view('insurances.thirdParty.showInputView')
+            ->with('package', $thirdPartyPackage)
+            ->with('coverDetail', $coverDetail)
+            ->with('provinces', $provinces)
+            ->with('vehicleBrand', $vehicleBrand);
+    }
+
+    /** Function to store the input date of the ThirdPartyInsurane */
+    public function thirdPartyStoreInput(Request $req)
+    {
+        //Validate the information
+        $req->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'lastname' => 'required',
+            'sex' => 'required',
+            'identity' => 'required',
+            'province'  =>  'required',
+            'district'  => 'required',
+            'address' => 'required',
+            'vehicleBrand' => 'required',
+            'number_plate' => 'required',
+            'color' => 'required',
+            'engine_number' => 'required',
+            'chassic_number' => 'required',
+            'registeredProvince' => 'required'
+        ]);
+        //More validate from here ///////
+
+        /////////////////////////////////
+
+        //Create new object
+        $object = new ThirdPartyCustomerInput();
+        $object->firstname = $req->input('firstname');
+        $object->lastname = $req->input('lastname');
+        $object->sex = $req->input('sex');
+        $object->dob = $req->input('dob');
+        $object->tel = $req->input('tel');
+        $object->identity = $req->input('identity');
+        $object->province = $req->input('province');
+        $object->district = $req->input('district');
+        $object->address = $req->input('address');
+        $object->vehicle_brand = $req->input('vehicleBrand');
+        $object->number_plate = $req->input('number_plate');
+        $object->color = $req->input('color');
+        $object->engine_number = $req->input('engine_number');
+        $object->chassic_number = $req->input('chassic_number');
+        $object->registered_province = $req->input('registeredProvince');
+        //Get Third Party Package data
+        $thirdPackage = ThirdPartyPackage::find($req->input('package_id'));
+
+        $object->fee_charge = $thirdPackage->fee;
+        $object->total_price = $thirdPackage->final_price;
+        $object->third_package_id = $req->input('package_id');
+        $object->payment_confirm = "WAIT_FOR_PAYMENT";
+        $object->user_id = Auth::user()->id;
+
+
+        if ($object->save()) {
+            session(['third_package_id' => $object->id]);
+            return redirect()->route('InsuranceFlowController.showThirdPartyAgreement',['package_id'=>$object->id]);
+        } else {
+            return redirect()->back()->withInput()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
+    }
+
+   
+    /** Function to show agreement of thirdParty after input */
+    public function showThirdPartyAgreement($package_id)
+    {
+        
+        //Get section information
+        session(['third_package_id'=>$package_id]);
+
+        $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+        tpp.fee, tpp.final_price, ic.logo, tpp.term
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+        INNER JOIN levels l on l.id = tpp.`level` 
+        AND tpp.id =?";
+
+        $customerPackage = ThirdPartyCustomerInput::find(session('third_package_id'));
+
+        $thirdPartyPackage = collect(DB::select($query, [$customerPackage->third_package_id]))->first();
+
+        //Get cover item detail
+        $coverDetail = ThirdPartyCoverItem::where('third_package_id', '=', $customerPackage->third_package_id)->get();
+
+        //Province information
+        $provinces = Province::all();
+        //Vehicle Brand
+        $vehicleBrand = CarBrand::all();
+
+        return view('insurances.thirdParty.showAgreement')
+            ->with('package', $thirdPartyPackage)
+            ->with('coverDetail', $coverDetail)
+            ->with('provinces', $provinces)
+            ->with('vehicleBrand', $vehicleBrand)
+            ->with('customerPackage', $customerPackage);
+    }
+
+    /** Function to customer to confirm customer information */
+    public function updateConfirmThirdParty(Request $req)
+    {
+    
+        //Get section information
+        if (!Session::has('third_package_id')) {
+            return redirect()->back()->with('error', 'ເກິດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່ພາຍຫຼັງ');
+        }
+        //Validate the information
+        $req->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'lastname' => 'required',
+            'sex' => 'required',
+            'identity' => 'required',
+            'province'  =>  'required',
+            'district'  => 'required',
+            'address' => 'required',
+            'vehicleBrand' => 'required',
+            'number_plate' => 'required',
+            'color' => 'required',
+            'engine_number' => 'required',
+            'chassic_number' => 'required',
+            'registeredProvince' => 'required'
+        ]);
+
+        //Find the object
+        $object = ThirdPartyCustomerInput::find(session('third_package_id'));
+        $object->firstname = $req->input('firstname');
+        $object->lastname = $req->input('lastname');
+        $object->sex = $req->input('sex');
+        $object->dob = $req->input('dob');
+        $object->tel = $req->input('tel');
+        $object->identity = $req->input('identity');
+        $object->province = $req->input('province');
+        $object->district = $req->input('district');
+        $object->address = $req->input('address');
+        $object->vehicle_brand = $req->input('vehicleBrand');
+        $object->number_plate = $req->input('number_plate');
+        $object->color = $req->input('color');
+        $object->engine_number = $req->input('engine_number');
+        $object->chassic_number = $req->input('chassic_number');
+        $object->registered_province = $req->input('registeredProvince');
+
+        $object->third_package_id = $req->input('package_id');
+        $object->payment_confirm = "WAIT_FOR_PAYMENT";
+        if($object->save()){
+
+            return redirect()->route('InsuranceFlowController.showPaymentProviderForThirdPartyPackage');
+        }else{
+            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
+        
+    }
+
+    /** Function to show the payment provider detail */
+    public function showPaymentProviderForThirdPartyPackage()
+    {
+        //When session not set then send back to welcome page
+        if (!Session::has('third_package_id')) {
+            return redirect()->route('welcome');
+        }
+
+        //Get the available payment provider data by status 1 = avaialbe, 0 = not available
+        $paymentProviders = PaymentProvider::where('status', '=', '1')->get();
+
+        return view('insurances.thirdParty.showPaymentProviderList')->with('paymentProviders', $paymentProviders);
+    }
+
+    /** Function to select payment provider for third party package */
+    public function showSubmitPaymentForThirdPartyPackage($provider_id){
+        //dd(session('third_package_id'));
+
+        //When session not set then send back to welcome page
+        if (!Session::has('third_package_id')) {
+        
+            return redirect()->route('welcome');
+        }
+        $provider = PaymentProvider::find($provider_id);
+
+        return view('insurances.thirdParty.showPaymentSubmit')->with('provider', $provider);
+    }
+
+      /** Function update payment detail of third party package */
+    public function updatePaymentDetailOfThirdParty(Request $req)
+    {
+        //Validate the image should be upload
+        $req->validate([
+            'slipUploaded' => 'required'
+        ]);
+        $thirdPackageID = session('third_package_id');
+
+        //When session not set then send back to welcome page
+        if (!Session::has('third_package_id')) {
+           
+            return redirect()->route('welcome');
+        }
+
+        $inputData = ThirdPartyCustomerInput::find(session('third_package_id'));
+
+        $extension = $req->file('slipUploaded')->getClientOriginalExtension();
+        $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
+        $data = file_get_contents($newImageCompress);
+        $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($data);
+        File::delete($newImageCompress);
+
+        $inputData->slip_confirmed = $base64SlipImage;
+        $inputData->payment_time = now();
+        $inputData->payment_confirm = "WAIT_FOR_APPROVED";
+
+        $inputData->save();
+
+        session(['payment_status' => 'WAIT_FOR_APPROVED']);
+
+        return redirect()->route('InsuranceFlowController.showComplete');
+    }
+
+    /** Function to delete customer of third party */
+    public function deleteThirdPartyInsurance($id){
+        $deleteObject = ThirdPartyCustomerInput::find($id);
+
+        if($deleteObject->delete()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
     }
 }

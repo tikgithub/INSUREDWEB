@@ -8,6 +8,8 @@ use App\Models\InsuranceCompany;
 use App\Models\Level;
 use App\Models\Province;
 use App\Models\SaleOption;
+use App\Models\ThirdPartyCoverItem;
+use App\Models\ThirdPartyCustomerInput;
 use App\Models\Vehicle_Type;
 use App\Models\VehicleInsuranceDetail;
 use App\Models\VehiclePackage;
@@ -24,6 +26,7 @@ class AdminController extends Controller
     /** Function to show Admin Dashboard */
     public function showAdminDashBoard()
     {
+        /************************ Vehicle Insurance *********************************/
         //Find new purchase order not payment
         $newPurchase = VehicleInsuranceDetail::where('payment_confirm', '=', null)->get();
         //Find purchase data with paymented
@@ -36,12 +39,24 @@ class AdminController extends Controller
         $outOfContracts = VehicleInsuranceDetail::where('contract_status', '=', 'IN_CONTRACT', 'AND')
             ->where(DB::raw('now()'), '>=', DB::raw("DATE_SUB(end_date,INTERVAL 7 DAY)"), 'AND')
             ->where(DB::raw('now()'), '<=', DB::raw("DATE_ADD(end_date,INTERVAL 7 DAY)"))->get();
+        /************************** End Vehicle Insurance Information ***************/
+
+        /******************************* Third Party Insurance *******************************/
+        $thirPartyNewPurchase = ThirdPartyCustomerInput::where('payment_confirm','=','WAIT_FOR_PAYMENT')->get();
+        $thirdPartyWaitForApprove = ThirdPartyCustomerInput::where('payment_confirm','=','WAIT_FOR_APPROVED')->get();
+        $inContracts = ThirdPartyCustomerInput::where('payment_confirm','=','APPROVED_OK','AND')->where('end_date','>',now())->get();
+        /******************************* End Third Party Insurance *******************************/
 
         return view('admin.dashboard')
+        //Vehicle Insurance Detail
             ->with('newPurchase', $newPurchase)
             ->with('paymentItems', $paymentItems)
             ->with('contracts', $contracts)
-            ->with('outOfContracts', $outOfContracts);
+            ->with('outOfContracts', $outOfContracts)
+        //Third Party Insurance Detail
+            ->with('thirPartyNewPurchase',$thirPartyNewPurchase)
+            ->with('thirdPartyWaitForApprove',$thirdPartyWaitForApprove)
+            ->with('inContracts',$inContracts);
     }
 
     /** Function to allow admin to view input data from customer (readonly customer can edit only) */
@@ -428,5 +443,163 @@ class AdminController extends Controller
          return view('admin.curd.vehicleInsurancePackage.create')->with('levels',$levels)
          ->with('companies',$companies)
          ->with('vehicleTypes',$vehicleTypes);
+     }
+
+     /** Show ThirdPartyInsuranceDetail for "WAIT FOR PAYMENT" */
+     public function thirdPartyWaitForPaymentDetail($id){
+        
+
+        $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+        tpp.fee, tpp.final_price, ic.logo, tpp.term
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+        INNER JOIN levels l on l.id = tpp.`level` 
+        AND tpp.id =?";
+
+        $customerPackage = ThirdPartyCustomerInput::find($id);
+
+        $thirdPartyPackage = collect(DB::select($query, [$customerPackage->third_package_id]))->first();
+
+        //Get cover item detail
+        $coverDetail = ThirdPartyCoverItem::where('third_package_id', '=', $customerPackage->third_package_id)->get();
+
+        //Province information
+        $provinces = Province::all();
+        //Vehicle Brand
+        $vehicleBrand = CarBrand::all();
+
+        return view('admin.thirdPartyInsurance.showInsuranceDetailForWaitForPayment')
+            ->with('package', $thirdPartyPackage)
+            ->with('coverDetail', $coverDetail)
+            ->with('provinces', $provinces)
+            ->with('vehicleBrand', $vehicleBrand)
+            ->with('customerPackage', $customerPackage);
+     }
+
+     /** Function to delete customer of third party */
+    public function deleteThirdPartyInsurance($id){
+        $deleteObject = ThirdPartyCustomerInput::find($id);
+
+        if($deleteObject->delete()){
+            return redirect()->route('AdminController.showAdminDashBoard')->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->route('AdminController.showAdminDashBoard')->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
+    }
+
+    /** Function to show List of third party insurance which are wait for payment */
+    public function listOfThirdPartyInsuranceWaitForPayment(){
+
+        $thirdPartyNewPurchase = ThirdPartyCustomerInput::where('payment_confirm','=','WAIT_FOR_PAYMENT')->get();
+
+        return view('admin.thirdPartyInsurance.listOfThirdPartyInsuranceWaitForPayment')
+        ->with('thirdPartyNewPurchase',$thirdPartyNewPurchase);
+    }
+
+ 
+    /** Show ThirdPartyInsuranceDetail for "WAIT FOR APPROVED" */
+    public function thirdPartyWaitForApproveDetail($id){
+        
+
+        $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+        tpp.fee, tpp.final_price, ic.logo, tpp.term
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+        INNER JOIN levels l on l.id = tpp.`level` 
+        AND tpp.id =?";
+
+        $customerPackage = ThirdPartyCustomerInput::find($id);
+
+        $thirdPartyPackage = collect(DB::select($query, [$customerPackage->third_package_id]))->first();
+
+        //Get cover item detail
+        $coverDetail = ThirdPartyCoverItem::where('third_package_id', '=', $customerPackage->third_package_id)->get();
+
+        //Province information
+        $provinces = Province::all();
+        //Vehicle Brand
+        $vehicleBrand = CarBrand::all();
+
+        return view('admin.thirdPartyInsurance.showInsuranceDetailForWaitForApprove')
+            ->with('package', $thirdPartyPackage)
+            ->with('coverDetail', $coverDetail)
+            ->with('provinces', $provinces)
+            ->with('vehicleBrand', $vehicleBrand)
+            ->with('customerPackage', $customerPackage);
+     }
+
+     /** Function to update third party information by admin */
+     public function updateThirdPartyInformationForCustomer(Request $req){
+          //Validate the information
+        $req->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'lastname' => 'required',
+            'sex' => 'required',
+            'identity' => 'required',
+            'province'  =>  'required',
+            'district'  => 'required',
+            'address' => 'required',
+            'vehicleBrand' => 'required',
+            'number_plate' => 'required',
+            'color' => 'required',
+            'engine_number' => 'required',
+            'chassic_number' => 'required',
+            'registeredProvince' => 'required',
+            'third_package_id' => 'required'
+        ]);
+
+        //Find the object
+        $object = ThirdPartyCustomerInput::find($req->input('third_package_id'));
+        $object->firstname = $req->input('firstname');
+        $object->lastname = $req->input('lastname');
+        $object->sex = $req->input('sex');
+        $object->dob = $req->input('dob');
+        $object->tel = $req->input('tel');
+        $object->identity = $req->input('identity');
+        $object->province = $req->input('province');
+        $object->district = $req->input('district');
+        $object->address = $req->input('address');
+        $object->vehicle_brand = $req->input('vehicleBrand');
+        $object->number_plate = $req->input('number_plate');
+        $object->color = $req->input('color');
+        $object->engine_number = $req->input('engine_number');
+        $object->chassic_number = $req->input('chassic_number');
+        $object->registered_province = $req->input('registeredProvince');
+
+        if($object->save()){
+
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
+     }
+
+     /** Function Approve Third Party Insurance */
+     public function approveThirdPartyInsurance(Request $req){
+         $req->validate([
+            'contract_no'=>'required|unique:third_party_customer_inputs,contract_no',
+            'start_date'=>'required',
+            'third_package_id'=> 'required'
+         ]);
+
+         //Find the object from DB
+         $object = ThirdPartyCustomerInput::find($req->input('third_package_id'));
+         $object->contract_no = $req->input('contract_no');
+         $object->start_date = $req->input('start_date');
+         $object->end_date = date('Y-m-d', strtotime('+1 year'));
+         $object->approved_time = now();
+         $object->payment_confirm = "APPROVED_OK";
+         $object->approve_by = Auth::user()->id;
+
+         if($object->save()){
+            return redirect()->route('AdminController.showAdminDashBoard')->with('success','ດຳເນີນການສຳເລັດ');
+         }else{
+            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+         }
+
+
      }
 }

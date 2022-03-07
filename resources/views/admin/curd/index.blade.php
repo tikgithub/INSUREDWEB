@@ -23,7 +23,7 @@
                     <div class="row">
                         {{-- Car Brand Link --}}
                         <div class="col-md-3 mb-5">
-                            <a href="{{ route('AdminController.indexCarbrand') }}" class="text-decoration-none"><img
+                            <a href="{{ route('AdminController.indexCarbrand') }}" class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/brand.png') }}" class="menu_image">
                                 ຍີ່ຫໍ້ລົດ</a>
                         </div>
@@ -31,7 +31,7 @@
 
                         {{-- Insurance Company Link --}}
                         <div class="col-md-3 text-center">
-                            <a href="{{ route('AdminController.indexInsuranceCompany') }}" class="text-decoration-none"><img
+                            <a href="{{ route('AdminController.indexInsuranceCompany') }}" class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/company.png') }}" class="menu_image">
                                 ບໍລິສັດປະກັນໄພ</a>
                         </div>
@@ -39,7 +39,7 @@
 
                         {{-- Insurance Level Link --}}
                         <div class="col-md-3 text-center">
-                            <a href="{{ route('AdminController.indexInsuranceLevel') }}" class="text-decoration-none"><img
+                            <a href="{{ route('AdminController.indexInsuranceLevel') }}" class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/level.png') }}" class="menu_image">
                                 ຊັ້ນປະກັນໄພ</a>
                         </div>
@@ -47,7 +47,7 @@
 
                         {{-- Vehicle Link --}}
                         <div class="col-md-3 text-center">
-                            <a href="{{ route('AdminController.indexVehicleType') }}" class="text-decoration-none"><img
+                            <a href="{{ route('AdminController.indexVehicleType') }}" class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/vehicle_type.png') }}" class="menu_image">
                                 ປະເພດຍານພາຫະນະ</a>
                         </div>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <a href="{{ route('AdminController.indexVehicleDetail') }}" class="text-decoration-none"><img
+                            <a href="{{ route('AdminController.indexVehicleDetail') }}" class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/car_body.png') }}" class="menu_image">
                                 ຕົວເລືອກປະເພດລົດ</a>
                         </div>
@@ -97,22 +97,19 @@
                         </div>
                         {{-- End Adjust Third Party Insurance Link --}}
 
-
-
-
                     </div>
 
                     <div class="row">
                         {{-- Create New Insurance Info Link --}}
                         <div class="col-md-3 mb-5 text-center">
-                            <a href="{{ route('AdminController.createVehiclePackage') }}" class="text-decoration-none"><img
+                            <a href="{{ route('AdminController.createVehiclePackage') }}" class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/new.png') }}" class="menu_image">
                                 <br>ສ້າງຮູບແບບປະກັນໄພຍານພາຫະນະອັນໃໝ່</a>
                         </div>
                         {{-- End Create New Insurance Info Link --}}
 
                         <div class="col-md-3 mb-5 text-center">
-                            <a href="{{ route('AdminController.createVehiclePackage') }}" class="text-decoration-none"><img
+                            <a href="{{ route('AdminController.createVehiclePackage') }}" class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/insurance_info.png') }}" class="menu_image">
                                 <br>ຮູບແບບປະກັນໄພ</a>
                         </div>

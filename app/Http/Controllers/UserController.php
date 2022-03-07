@@ -10,6 +10,7 @@ use App\Models\VehiclePackage;
 use App\Utils\ImageCompress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
@@ -112,10 +113,20 @@ class UserController extends Controller
 
         //Get Information of Normal insurance
         $insuranceData = VehicleInsuranceDetail::where('user_id', '=', $user->id)->get();
-
-
+        //Get ThirdParty Insurance data of user
+        $query = "SELECT tpci.id, tpp.name  as package_name, ic.name  as company_name, ic.logo, tpci.total_price, c.name as vehicle_brand, pro.province_name as registered_province,
+        tpci .number_plate ,tpci.engine_number , tpci.chassic_number, tpci.payment_time, tpci .payment_confirm, tpci .slip_confirmed, tpci.third_package_id, tpci.contract_no
+        FROM third_party_customer_inputs tpci inner join provinces p on p.id = tpci.id 
+        inner join third_party_packages tpp on tpp.id = tpci.third_package_id 
+        INNER join insurance_companies ic on ic.id = tpp.company_id 
+        INNER join carbrands c on c.id = tpci.vehicle_brand 
+        inner join provinces pro on pro.id = tpci.registered_province 
+        Where tpci .user_id  = ?";
+        $thirdPartyList = (DB::select($query,[Auth::user()->id]));
+        
         return view('user_view.insuranceList')
-            ->with('orderData', $insuranceData);
+            ->with('orderData', $insuranceData)
+            ->with('thirdPartyList',$thirdPartyList);
     }
 
     /** User Profile viewer */
