@@ -116,6 +116,15 @@
                         {{-- End  Insurance Info Link --}}
                     </div>
 
+                    <div class="row">
+                        {{-- Create New Heath Cover Type --}}
+                        <div class="col-md-3 mb-5 text-center">
+                            <a href="{{ route('AdminController.heathCoverType') }}" class="text-decoration-none text-dark"><img
+                                    src="{{ asset('assets/image/new.png') }}" class="menu_image">
+                                <br>ສ້າງປະເພດການຄຸ້ມຄອງ</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

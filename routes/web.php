@@ -306,6 +306,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Route for update the approve insurance for third party insurnace */
     Route::post('/insurance/thirdparty/approve',[AdminController::class,'approveThirdPartyInsurance'])->name('AdminController.approveThirdPartyInsurance');
+
+    /** Route for show the HeathCoverType Index page */
+    Route::get('/datamanager/heathcovertype/',[AdminController::class,'heathCoverType'])->name('AdminController.heathCoverType');
     
     /************************************************ End Data Manager **************************************/
 });

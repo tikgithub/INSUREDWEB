@@ -599,7 +599,13 @@ class AdminController extends Controller
          }else{
             return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
          }
+     }
 
+     /** Function to show index page of HeathCoverType */
+     public function heathCoverType(){
+         $companies = InsuranceCompany::all();
 
+         return view('admin.curd.heathCoverType.index')
+         ->with('companies',$companies);
      }
 }

@@ -10,7 +10,6 @@
     </div>
     {{-- End Header --}}
     {{-- Navigator bar --}}
-
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb notosanLao">
             <li class="breadcrumb-item"><a href="{{ route('AdminController.showAdminDashBoard') }}">ໜ້າຫຼັກ</a></li>
