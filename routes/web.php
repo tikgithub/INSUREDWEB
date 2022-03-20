@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HeathCoverTypeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InsuranceCompanyController;
 use App\Http\Controllers\InsuranceFlowController;
@@ -309,6 +310,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Route for show the HeathCoverType Index page */
     Route::get('/datamanager/heathcovertype/',[AdminController::class,'heathCoverType'])->name('AdminController.heathCoverType');
+    /** Route to store HeathCoverType Item */
+    Route::post('/datamanager/heathcovertype/store',[HeathCoverTypeController::class,'store'])->name('HeathCoverTypeController.store');
     
     /************************************************ End Data Manager **************************************/
 });

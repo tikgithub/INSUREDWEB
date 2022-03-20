@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('heath_cover_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('shortname');
             $table->integer('company_id');
             $table->boolean('status');
             $table->timestamps();

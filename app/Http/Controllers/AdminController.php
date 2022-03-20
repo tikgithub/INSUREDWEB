@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CarBrand;
 use App\Models\District;
+use App\Models\HeathCoverType;
 use App\Models\InsuranceCompany;
 use App\Models\Level;
 use App\Models\Province;
@@ -604,8 +605,9 @@ class AdminController extends Controller
      /** Function to show index page of HeathCoverType */
      public function heathCoverType(){
          $companies = InsuranceCompany::all();
-
+         $heathCoverTypes = HeathCoverType::paginate(3);
          return view('admin.curd.heathCoverType.index')
-         ->with('companies',$companies);
+         ->with('companies',$companies)
+         ->with('heathCoverTypes',$heathCoverTypes);
      }
 }
