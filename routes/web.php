@@ -312,6 +312,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/datamanager/heathcovertype/',[AdminController::class,'heathCoverType'])->name('AdminController.heathCoverType');
     /** Route to store HeathCoverType Item */
     Route::post('/datamanager/heathcovertype/store',[HeathCoverTypeController::class,'store'])->name('HeathCoverTypeController.store');
+
+    /** Route to update HeathCoverType Item */
+    Route::post('/datamanager/heathcovertype/update',[HeathCoverTypeController::class,'update'])->name('HeathCoverTypeController.update');
+
+    /** Route to delete HeathCoverType */
+    Route::get('/datamanager/heathcovertype/delete/{id}',[HeathCoverTypeController::class,'delete'])->name('HeathCoverTypeController.delete');
+
+    /** Route to update HeathCoverType Status */
+    Route::get('/datamanager/heathcovertype/updatestatus/{id}/{status}',[HeathCoverTypeController::class,'updateStatus'])->name('HeathCoverTypeController.updateStatus');
+
+    /** Route to search HeathCoverType By Company Id */
+    Route::get('/datamanager/heathcovertype/search/{company_id}',[HeathCoverTypeController::class,'searchByCompany'])->name('HeathCoverTypeController.searchByCompany');
+
     
     /************************************************ End Data Manager **************************************/
 });

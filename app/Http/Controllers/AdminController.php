@@ -605,7 +605,7 @@ class AdminController extends Controller
      /** Function to show index page of HeathCoverType */
      public function heathCoverType(){
          $companies = InsuranceCompany::all();
-         $heathCoverTypes = HeathCoverType::paginate(3);
+         $heathCoverTypes = HeathCoverType::paginate(10);
          return view('admin.curd.heathCoverType.index')
          ->with('companies',$companies)
          ->with('heathCoverTypes',$heathCoverTypes);

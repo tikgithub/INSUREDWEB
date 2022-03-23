@@ -24,8 +24,9 @@
     @endif
 </div>
 
-{{-- @if ($errors->any())
+
+@if ($errors->any())
 <script>
-    toastr.success($message);
+   toastr.warning('{{ implode('', $errors->all(':message')) }}');
 </script>
-@endif --}}
+@endif
