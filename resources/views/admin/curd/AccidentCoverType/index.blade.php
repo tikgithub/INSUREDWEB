@@ -28,7 +28,11 @@
             <select  name="search_by_company" id="search_by_company" class="form-select" onchange="onSearchByCompany()">
                 <option value="">ທັງໝົດ</option>
                 @foreach ($companies as $item)
-                    <option value="{{ $item->id }}" {{$item->id==$company_id? 'selected':''}}>{{ $item->name }}</option>
+                    @if(isset($company_id))
+                        <option value="{{ $item->id }}" {{$item->id==$company_id? 'selected':''}}>{{ $item->name }}</option>
+                    @else
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>

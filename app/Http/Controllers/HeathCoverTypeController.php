@@ -75,7 +75,7 @@ class HeathCoverTypeController extends Controller
         
         $companies = InsuranceCompany::all();
         $heathCoverTypes = HeathCoverType::where('company_id','=',$company_id)->paginate(10);
-        return view('admin.curd.heathCoverType.index')
+        return view('admin.curd.accidentCoverType.index')
         ->with('companies',$companies)
         ->with('company_id',$company_id)
         ->with('heathCoverTypes',$heathCoverTypes);

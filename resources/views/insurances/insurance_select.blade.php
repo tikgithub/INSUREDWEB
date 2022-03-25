@@ -4,34 +4,47 @@
     <div class="pt-5"></div>
     <div class="row">
         <div class="col-md-12 notosanLao">
-            <h3 class="notosanLao text-center">
+            <h1 class="notosanLao text-center">
                 ເລືອກປະເພດປະກັນໄພ
-            </h3>
+            </h1>
         </div>
     </div>
     <div class="pt-5"></div>
     {{-- Card data --}}
     <div class="row" style="padding-bottom: 150px;">
-        <div class="col-md-6 d-flex justify-content-center">
+        <div class="col-md-4 d-flex justify-content-center pt-2 zoom">
             <div class="card shadow notosanLao pt-2" style="width: 19.8rem">
                 <div class="card-body text-center">
-                    <a href="{{route('InsuranceFlowController.showCarInsuranceSelectionMenu')}}">
+                    <a href="{{route('InsuranceFlowController.showCarInsuranceSelectionMenu')}}" class="text-decoration-none text-dark">
                         <img src="{{ asset('assets/image/car_accident.png') }}" style="width: auto;height: 200px;">
-                        <h3>
+                        <h4 class="mt-2">
                             ປະກັນໄພລົດ
-                        </h3>
+                        </h4>
                     </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 d-flex justify-content-center">
-            <div class="card shadow notosanLao pt-2" style="width: 19.8rem">
+        <div class="col-md-4 d-flex justify-content-center pt-2">
+            <div class="card shadow notosanLao pt-2 zoom" style="width: 19.8rem">
                 <div class="card-body text-center">
-                    <a href="http://">
+                    <a href="http://" class="text-decoration-none text-dark">
+                        <img src="{{ asset('assets/image/personal_accident.png') }}" style="width: auto;height: 200px;">
+                        <h4 class="mt-2">
+                            ປະກັນໄພອຸບັດຕິເຫດບຸກຄົນ PA/OPA
+                        </h4>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center pt-2">
+            <div class="card shadow notosanLao pt-2 zoom" style="width: 19.8rem">
+                <div class="card-body text-center">
+                    <a href="http://" class="text-decoration-none text-dark">
                         <img src="{{ asset('assets/image/heath.png') }}" style="width: auto;height: 200px;">
-                        <h3>
-                            ປະກັນໄພບຸກຄົນ
-                        </h3>
+                        
+                        <h4 class="mt-2">
+                            ປະກັນໄພສຸຂະພາບ
+                        </h4>
                     </a>
                 </div>
             </div>

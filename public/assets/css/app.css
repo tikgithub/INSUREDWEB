@@ -80,3 +80,13 @@ legend {
 
     border-top: none;
   }
+
+  .zoom {
+   
+    transition: transform .2s; /* Animation */
+    margin: 0 auto;
+  }
+  
+  .zoom:hover {
+    transform: scale(1.2);
+  }
