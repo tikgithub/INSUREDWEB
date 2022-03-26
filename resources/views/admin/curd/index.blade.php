@@ -158,7 +158,7 @@
                         </div>
 
                         <div class="col-md-3 mb-5 text-center">
-                            <a href="{{route('AccidentCoverItemController@index')}}"
+                            <a href="{{route('AccidentItemController@index')}}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
                                 ກຳນົດລາຍການທີ່ຄຸ້ມຄອງ</a>

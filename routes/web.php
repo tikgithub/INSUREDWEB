@@ -327,7 +327,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/datamanager/heathcovertype/search/{company_id}',[HeathCoverTypeController::class,'searchByCompany'])->name('HeathCoverTypeController.searchByCompany');
 
     /** Route to call Index of curd accident item  */
-    Route::get('/datamanager/accidentcoveritem/',[\App\Http\Controllers\AccidentCoverItemController::class,'index'])->name('AccidentCoverItemController@index');
+    Route::get('/datamanager/accidentcoveritem/',[\App\Http\Controllers\AccidentItemController::class,'index'])->name('AccidentItemController@index');
     
+    /** Route for each the OPA/PA Data by company_id */
+    Route::get('/datamanager/accidentcoveritem/find/{company_id}',[AccidentItemController::class,'searchByCompany'])->name('AccidentItemController.searchByCompany');
+
+    /** Route for create PA*OPA  */
+    Route::get('/datamanager/accidentcoveritem/create/{id}',[AccidentItemController::class,'create'])->name('AccidentItemController.create');
     /************************************************ End Data Manager **************************************/
 });
