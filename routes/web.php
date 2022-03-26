@@ -13,6 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleDetailController;
 use App\Http\Controllers\VehiclePackageController;
 use App\Http\Controllers\VehicleTypeController;
+use App\Http\Controllers\AccidentCoverItemController;
+use App\Http\Controllers\AccidentItemController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -325,6 +327,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     /** Route to search HeathCoverType By Company Id */
     Route::get('/datamanager/heathcovertype/search/{company_id}',[HeathCoverTypeController::class,'searchByCompany'])->name('HeathCoverTypeController.searchByCompany');
 
+    /** Route to call Index of curd accident item  */
+    Route::get('/datamanager/accidentcoveritem/',[\App\Http\Controllers\AccidentCoverItemController::class,'index'])->name('AccidentCoverItemController@index');
     
     /************************************************ End Data Manager **************************************/
 });

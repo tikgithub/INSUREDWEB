@@ -2,7 +2,7 @@
 @section('content')
 <div class="pt-5"></div>
 <div class="row">
-    <div class="col-md-6 offset-md-3 text-center">
+    <div class="col-md-4 offset-md-4 text-center">
        <div class="card shadow">
            <div class="card-header notosanLao bg-blue">
             <h3 class="fs-4 text-white">
@@ -11,7 +11,7 @@
            </div>
            <div class="card-body notosanLao">
                <p>
-                   <img class="shadow bg-blue rounded p-2" src="{{asset('assets/image/mainlogo.png')}}"  style="width: auto;height: 100px;">
+                   <img class="shadow bg-blue rounded-circle p-2" src="{{asset('assets/image/mainlogo.png')}}"  style="width: auto;height: 100px;">
                </p>
             <p>
 
@@ -19,11 +19,11 @@
                     @csrf
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope"></i></span>
-                        <input type="email" class="form-control form-control-lg {{$errors->has('email')? 'border-danger':''}}" placeholder="ອີເມວ" aria-label="email" name="email" value="{{old('email')}}">
+                        <input type="email" class="form-control form-control-lg text-center {{$errors->has('email')? 'border-danger':''}}" placeholder="ອີເມວ" aria-label="email" name="email" value="{{old('email')}}">
                       </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-asterisk"></i></span>
-                        <input type="password" class="form-control form-control-lg {{$errors->has('password')? 'border-danger':''}}" placeholder="ລະຫັດຜ່ານ" aria-label="password"  name="password">
+                        <input type="password" class="form-control form-control-lg text-center {{$errors->has('password')? 'border-danger':''}}" placeholder="ລະຫັດຜ່ານ" aria-label="password"  name="password">
                     </div>
                     @if ($errors->has('password'))
                             <div class="alert-danger notosanLao rounded mb-3 p-2">

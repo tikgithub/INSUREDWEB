@@ -158,10 +158,10 @@
                         </div>
 
                         <div class="col-md-3 mb-5 text-center">
-                            <a href="{{ route('ThirdPartyInsuranceController.index') }}"
+                            <a href="{{route('AccidentCoverItemController@index')}}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
-                                ກຳນົດການຄຸ້ມຄອງ</a>
+                                ກຳນົດລາຍການທີ່ຄຸ້ມຄອງ</a>
                         </div>
 
 
