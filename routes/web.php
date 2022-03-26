@@ -13,7 +13,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleDetailController;
 use App\Http\Controllers\VehiclePackageController;
 use App\Http\Controllers\VehicleTypeController;
-use App\Http\Controllers\AccidentCoverItemController;
 use App\Http\Controllers\AccidentItemController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;

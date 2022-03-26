@@ -20,7 +20,16 @@
 
     <div class="row notosanLao">
         <div class="col-md-12 text-center">
-            <h4>ຄົ້ນຫາຂໍ້ມູນ</h4>
+            <h4>ຄົ້ນຫາລາຍການ</h4>
+            <div class="mb3">
+              <div class="row">
+                  <div class="col-md-4 offset-md-4">
+                      <select name="company_id" class="form-select" id="company_id">
+                          <option value="">ເລືອກ</option>
+                      </select>
+                  </div>
+              </div>
+            </div>
         </div>
     </div>
 @endsection
