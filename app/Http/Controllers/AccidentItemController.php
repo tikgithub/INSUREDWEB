@@ -29,7 +29,7 @@ class AccidentItemController extends Controller
             ->with('companies', $companies)
             ->with('accidentData', $accidentType)
             ->with('searchId', $company_id);
-    }
+}
 
     public function create($id)
     {

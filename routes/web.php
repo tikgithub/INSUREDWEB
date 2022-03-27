@@ -345,6 +345,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     /** Accident Plan */
     Route::get('/datamanager/accidentplan/create',[AccidentPlanController::class,'index'])->name('AccidentPlanController.index');
     Route::get('/datamanager/accidentplan/search/{company_id}',[AccidentPlanController::class,'searchByCompany'])->name('AccidentPlanController.search');
+    Route::get('/datamanager/accidentplan/createplan/{type_id}',[AccidentPlanController::class,'managePlan'])->name("AccidentPlanController.managePlan");
     /** End Accident Plan */
     /************************************************ End Data Manager **************************************/
 });

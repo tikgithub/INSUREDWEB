@@ -23,7 +23,11 @@
             <select name="company_id" class="form-select" id="company_id" onchange="selectionSubmit()">
                 <option value="">ເລືອກ</option>
                 @foreach ($companies as $item)
-                    <option value="{{$item->id}}">{{$item->name}}</option>
+                   @if (isset($searchId))
+                        <option value="{{$item->id}}" {{$item->id==$searchId? 'selected':''}}>{{$item->name}}</option>
+                    @else
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                   @endif
                 @endforeach
             </select>
         </div>
@@ -52,7 +56,7 @@
                                 @endif
                             </td>
                             <td class="text-center"> 
-                                <a href="{{route('AccidentItemController.create',['id'=>$item->id])}}" class=" text-white btn btn-info btn-sm">ຈັດການແຜນ ແລະ ລາຄາ</a>
+                                <a href="{{route('AccidentPlanController.managePlan',['type_id'=>$item->id])}}" class=" text-white btn btn-info btn-sm">ຈັດການແຜນ ແລະ ລາຄາ</a>
                             </td>
                         </tr>
                     @endforeach
