@@ -82,7 +82,9 @@
             var getSelectIndex = document.getElementById("company_id");
             //Get selected ID from select
             var selectedCompanyId = getSelectIndex.options[getSelectIndex.selectedIndex].value;
-
+            if(selectedCompanyId==""){
+                return;
+            }
             //Build the redirect String URL
             var loadURL = "{{route('AccidentItemController.searchByCompany',['company_id'=>':id'])}}";
             loadURL = loadURL.replace(':id',selectedCompanyId);

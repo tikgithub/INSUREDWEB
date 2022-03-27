@@ -145,7 +145,7 @@
         <div class="col-md-12 ">
             <div class="card notosanLao shadow">
                 <div class="card-header bg-white">
-                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i>ປະກັນໄຟອຸບັດຕິເຫດ</h5>
+                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i>ປະກັນໄຟອຸບັດຕິເຫດບຸກຄົນ</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -162,6 +162,13 @@
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
                                 ກຳນົດລາຍການທີ່ຄຸ້ມຄອງ</a>
+                        </div>
+
+                        <div class="col-md-3 mb-5 text-center">
+                            <a href="{{route('AccidentPlanController.index')}}"
+                                class="text-decoration-none text-dark">
+                                <img src="{{ asset('assets/image/price.png') }}" class="menu_image"><br>
+                                ສ້າງແຜນ ແລະ ກຳນົດລາຄາຄຸ້ມຄອງ</a>
                         </div>
 
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\VehicleDetailController;
 use App\Http\Controllers\VehiclePackageController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\AccidentItemController;
+use App\Http\Controllers\AccidentPlanController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -339,5 +340,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::post('/datamanger/accidentcoveritem/store',[AccidentItemController::class,'store'])->name('AccidentItemController.store');
     Route::get('/datamanager/accidentcoveritem/delete/{id}',[AccidentItemController::class,'delete'])->name('AccidentItemController.delete');
     Route::post('/datamanager/accidentcoveritem/update',[AccidentItemController::class,'update'])->name('AccidentItemController.update');
+
+
+    /** Accident Plan */
+    Route::get('/datamanager/accidentplan/create',[AccidentPlanController::class,'index'])->name('AccidentPlanController.index');
+    Route::get('/datamanager/accidentplan/search/{company_id}',[AccidentPlanController::class,'searchByCompany'])->name('AccidentPlanController.search');
+    /** End Accident Plan */
     /************************************************ End Data Manager **************************************/
 });

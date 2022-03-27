@@ -74,7 +74,7 @@
 
 </head>
 
-<body style="padding-bottom: 100px; padding-top:40px; background-color: white">
+<body style="padding-bottom: 100px; padding-top:40px; background-color: white" class="notosanLao">
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;">
         <div class="container-fluid">
