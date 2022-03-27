@@ -334,5 +334,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Route for create PA*OPA  */
     Route::get('/datamanager/accidentcoveritem/create/{id}',[AccidentItemController::class,'create'])->name('AccidentItemController.create');
+
+    /** Route for store PA & OPA Data */
+    Route::post('/datamanger/accidentcoveritem/store',[AccidentItemController::class,'store'])->name('AccidentItemController.store');
+    Route::get('/datamanager/accidentcoveritem/delete/{id}',[AccidentItemController::class,'delete'])->name('AccidentItemController.delete');
+    Route::post('/datamanager/accidentcoveritem/update',[AccidentItemController::class,'update'])->name('AccidentItemController.update');
     /************************************************ End Data Manager **************************************/
 });
