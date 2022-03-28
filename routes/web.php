@@ -329,7 +329,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Route to call Index of curd accident item  */
     Route::get('/datamanager/accidentcoveritem/',[\App\Http\Controllers\AccidentItemController::class,'index'])->name('AccidentItemController@index');
-    
+
     /** Route for each the OPA/PA Data by company_id */
     Route::get('/datamanager/accidentcoveritem/find/{company_id}',[AccidentItemController::class,'searchByCompany'])->name('AccidentItemController.searchByCompany');
 
@@ -346,6 +346,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/datamanager/accidentplan/create',[AccidentPlanController::class,'index'])->name('AccidentPlanController.index');
     Route::get('/datamanager/accidentplan/search/{company_id}',[AccidentPlanController::class,'searchByCompany'])->name('AccidentPlanController.search');
     Route::get('/datamanager/accidentplan/createplan/{type_id}',[AccidentPlanController::class,'managePlan'])->name("AccidentPlanController.managePlan");
+    Route::post('/datamanager/accidentplan/store',[AccidentPlanController::class,'store'])->name('AccidentPlanController.store');
+    Route::get('/datamanager/accidentplan/delete/{id}',[AccidentPlanController::class,'delete'])->name('AccidentPlanController.delete');
+    Route::post('/datamanager/accidentplan/update',[AccidentPlanController::class,'update'])->name('AccidentPlanController.update');
     /** End Accident Plan */
     /************************************************ End Data Manager **************************************/
 });

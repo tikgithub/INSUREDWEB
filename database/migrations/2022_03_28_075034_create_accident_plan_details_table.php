@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('accident_plans', function (Blueprint $table) {
+        Schema::create('accident_plan_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('cover_type_id');
-            $table->string('name');
+            $table->integer('plan_id');
+            $table->integer('item_id');
+            $table->decimal('cover_price',18,2);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accident_plans');
+        Schema::dropIfExists('accident_plan_details');
     }
 };

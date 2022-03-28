@@ -55,7 +55,7 @@
                                     <i class="bi bi-x-circle fs-4"></i>
                                 @endif
                             </td>
-                            <td class="text-center"> 
+                            <td class="text-center">
                                 <a href="{{route('AccidentPlanController.managePlan',['type_id'=>$item->id])}}" class=" text-white btn btn-info btn-sm">ຈັດການແຜນ ແລະ ລາຄາ</a>
                             </td>
                         </tr>
@@ -79,7 +79,7 @@
             var loadURL = "{{route('AccidentPlanController.search',['company_id'=>':id'])}}";
             loadURL = loadURL.replace(':id',selectedCompanyId);
             window.location.href= loadURL;
-            
+
         }
     </script>
 @endsection

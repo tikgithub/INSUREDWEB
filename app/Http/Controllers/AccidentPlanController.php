@@ -8,6 +8,7 @@ use App\Models\HeathCoverType;
 use App\Models\InsuranceCompany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\TryCatch;
 
 class AccidentPlanController extends Controller
 {
@@ -28,10 +29,9 @@ class AccidentPlanController extends Controller
     }
 
     public function managePlan($type_id){
-        $plans = AccidentPlan::where("cover_type_id","=",$type_id);
+        $plans = AccidentPlan::where("cover_type_id","=",$type_id)->get();
 
-      
-        $sqlQuery = "select hct.id, hct.name, ic.name as companyname, ic.logo as companylogo from heath_cover_types hct inner join 
+        $sqlQuery = "select hct.id, hct.name, ic.name as companyname, ic.logo as companylogo from heath_cover_types hct inner join
         insurance_companies ic on hct.company_id = ic.id
         Where hct.id=?;";
 
@@ -41,6 +41,50 @@ class AccidentPlanController extends Controller
         return view("admin.curd.accidentPlan.createPlan")
         ->with('coverTypeData',$coverTypeData)
         ->with('plans',$plans);
+
+    }
+
+    public function store(Request $req)
+    {
+        $req->validate([
+            "cover_type_id" => 'required',
+            "name" => 'required'
+        ]);
+
+        //Create object and store
+        $data = new AccidentPlan();
+        $data->cover_type_id = $req->input('cover_type_id');
+        $data->name = $req->input("name");
+        if($data->save()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with("error","ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່");
+        }
+    }
+
+    public function delete($id){
+        $data = AccidentPlan::find($id);
+
+        if($data->delete()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with("error","ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່");
+        }
+    }
+
+    public function update(Request $req){
+        $req->validate([
+            'editId'=>'required',
+            'editName'=>'required'
+        ]);
+        //Find and Update
+        $data = AccidentPlan::find($req->input('editId'));
+        $data->name = $req->input('editName');
+        if($data->save()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with("error","ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່");
+        }
 
     }
 
