@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AccidentCoverItem;
 use App\Models\AccidentPlan;
+use App\Models\AccidentPlanDetail;
 use App\Models\HeathCoverType;
 use App\Models\InsuranceCompany;
+use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
@@ -56,6 +58,17 @@ class AccidentPlanController extends Controller
         $data->cover_type_id = $req->input('cover_type_id');
         $data->name = $req->input("name");
         if($data->save()){
+            //Create the plan detail
+            $coverItems = AccidentCoverItem::where("cover_type_id","=",$req->input('cover_type_id'))->get();
+            
+            foreach($coverItems as $item){
+               $cover = new AccidentPlanDetail();
+               $cover->plan_id = $data->id;
+               $cover->item_id = $item->id;
+               $cover->save();
+            }
+   
+
             return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
         }else{
             return redirect()->back()->with("error","ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່");
@@ -66,6 +79,9 @@ class AccidentPlanController extends Controller
         $data = AccidentPlan::find($id);
 
         if($data->delete()){
+
+            AccidentPlanDetail::where("plan_id","=",$id)->delete();
+
             return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
         }else{
             return redirect()->back()->with("error","ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່");
@@ -86,6 +102,11 @@ class AccidentPlanController extends Controller
             return redirect()->back()->with("error","ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່");
         }
 
+    }
+
+    public function setBudget($plan_id){
+        //get the accident plan detail
+        
     }
 
 }

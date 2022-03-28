@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('plan_id');
             $table->integer('item_id');
-            $table->decimal('cover_price',18,2);
+            $table->decimal('cover_price',18,2)->nullable();
             $table->timestamps();
         });
     }
