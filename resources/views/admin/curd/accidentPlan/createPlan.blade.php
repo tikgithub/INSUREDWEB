@@ -41,7 +41,7 @@
                                 <a onclick="edit({{$item->id}},'{{$item->name}}')" data-bs-toggle="modal" data-bs-target="#editPlanModal" class="btn btn-sm btn-warning"><i
                                         class="bi bi-pencil"></i></a>
                                 <a onclick="deletePlan({{$item->id}})" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deletePlanModal"><i class="bi bi-trash"></i></a>
-                                <a href="" class="btn btn-sm btn-info"><i class="bi bi-info-circle"></i> ງົບປະມານ</a>
+                                <a href="{{route('AccidentPlanController.showPlanDetail',['plan_id'=>$item->id])}}" class="btn btn-sm btn-info"><i class="bi bi-info-circle"></i> ວົງເງິນປະກັນ</a>
                             </td>
                         </tr>
                     @endforeach

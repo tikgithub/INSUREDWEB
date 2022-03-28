@@ -349,6 +349,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::post('/datamanager/accidentplan/store',[AccidentPlanController::class,'store'])->name('AccidentPlanController.store');
     Route::get('/datamanager/accidentplan/delete/{id}',[AccidentPlanController::class,'delete'])->name('AccidentPlanController.delete');
     Route::post('/datamanager/accidentplan/update',[AccidentPlanController::class,'update'])->name('AccidentPlanController.update');
+    Route::get("/datamanager/accidentplan/plandetail/{plan_id}",[AccidentPlanController::class,'showPlanDetail'])->name("AccidentPlanController.showPlanDetail");
     /** End Accident Plan */
     /************************************************ End Data Manager **************************************/
 });

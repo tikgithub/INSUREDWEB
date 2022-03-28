@@ -104,9 +104,11 @@ class AccidentPlanController extends Controller
 
     }
 
-    public function setBudget($plan_id){
+    public function showPlanDetail($plan_id){
         //get the accident plan detail
+        $insuranceDetail = "";
         
+        return view('admin.curd.accidentPlan.accidentPlanDetail');
     }
 
 }
