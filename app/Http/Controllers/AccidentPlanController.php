@@ -60,14 +60,14 @@ class AccidentPlanController extends Controller
         if($data->save()){
             //Create the plan detail
             $coverItems = AccidentCoverItem::where("cover_type_id","=",$req->input('cover_type_id'))->get();
-            
+
             foreach($coverItems as $item){
                $cover = new AccidentPlanDetail();
                $cover->plan_id = $data->id;
                $cover->item_id = $item->id;
                $cover->save();
             }
-   
+
 
             return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
         }else{
@@ -105,10 +105,16 @@ class AccidentPlanController extends Controller
     }
 
     public function showPlanDetail($plan_id){
+      
         //get the accident plan detail
-        $insuranceDetail = "";
-        
-        return view('admin.curd.accidentPlan.accidentPlanDetail');
+        $insuranceDetailQuery = "SELECT ap.id as plan_id, ap.name as plan_name, hct.name as type_name, ic.name as company_name, ic.logo
+        FROM accident_plans ap inner join heath_cover_types hct on ap.cover_type_id = hct.id INNER JOIN insurance_companies ic on ic.id = hct.company_id
+        Where ap.id = ?";
+
+        //Query from Database
+        $insuraceDetail = collect(DB::select($insuranceDetailQuery,[$plan_id]))->first();
+        return view('admin.curd.accidentPlan.accidentPlanDetail')
+        ->with('insuranceDetail',$insuraceDetail);
     }
 
 }
