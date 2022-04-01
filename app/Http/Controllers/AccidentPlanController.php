@@ -105,16 +105,35 @@ class AccidentPlanController extends Controller
     }
 
     public function showPlanDetail($plan_id){
-      
-        //get the accident plan detail
-        $insuranceDetailQuery = "SELECT ap.id as plan_id, ap.name as plan_name, hct.name as type_name, ic.name as company_name, ic.logo
-        FROM accident_plans ap inner join heath_cover_types hct on ap.cover_type_id = hct.id INNER JOIN insurance_companies ic on ic.id = hct.company_id
-        Where ap.id = ?";
 
-        //Query from Database
-        $insuraceDetail = collect(DB::select($insuranceDetailQuery,[$plan_id]))->first();
+        //get the accident plan detail
+        $planDetail = AccidentPlan::find($plan_id);
+
+        $coverTypeDataQuery = "select hct.id, hct.name, ic.name as companyname, ic.logo as companylogo from heath_cover_types hct inner join
+        insurance_companies ic on hct.company_id = ic.id
+        Where hct.id=?;";
+
+        $coverTypeData = collect(DB::select($coverTypeDataQuery, [$planDetail->cover_type_id]))->first();
+
+        $planItemDetailQuery = "SELECT * from accident_plan_details apd inner join accident_cover_items aci on aci.id = apd.item_id where apd.plan_id = ?";
+
+        $planItemDetails = DB::select($planItemDetailQuery,[$plan_id]);
+
         return view('admin.curd.accidentPlan.accidentPlanDetail')
-        ->with('insuranceDetail',$insuraceDetail);
+        ->with('planDetail',$planDetail)
+        ->with('planItemDetails',$planItemDetails)
+        ->with('coverTypeData',$coverTypeData);
+    }
+
+    public function updatePrice(Request $req){
+
+        // $planDetail = AccidentPlanDetail::find($req->input('update_id'));
+        // $planDetail->cover_price = $req->input('update_price');
+        // $planDetail->save();
+
+         error_log("incomming");
+
+        return response()->json(['name' => 'Virat Gandhi', 'state' => 'Gujarat']);
     }
 
 }
