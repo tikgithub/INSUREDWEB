@@ -33,18 +33,20 @@
                 </thead>
                 <tbody>
                     @foreach ($planItemDetails as $item)
-                        <tr>
-                            <td>{{ $item->item }}</td>
-                            <td>
-                                <input type="number" name="cover_price" id="cover_price{{ $item->cover_price }}"
-                                    class="form-control" value="{{ $item->cover_price }}">
-                            </td>
-                            <td>
-                                <button
-                                    onclick="onClickUpdate({{ $item->id }},'cover_price{{ $item->cover_price }}')"
-                                    type="button" class="btn btn-sm btn-warning">ແກ້ໄຂ</button>
-                            </td>
-                        </tr>
+                        <form action="{{route('AccidentPlanController.updatePrice')}}" method="post">
+                            @csrf
+                            <tr>
+                                <td>{{ $item->item }}</td>
+                                <td>
+                                    <input type="hidden" name="update_id" value="{{ $item->id }}">
+                                    <input type="number" name="update_price" id="update_price{{ $item->cover_price }}"
+                                        class="form-control" value="{{ $item->cover_price }}">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-sm btn-warning">ແກ້ໄຂ</button>
+                                </td>
+                            </tr>
+                        </form>
                     @endforeach
                 </tbody>
             </table>
@@ -52,34 +54,5 @@
     </div>
 @endsection
 @section('scripting')
-    <script>
-        function onClickUpdate(id, value_id) {
-            var price = document.getElementById(value_id).value;
-            //Data to update
-            var updateData = {
-                'update_id': id,
-                'update_value': price
-            };
-
-            //Prepare fetch data
-            var url = "{{ route('AccidentPlanController.updatePrice') }}";
-            var token = "{{csrf_token()}}";
-            console.log(url);
-
-            fetch(url, {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'csrf-token': "{{csrf_token()}}"
-                    },
-                    body: JSON.stringify(updateData)
-                }).then(response => response.json())
-                .then(data => {
-                    console.log("response: ", data);
-                    toastr.success('Update Completed');
-                }).catch((error => {
-                    console.error(error);
-                }));
-        }
-    </script>
+    @include('toastrMessage')
 @endsection

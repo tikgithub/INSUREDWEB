@@ -126,14 +126,18 @@ class AccidentPlanController extends Controller
     }
 
     public function updatePrice(Request $req){
+        $req->validate([
+            'update_id'=>'required',
+            'update_price'=>'required'
+        ]);
 
-        // $planDetail = AccidentPlanDetail::find($req->input('update_id'));
-        // $planDetail->cover_price = $req->input('update_price');
-        // $planDetail->save();
-
-         error_log("incomming");
-
-        return response()->json(['name' => 'Virat Gandhi', 'state' => 'Gujarat']);
+        $updateRow = AccidentPlanDetail::find($req->input('update_id'));
+        $updateRow->cover_price = $req->input("update_price");
+        if($updateRow->save()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with("error","ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່");
+        }
     }
 
 }
