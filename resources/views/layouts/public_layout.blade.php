@@ -14,42 +14,72 @@
     {{-- Date Picker Third Party MC Date Picker --}}
     <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
     @yield('styles')
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main {
+            flex-grow: 1;
+        }
+
+        footer {
+            background-color: red;
+        }
+
+    </style>
 
     <title>{{ config('app.name') }}</title>
 
 </head>
 
-<body style=" padding-top:40px;">
+<body class="notosanLao">
     {{-- Navbar --}}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;" >
+    <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('assets/image/mainlogo.png') }}" width="auto" height="64" class="d-inline-block ">
             </a>
+
+            <a class="navbar-toggler fs-4 pt-2 pb-2" aria-current="page" href="{{ url()->previous() }}"><i
+                    class="bi bi-arrow-left-circle"></i></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 notosanLao fs-5">
+                    <li class="nav-item " id="backButton">
+
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link active " aria-current="page" href="{{ route('welcome') }}">ໜ້າຫຼັກ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{route('InsuranceFlowController.showInsuranceTypeSelection')}}">ຊື້ປະກັນໄພ</a>
+                        <a class="nav-link active"
+                            href="{{ route('InsuranceFlowController.showInsuranceTypeSelection') }}">ຊື້ປະກັນໄພ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#category" @else href="{{route('welcome')}}/#category" @endif  >ຮູບແບບປະກັນໄພ</a>
+                        <a class="nav-link active"
+                            @if (Request::route()->getName() == route('welcome')) href="#category" @else href="{{ route('welcome') }}/#category" @endif>ຮູບແບບປະກັນໄພ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#howToBuy" @else href="{{route('welcome')}}/#howToBuy" @endif>ຂັ້ນຕອນການຊື້ປະກັນໄພ</a>
+                        <a class="nav-link active"
+                            @if (Request::route()->getName() == route('welcome')) href="#howToBuy" @else href="{{ route('welcome') }}/#howToBuy" @endif>ຂັ້ນຕອນການຊື້ປະກັນໄພ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#partner" @else href="{{route('welcome')}}/#partner" @endif>ຄູ່ຮ່ວມປະກັນໄພ</a>
+                        <a class="nav-link active"
+                            @if (Request::route()->getName() == route('welcome')) href="#partner" @else href="{{ route('welcome') }}/#partner" @endif>ຄູ່ຮ່ວມປະກັນໄພ</a>
                     </li>
-                    <li class="nav-item"> 
-                        <a class="nav-link active" @if(Request::route()->getName()==route('welcome')) href="#contact" @else href="{{route('welcome')}}/#contact" @endif>ຕິດຕໍ່ພວກເຮົາ</a>
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                            @if (Request::route()->getName() == route('welcome')) href="#contact" @else href="{{ route('welcome') }}/#contact" @endif>ຕິດຕໍ່ພວກເຮົາ</a>
                     </li>
                 </ul>
                 <div class="d-flex  notosanLao">
@@ -60,25 +90,31 @@
                         <div class="btn-group ">
                             <button type="button" class="text-white btn btn-lg bg-blue dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ ( Auth::user()->profile_photo !=null )? asset(Auth::user()->profile_photo) : asset('assets/image/user_thumnail.png') }}"
+                                <img src="{{ Auth::user()->profile_photo != null? asset(Auth::user()->profile_photo): asset('assets/image/user_thumnail.png') }}"
                                     class="rounded-circle border" style="width: 40px;height: 40px; object-fit: cover">
                                 {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
                             </button>
                             <ul class="dropdown-menu notosanLao">
-                                <li><a class="dropdown-item" href="{{route('UserController.showUserProfilePage')}}"><i class="bi bi-person-circle"></i> ໂປຣໄຟຣ</a></li>
-                                <li><a class="dropdown-item" href="{{route('UserController.userListInsurance')}}"><i class="bi bi-list-task"></i> ລາຍການຊື້ປະກັນ</a></li>
+                                <li><a class="dropdown-item"
+                                        href="{{ route('UserController.showUserProfilePage') }}"><i
+                                            class="bi bi-person-circle"></i> ໂປຣໄຟຣ</a></li>
+                                <li><a class="dropdown-item"
+                                        href="{{ route('UserController.userListInsurance') }}"><i
+                                            class="bi bi-list-task"></i> ລາຍການຊື້ປະກັນ</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
                                 {{-- Admin Checked --}}
                                 @if (Auth::user()->role == 'admin')
-                                    <li><a class="dropdown-item" href="{{route('AdminController.showAdminDashBoard')}}"><i class="bi bi-hdd-network-fill"></i> Go to BackEnd</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('AdminController.showAdminDashBoard') }}"><i
+                                                class="bi bi-hdd-network-fill"></i> Go to BackEnd</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
                                 @endif
-                                <li><a class="dropdown-item"
-                                        href="{{ route('UserController.logOut') }}"><i class="bi bi-power"></i> ອອກຈາກລະບົບ</a></li>
+                                <li><a class="dropdown-item" href="{{ route('UserController.logOut') }}"><i
+                                            class="bi bi-power"></i> ອອກຈາກລະບົບ</a></li>
                             </ul>
                         </div>
                     @else
@@ -108,21 +144,33 @@
             </div>
         </div>
     </nav>
-    <div class="">
-        @yield('nav-content')
-    </div>
-    <div class="container">
+
+    <div id="loading" class="loader"></div>
+
+    <div id="main_content" class="main container" style=" padding-top: 60px;">
         @yield('content')
     </div>
-    <div class="">
-        @yield('footer')
-    </div>
+
+
+    @yield('footer')
+
     {{-- End NavBar --}}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous">
+    </script>
+    <script>
+        document.onreadystatechange = function() {
+            if (document.readyState !== "complete") {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('main_content').style.display = 'none';
+            } else {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('main_content').style.display = 'block';
+            }
+        };
     </script>
 
     @yield('scripting')

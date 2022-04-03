@@ -1,7 +1,6 @@
-<!-- Remove the container if you want to extend the Footer to full width. -->
-<div class="pt-5">
+<div class="pt-5"></div>
     <!-- Footer -->
-    <footer class="text-center text-lg-start text-white bg-blue">
+    <footer class="text-center text-lg-start text-white bg-blue foot">
         <!-- Grid container -->
         <div class="container p-4 pb-0">
             <!-- Section: Links -->
@@ -89,7 +88,7 @@
                         <!-- Copyright -->
                         <div class="p-3">
                             © 2022 Copyright:
-                            <a class="text-white" href="">{{config('app.name')}}</a>
+                            <a class="text-white" href="">{{ config('app.name') }}</a>
                         </div>
                         <!-- Copyright -->
                     </div>
@@ -121,6 +120,11 @@
         <!-- Grid container -->
     </footer>
     <!-- Footer -->
-</div>
+
 <!-- End of .container -->
 
+@section('styles')
+    <style>
+       
+    </style>
+@endsection

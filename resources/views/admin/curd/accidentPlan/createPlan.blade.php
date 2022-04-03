@@ -40,7 +40,7 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $item->name }}</td>
                             <td class="text-center">
-                                <a onclick="edit({{$item->id}},'{{$item->name}}')" data-bs-toggle="modal" data-bs-target="#editPlanModal" class="btn btn-sm btn-warning"><i
+                                <a onclick="edit({{$item}})" data-bs-toggle="modal" data-bs-target="#editPlanModal" class="btn btn-sm btn-warning"><i
                                         class="bi bi-pencil"></i></a>
                                 <a onclick="deletePlan({{$item->id}})" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deletePlanModal"><i class="bi bi-trash"></i></a>
                                 <a href="{{route('AccidentPlanController.showPlanDetail',['plan_id'=>$item->id])}}" class="btn btn-sm btn-info"><i class="bi bi-info-circle"></i> ວົງເງິນປະກັນ</a>
@@ -64,7 +64,27 @@
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="cover_type_id" value="{{ $coverTypeData->id }}">
-                        <input type="text" name="name" id="name" class="form-control">
+                        <div class="mb-3">
+                            <label for="">ແຜນ</label>
+                            <input type="text" name="name" id="name" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ເລີ່ມຕົ້ນອາຍຸ</label>
+                            <input type="number" name="start_age" id="start_age" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ອາຍຸສູງສຸດ</label>
+                            <input type="number" name="end_age" id="end_age" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ຄ່າທຳນຽມ</label>
+                            <input type="number" name="fee" id="fee" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ລາຄາຂາຍ</label>
+                            <input type="number" name="sale_price" id="sale_price" class="form-control">
+                        </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
@@ -87,7 +107,26 @@
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="editId" id="editId">
-                        <input type="text" name="editName" id="editName" class="form-control">
+                        <div class="mb-3">
+                            <label for="">ແຜນ</label>
+                            <input type="text" name="editName" id="editName" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ເລີ່ມຕົ້ນອາຍຸ</label>
+                            <input type="number" name="editStartAge" id="editStartAge" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ອາຍຸສູງສຸດ</label>
+                            <input type="number" name="editEndAge" id="editEndAge" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ຄ່າທຳນຽມ</label>
+                            <input type="number" name="editFee" id="editFee" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ລາຄາຂາຍ</label>
+                            <input type="number" name="editSalePrice" id="editSalePrice" class="form-control">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
@@ -120,9 +159,13 @@
 @section('scripting')
 @include('toastrMessage')
     <script>
-        function edit(id,name){
-            document.getElementById('editId').value = id;
-            document.getElementById('editName').value = name;
+        function edit(item){
+            document.getElementById('editId').value = item.id;
+            document.getElementById('editName').value = item.name;
+            document.getElementById('editStartAge').value = item.start_age;
+            document.getElementById('editEndAge').value = item.end_age;
+            document.getElementById('editFee').value = item.fee;
+            document.getElementById('editSalePrice').value = item.sale_price;
         }
         function deletePlan(id){
             var delBtn = document.getElementById("deleteButton");

@@ -15,6 +15,7 @@ use App\Http\Controllers\VehiclePackageController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\AccidentItemController;
 use App\Http\Controllers\AccidentPlanController;
+use App\Http\Controllers\AccidentSaleController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -82,6 +83,12 @@ Route::group(['prefix' => 'insurance'], function () {
 
     /** Route to show input data of third party insurance */
     Route::get('/customer/thirdparty/fillform/{id}', [InsuranceFlowController::class, 'showInputPageThirdPartyInsurance'])->name('InsuranceFlowController.showInputPageThirdPartyInsurance');
+
+    /** Accident PA/OPA Work flow */
+    Route::get('/accident/select_company', [AccidentSaleController::class, 'showSelectCompany'])->name('AccidentSaleController.showSelectCompany');
+    Route::get('/accident/select_insurance_type/{company_id}', [AccidentSaleController::class, 'showPackagePlan'])->name('AccidentSaleController.showPackagePlan');
+    Route::get('/accident/show_package_detail/{plan_id}', [AccidentSaleController::class, 'showPlanDetail'])->name('AccidentSaleController.showPlanDetail');
+    Route::get('/accident/customer_information_input/{plan_id}',[AccidentSaleController::class,'showInputInformationPage'])->name('AccidentSaleController.showInputInformationPage');
 });
 
 /** JsonResponse Route Group */
@@ -145,25 +152,22 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     Route::post('/customer/changepassword', [UserController::class, 'changeUserPassword'])->name('UserController.changeUserPassword');
 
     /** Route to store user information of third party package */
-    Route::post('/customer/thirdparty/information',[InsuranceFlowController::class,'thirdPartyStoreInput'])->name('InsuranceFlowController.thirdPartyStoreInput');
+    Route::post('/customer/thirdparty/information', [InsuranceFlowController::class, 'thirdPartyStoreInput'])->name('InsuranceFlowController.thirdPartyStoreInput');
 
     /** Route to show user information agreement before submit */
-    Route::get('/customer/thirdparty/agreement/{package_id}',[InsuranceFlowController::class,'showThirdPartyAgreement'])->name('InsuranceFlowController.showThirdPartyAgreement');
+    Route::get('/customer/thirdparty/agreement/{package_id}', [InsuranceFlowController::class, 'showThirdPartyAgreement'])->name('InsuranceFlowController.showThirdPartyAgreement');
 
     /** Route to confirm the user information agreement */
-    Route::post('/customer/thirdparty/confirm',[InsuranceFlowController::class,'updateConfirmThirdParty'])->name('InsuranceFlowController.updateConfirmThirdParty');
+    Route::post('/customer/thirdparty/confirm', [InsuranceFlowController::class, 'updateConfirmThirdParty'])->name('InsuranceFlowController.updateConfirmThirdParty');
 
     /** Route to show payment provider for third party insurnace */
-    Route::get('/customer/thirdparty/paymentprovider}',[InsuranceFlowController::class,'showPaymentProviderForThirdPartyPackage'])->name('InsuranceFlowController.showPaymentProviderForThirdPartyPackage');
+    Route::get('/customer/thirdparty/paymentprovider}', [InsuranceFlowController::class, 'showPaymentProviderForThirdPartyPackage'])->name('InsuranceFlowController.showPaymentProviderForThirdPartyPackage');
 
     /** Route to select payment provider and show how to pay */
-    Route::get('/customer/thirdparty/howtopay/{provider_id}',[InsuranceFlowController::class,'showSubmitPaymentForThirdPartyPackage'])->name('InsuranceFlowController.showSubmitPaymentForThirdPartyPackage');
+    Route::get('/customer/thirdparty/howtopay/{provider_id}', [InsuranceFlowController::class, 'showSubmitPaymentForThirdPartyPackage'])->name('InsuranceFlowController.showSubmitPaymentForThirdPartyPackage');
 
     /** Route to update payment detail of third party insurnace */
-    Route::post('/customer/thirparty/paymentconfirm',[InsuranceFlowController::class,'updatePaymentDetailOfThirdParty'])->name('InsuranceFlowController.updatePaymentDetailOfThirdParty');
-
-
-
+    Route::post('/customer/thirparty/paymentconfirm', [InsuranceFlowController::class, 'updatePaymentDetailOfThirdParty'])->name('InsuranceFlowController.updatePaymentDetailOfThirdParty');
 });
 
 
@@ -293,64 +297,64 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/datamanager/thirdpartycover/delete/{id}', [ThirdParyCoverController::class, 'destroy'])->name('ThirdPartyCoverController.destroy');
 
     /** Route to show Third Party Insurance */
-    Route::get('/insurance/thirdpartyinsurance/{id}',[AdminController::class,'thirdPartyWaitForPaymentDetail'])->name('AdminController.thirdPartyWaitForPaymentDetail');
+    Route::get('/insurance/thirdpartyinsurance/{id}', [AdminController::class, 'thirdPartyWaitForPaymentDetail'])->name('AdminController.thirdPartyWaitForPaymentDetail');
 
     /** Route to delete the Third Party Insurance by Admin */
-    Route::get('/insurance/thirdparty/delete/{id}',[AdminController::class,'deleteThirdPartyInsurance'])->name('AdminController.deleteThirdPartyInsurance');
+    Route::get('/insurance/thirdparty/delete/{id}', [AdminController::class, 'deleteThirdPartyInsurance'])->name('AdminController.deleteThirdPartyInsurance');
 
     /** Route for display third party insruance link which not payment yet */
-    Route::get('/insurance/thirdparty/waitforpayment',[AdminController::class,'listOfThirdPartyInsuranceWaitForPayment'])->name('AdminController.listOfThirdPartyInsuranceWaitForPayment');
+    Route::get('/insurance/thirdparty/waitforpayment', [AdminController::class, 'listOfThirdPartyInsuranceWaitForPayment'])->name('AdminController.listOfThirdPartyInsuranceWaitForPayment');
 
     /** Route for show wait for approve view */
-    Route::get('/insurance/thirdparty/waitforapprove/{id}',[AdminController::class,'thirdPartyWaitForApproveDetail'])->name('AdminController.thirdPartyWaitForApproveDetail');
+    Route::get('/insurance/thirdparty/waitforapprove/{id}', [AdminController::class, 'thirdPartyWaitForApproveDetail'])->name('AdminController.thirdPartyWaitForApproveDetail');
 
     /** Route for update the data for admin update user information */
-    Route::post('/insurance/thirdparty/waitforapprove/update',[AdminController::class,'updateThirdPartyInformationForCustomer'])->name('AdminController.updateThirdPartyInformationForCustomer');
+    Route::post('/insurance/thirdparty/waitforapprove/update', [AdminController::class, 'updateThirdPartyInformationForCustomer'])->name('AdminController.updateThirdPartyInformationForCustomer');
 
     /** Route for update the approve insurance for third party insurnace */
-    Route::post('/insurance/thirdparty/approve',[AdminController::class,'approveThirdPartyInsurance'])->name('AdminController.approveThirdPartyInsurance');
+    Route::post('/insurance/thirdparty/approve', [AdminController::class, 'approveThirdPartyInsurance'])->name('AdminController.approveThirdPartyInsurance');
 
     /** Route for show the HeathCoverType Index page */
-    Route::get('/datamanager/heathcovertype/',[AdminController::class,'heathCoverType'])->name('AdminController.heathCoverType');
+    Route::get('/datamanager/heathcovertype/', [AdminController::class, 'heathCoverType'])->name('AdminController.heathCoverType');
     /** Route to store HeathCoverType Item */
-    Route::post('/datamanager/heathcovertype/store',[HeathCoverTypeController::class,'store'])->name('HeathCoverTypeController.store');
+    Route::post('/datamanager/heathcovertype/store', [HeathCoverTypeController::class, 'store'])->name('HeathCoverTypeController.store');
 
     /** Route to update HeathCoverType Item */
-    Route::post('/datamanager/heathcovertype/update',[HeathCoverTypeController::class,'update'])->name('HeathCoverTypeController.update');
+    Route::post('/datamanager/heathcovertype/update', [HeathCoverTypeController::class, 'update'])->name('HeathCoverTypeController.update');
 
     /** Route to delete HeathCoverType */
-    Route::get('/datamanager/heathcovertype/delete/{id}',[HeathCoverTypeController::class,'delete'])->name('HeathCoverTypeController.delete');
+    Route::get('/datamanager/heathcovertype/delete/{id}', [HeathCoverTypeController::class, 'delete'])->name('HeathCoverTypeController.delete');
 
     /** Route to update HeathCoverType Status */
-    Route::get('/datamanager/heathcovertype/updatestatus/{id}/{status}',[HeathCoverTypeController::class,'updateStatus'])->name('HeathCoverTypeController.updateStatus');
+    Route::get('/datamanager/heathcovertype/updatestatus/{id}/{status}', [HeathCoverTypeController::class, 'updateStatus'])->name('HeathCoverTypeController.updateStatus');
 
     /** Route to search HeathCoverType By Company Id */
-    Route::get('/datamanager/heathcovertype/search/{company_id}',[HeathCoverTypeController::class,'searchByCompany'])->name('HeathCoverTypeController.searchByCompany');
+    Route::get('/datamanager/heathcovertype/search/{company_id}', [HeathCoverTypeController::class, 'searchByCompany'])->name('HeathCoverTypeController.searchByCompany');
 
     /** Route to call Index of curd accident item  */
-    Route::get('/datamanager/accidentcoveritem/',[\App\Http\Controllers\AccidentItemController::class,'index'])->name('AccidentItemController@index');
+    Route::get('/datamanager/accidentcoveritem/', [\App\Http\Controllers\AccidentItemController::class, 'index'])->name('AccidentItemController@index');
 
     /** Route for each the OPA/PA Data by company_id */
-    Route::get('/datamanager/accidentcoveritem/find/{company_id}',[AccidentItemController::class,'searchByCompany'])->name('AccidentItemController.searchByCompany');
+    Route::get('/datamanager/accidentcoveritem/find/{company_id}', [AccidentItemController::class, 'searchByCompany'])->name('AccidentItemController.searchByCompany');
 
     /** Route for create PA*OPA  */
-    Route::get('/datamanager/accidentcoveritem/create/{id}',[AccidentItemController::class,'create'])->name('AccidentItemController.create');
+    Route::get('/datamanager/accidentcoveritem/create/{id}', [AccidentItemController::class, 'create'])->name('AccidentItemController.create');
 
     /** Route for store PA & OPA Data */
-    Route::post('/datamanger/accidentcoveritem/store',[AccidentItemController::class,'store'])->name('AccidentItemController.store');
-    Route::get('/datamanager/accidentcoveritem/delete/{id}',[AccidentItemController::class,'delete'])->name('AccidentItemController.delete');
-    Route::post('/datamanager/accidentcoveritem/update',[AccidentItemController::class,'update'])->name('AccidentItemController.update');
+    Route::post('/datamanger/accidentcoveritem/store', [AccidentItemController::class, 'store'])->name('AccidentItemController.store');
+    Route::get('/datamanager/accidentcoveritem/delete/{id}', [AccidentItemController::class, 'delete'])->name('AccidentItemController.delete');
+    Route::post('/datamanager/accidentcoveritem/update', [AccidentItemController::class, 'update'])->name('AccidentItemController.update');
 
 
     /** Accident Plan */
-    Route::get('/datamanager/accidentplan/create',[AccidentPlanController::class,'index'])->name('AccidentPlanController.index');
-    Route::get('/datamanager/accidentplan/search/{company_id}',[AccidentPlanController::class,'searchByCompany'])->name('AccidentPlanController.search');
-    Route::get('/datamanager/accidentplan/createplan/{type_id}',[AccidentPlanController::class,'managePlan'])->name("AccidentPlanController.managePlan");
-    Route::post('/datamanager/accidentplan/store',[AccidentPlanController::class,'store'])->name('AccidentPlanController.store');
-    Route::get('/datamanager/accidentplan/delete/{id}',[AccidentPlanController::class,'delete'])->name('AccidentPlanController.delete');
-    Route::post('/datamanager/accidentplan/update',[AccidentPlanController::class,'update'])->name('AccidentPlanController.update');
-    Route::get("/datamanager/accidentplan/plandetail/{plan_id}",[AccidentPlanController::class,'showPlanDetail'])->name("AccidentPlanController.showPlanDetail");
-    Route::post('/datamanager/accidentplan/plandetail',[AccidentPlanController::class,'updatePrice'])->name('AccidentPlanController.updatePrice');
+    Route::get('/datamanager/accidentplan/create', [AccidentPlanController::class, 'index'])->name('AccidentPlanController.index');
+    Route::get('/datamanager/accidentplan/search/{company_id}', [AccidentPlanController::class, 'searchByCompany'])->name('AccidentPlanController.search');
+    Route::get('/datamanager/accidentplan/createplan/{type_id}', [AccidentPlanController::class, 'managePlan'])->name("AccidentPlanController.managePlan");
+    Route::post('/datamanager/accidentplan/store', [AccidentPlanController::class, 'store'])->name('AccidentPlanController.store');
+    Route::get('/datamanager/accidentplan/delete/{id}', [AccidentPlanController::class, 'delete'])->name('AccidentPlanController.delete');
+    Route::post('/datamanager/accidentplan/update', [AccidentPlanController::class, 'update'])->name('AccidentPlanController.update');
+    Route::get("/datamanager/accidentplan/plandetail/{plan_id}", [AccidentPlanController::class, 'showPlanDetail'])->name("AccidentPlanController.showPlanDetail");
+    Route::post('/datamanager/accidentplan/plandetail', [AccidentPlanController::class, 'updatePrice'])->name('AccidentPlanController.updatePrice');
     /** End Accident Plan */
     /************************************************ End Data Manager **************************************/
 });

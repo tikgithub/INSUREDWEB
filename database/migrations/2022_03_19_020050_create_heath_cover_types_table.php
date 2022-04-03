@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('company_id');
+
             $table->boolean('status');
             $table->timestamps();
         });

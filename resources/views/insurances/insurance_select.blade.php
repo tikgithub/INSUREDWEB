@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 notosanLao">
             <h1 class="notosanLao text-center">
-                ເລືອກປະເພດປະກັນໄພ
+                ເລືອກຮູບແບບປະກັນໄພ
             </h1>
         </div>
     </div>
@@ -27,7 +27,7 @@
         <div class="col-md-4 d-flex justify-content-center pt-2">
             <div class="card shadow notosanLao pt-2 zoom" style="width: 19.8rem">
                 <div class="card-body text-center">
-                    <a href="http://" class="text-decoration-none text-dark">
+                    <a href="{{route('AccidentSaleController.showSelectCompany')}}" class="text-decoration-none text-dark">
                         <img src="{{ asset('assets/image/personal_accident.png') }}" style="width: auto;height: 200px;">
                         <h4 class="mt-2">
                             ປະກັນໄພອຸບັດຕິເຫດບຸກຄົນ PA/OPA

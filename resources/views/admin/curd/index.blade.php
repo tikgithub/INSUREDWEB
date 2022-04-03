@@ -16,7 +16,7 @@
         <hr>
         <div class="col-md-12">
             <div class="card notosanLao shadow">
-                <div class="card-header bg-white">
+                <div class="card-header">
                     <h5 class="card-title text-dark"><i class="bi bi-dash"></i> ຂໍ້ມູນພື້ນຖານ</h5>
                 </div>
                 <div class="card-body">
@@ -78,7 +78,7 @@
     <div class="row p-3">
         <div class="col-md-12 ">
             <div class="card notosanLao shadow">
-                <div class="card-header bg-white">
+                <div class="card-header">
                     <h5 class="card-title text-dark"><i class="bi bi-dash"></i> ປະກັນໄພບຸກຄົນທີ ສາມ</h5>
                 </div>
                 <div class="card-body">
@@ -144,7 +144,7 @@
     <div class="row p-3">
         <div class="col-md-12 ">
             <div class="card notosanLao shadow">
-                <div class="card-header bg-white">
+                <div class="card-header">
                     <h5 class="card-title text-dark"><i class="bi bi-dash"></i>ປະກັນໄຟອຸບັດຕິເຫດບຸກຄົນ</h5>
                 </div>
                 <div class="card-body">

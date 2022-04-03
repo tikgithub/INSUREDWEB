@@ -107,7 +107,22 @@
                             <label for="">ປະເພດການຄຸ້ມຄອງ</label>
                             <input type="text" class="form-control" name="name" id="name" required>
                         </div>
-
+                        {{-- <div class="mb-3">
+                            <label for="">ເລີ່ມຕົ້ນອາຍຸ</label>
+                            <input type="number" name="start_age" id="start_age" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ອາຍຸສູງສຸດ</label>
+                            <input type="number" name="end_age" id="end_age" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ຄ່າທຳນຽມ</label>
+                            <input type="number" name="fee" id="fee" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ລາຄາຂາຍ</label>
+                            <input type="number" name="sale_price" id="sale_price" class="form-control">
+                        </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i>
@@ -130,7 +145,27 @@
                     <div class="modal-body">
                         @csrf
                         <input type="hidden" name="editId" id="editId" required>
-                        <input type="text" name="editName" id="editName" class="form-control">
+                        <div class="mb-3">
+                            <label for="">ປະເພດການຄຸ້ມຄອງ</label>
+                            <input type="text" name="editName" id="editName" class="form-control">
+                        </div>
+                
+                        {{-- <div class="mb-3">
+                            <label for="">ເລີ່ມຕົ້ນອາຍຸ</label>
+                            <input type="number" name="editStartAge" id="editStartAge" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ອາຍຸສູງສຸດ</label>
+                            <input type="number" name="editEndAge" id="editEndAge" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ຄ່າທຳນຽມ</label>
+                            <input type="number" name="editFee" id="editFee" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ລາຄາຂາຍ</label>
+                            <input type="number" name="editSalePrice" id="editSalePrice" class="form-control">
+                        </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>
@@ -170,6 +205,10 @@
         function onClickEdit(objs) {
             document.getElementById('editId').value = objs.id;
             document.getElementById('editName').value = objs.name;
+            // document.getElementById('editStartAge').value = objs.start_age;
+            // document.getElementById('editEndAge').value = objs.end_age;
+            // document.getElementById('editFee').value = objs.fee;
+            // document.getElementById('editSalePrice').value = objs.sale_price;
         }
 
         function onClickDelete(objs) {
