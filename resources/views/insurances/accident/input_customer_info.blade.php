@@ -59,6 +59,16 @@
             @if (Auth::check())
                 {{-- Show Input form --}}
                 <h4 class="text-center">ປ້ອນຂໍ້ມູນປະກັນໄພ</h4>
+                <form action="" method="post">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>ຂໍ້ມູນຜູ້ເອົາປະກັນ</h2>
+                        </div>
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </form>
             @else
                 {{-- Show Login form --}}
                 <h4 class="text-center">ທ່ານຍັງບໍ່ໄດ້ເຂົ້າສູ່ລະບົບ</h4>
@@ -69,13 +79,13 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope"></i></span>
                         <input type="email"
-                            class="form-control form-control-lg {{ $errors->has('email') ? 'border-danger' : '' }}"
+                            class="form-control form-control-lg text-center {{ $errors->has('email') ? 'border-danger' : '' }}"
                             placeholder="ອີເມວ" aria-label="email" name="email" value="{{ old('email') }}">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-asterisk"></i></span>
                         <input type="password"
-                            class="form-control form-control-lg {{ $errors->has('password') ? 'border-danger' : '' }}"
+                            class="form-control form-control-lg text-center {{ $errors->has('password') ? 'border-danger' : '' }}"
                             placeholder="ລະຫັດຜ່ານ" aria-label="password" name="password">
                     </div>
                     @if ($errors->has('password'))
