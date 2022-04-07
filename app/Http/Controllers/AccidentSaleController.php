@@ -16,7 +16,7 @@ class AccidentSaleController extends Controller
     {
         $companyQuery = "SELECT distinct ic.id as company_id, ic.name as company_name, ic.logo FROM insurance_companies ic INNER JOIN heath_cover_types hct on ic.id = hct.company_id where hct.status = 1;";
         $companyQueryDatas = DB::select($companyQuery);
-       
+
         return view('insurances.accident.select_company')
         ->with('companyQueryDatas',$companyQueryDatas);
     }
@@ -29,14 +29,14 @@ class AccidentSaleController extends Controller
 
     public function showPlanDetail($plan_id){
 
-        $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans 
-        INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id 
+        $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans
+        INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id
         INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
         $planDatas = collect(DB::select($queryAccidentData,[$plan_id]))->first();
 
         //Query the cover item and cover price
-        $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details 
-        INNER JOIN accident_plans on accident_plans.id = accident_plan_details.plan_id 
+        $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details
+        INNER JOIN accident_plans on accident_plans.id = accident_plan_details.plan_id
         INNER JOIN accident_cover_items on accident_plan_details.item_id = accident_cover_items.id WHERE accident_plan_details.plan_id = ?;";
         $coverData = DB::select($queryCoverData,[$plan_id]);
 
@@ -50,9 +50,9 @@ class AccidentSaleController extends Controller
     }
 
     public function showInputInformationPage($plan_id){
-        
-        $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans 
-        INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id 
+
+        $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans
+        INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id
         INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
         $planData = collect(DB::select($queryAccidentData,[$plan_id]))->first();
 
@@ -61,11 +61,11 @@ class AccidentSaleController extends Controller
 
         //Show cover Item detail
          //Query the cover item and cover price
-         $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details 
-         INNER JOIN accident_plans on accident_plans.id = accident_plan_details.plan_id 
+         $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details
+         INNER JOIN accident_plans on accident_plans.id = accident_plan_details.plan_id
          INNER JOIN accident_cover_items on accident_plan_details.item_id = accident_cover_items.id WHERE accident_plan_details.plan_id = ?;";
          $coverData = DB::select($queryCoverData,[$plan_id]);
- 
+
          //Query the plan detail
          $plan = AccidentPlan::find($plan_id);
 
@@ -108,15 +108,18 @@ class AccidentSaleController extends Controller
         $obj->province = $req->input('province');
         $obj->district = $req->input('district');
         $obj->address = $req->input('address');
+        $obj->plan_id = $req->input('plan_id');
         //Image upload
         if($req->file('reference_photo')){
-          $obj->referernce_photo =   ImageCompress::notCompressImage($req->file('reference_photo'),'Insurances/people');
+          $obj->reference_photo =   ImageCompress::notCompressImage($req->file('reference_photo'),'Insurances/people');
         }else{
             return redirect()->back()->with('error', 'Photo not found');
         }
 
         if($obj->save()){
-            dd('OK');
+           //Set Session
+           Session(['accident_id'=>$obj->id]);
+           return redirect()->route('');
         }{
             return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
