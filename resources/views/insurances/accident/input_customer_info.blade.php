@@ -66,27 +66,32 @@
             {{-- Check Customer Authentication --}}
             @if (Auth::check())
                 {{-- Show Input form --}}
-                <form action="" method="post">
                     <div class="card">
                         <div class="card-header bg-blue">
                             <h5 class="text-white"> - ປ້ອນຂໍ້ມູນປະກັນໄພ</h5>
                         </div>
                         <div class="card-body">
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            <form action="{{route('AccidentSaleController.storeInput')}}" method="POST" enctype="multipart/form-data">
+                                @csrf
                                 <div class="row mb-3">
-                                    <label for="firstname" class="col-sm-3 col-form-label fs-4">ຊື່<span class="text-danger fs-6">*</span></label>
+                                    <label for="firstname" class="col-sm-3 col-form-label fs-4">ຊື່<span
+                                            class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="fristname" id="firstname" class=" form-control form-control-lg">
+                                        <input type="text" name="firstname" id="firstname"
+                                            class=" form-control form-control-lg">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="lastname" class="col-sm-3 col-form-label fs-4">ນາມສະກຸນ<span class="text-danger fs-6">*</span></label>
+                                    <label for="lastname" class="col-sm-3 col-form-label fs-4">ນາມສະກຸນ<span
+                                            class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="lastname" id="lastname" class=" form-control form-control-lg">
+                                        <input type="text" name="lastname" id="lastname"
+                                            class=" form-control form-control-lg">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="sex" class="col-sm-3 col-form-label fs-4">ເພດ<span class="text-danger fs-6">*</span></label>
+                                    <label for="sex" class="col-sm-3 col-form-label fs-4">ເພດ<span
+                                            class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9">
                                         <select name="sex" id="sex" class="form-select form-select-lg">
                                             <option>ເລືອກ</option>
@@ -97,37 +102,47 @@
                                 </div>
 
                                 <div class="row mb-3 fs-4">
-                                    <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span class="text-danger fs-6">*</span></label>
+                                    <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span
+                                            class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9">
                                         <input type="date" name="dob" id="dob" class="form-control form-control-lg">
                                     </div>
                                 </div>
 
                                 <div class="row mb-3 fs-4">
-                                    <label for="tel" class="col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span class="text-danger fs-6">*</span></label>
+                                    <label for="tel" class="col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span
+                                            class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="number" name="tel" id="tel" class="form-control form-control-lg" placeholder="ex: 55998899">
+                                        <input type="number" name="tel" id="tel" class="form-control form-control-lg"
+                                            placeholder="ex: 55998899">
                                     </div>
                                 </div>
 
                                 <div class="row mb-3 fs-4">
-                                    <label for="identity" class="col-form-label col-sm-3">ເລກທີ່ບັດປະຊາຊົນ ຫຼື ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
+                                    <label for="identity" class="col-form-label col-sm-3">ເລກທີ່ບັດປະຊາຊົນ ຫຼື
+                                        ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9 align-self-center">
-                                        <input type="text" name="identity" id="identity" class="form-control form-control-lg">
+                                        <input type="text" name="identity" id="identity"
+                                            class="form-control form-control-lg">
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row mb-3 fs-4">
-                                    <label for="province" class="col-form-label col-sm-3">ແຂວງ<span class="text-danger fs-6">*</span></label>
+                                    <label for="province" class="col-form-label col-sm-3">ແຂວງ<span
+                                            class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9">
-                                        <select name="province" id="province" class="form-select form-select-lg">
+                                        <select name="province" id="province" class="form-select form-select-lg"
+                                            onchange="onSelectedProvince()">
                                             <option>ເລືອກ</option>
-
+                                            @foreach ($provinceData as $item)
+                                                <option value="{{ $item->id }}">{{ $item->province_name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3 fs-4">
-                                    <label for="district" class="col-form-label col-sm-3">ເມືອງ<span class="text-danger fs-6">*</span></label>
+                                    <label for="district" class="col-form-label col-sm-3">ເມືອງ<span
+                                            class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9">
                                         <select name="district" id="district" class="form-select form-select-lg">
                                             <option>ເລືອກ</option>
@@ -137,24 +152,33 @@
                                 </div>
 
                                 <div class="row mb-3 fs-4">
-                                    <label for="address" class="col-form-label col-sm-3">ບ້ານ<span class="text-danger fs-6">*</span></label>
-                                    <div class="col-sm-9">  
-                                       <textarea name="address" id="address" rows="5" class="form-control"></textarea>
+                                    <label for="address" class="col-form-label col-sm-3">ບ້ານ<span
+                                            class="text-danger fs-6">*</span></label>
+                                    <div class="col-sm-9">
+                                        <textarea name="address" id="address" rows="5" class="form-control"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3 fs-4">
-                                    <label for="district" class="col-form-label col-sm-3">ຮູບຖ່າຍບັດປະຈຳໂຕ ຫຼື ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
+                                    <label for="district" class="col-form-label col-sm-3">ຮູບຖ່າຍບັດປະຈຳໂຕ ຫຼື
+                                        ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
                                     <div class="col-sm-9 align-self-center text-center">
-                                        <input type="file" name="photo" id="photo" class="form-control-file" hidden onchange="onPreviewChange()">
-                                        <button type="button" onclick="selectPhotoOnClick()" class="btn btn-warning btn-lg me-3"><i class="bi bi-image-alt"></i> ເລືອກຮູບ</button>
+                                        <input type="file" name="reference_photo" id="reference_photo" class="form-control-file" hidden
+                                            onchange="onPreviewChange()">
+                                        <button type="button" onclick="selectPhotoOnClick()"
+                                            class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
+                                            ເລືອກຮູບ</button>
                                         <img id="img_preview" src="" alt="" srcset="" class="border rounded img-fluid">
                                     </div>
+                                </div>
+                                <hr>
+                                <div class="mb-3 fs-4 text-center">
+                                    <button type="submit" class="btn btn-lg bg-blue text-white"><i class="bi bi-check2-circle me-3"></i>ຕົກລົງ</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </form>
+             
             @else
                 {{-- Show Login form --}}
                 <h4 class="text-center">ທ່ານຍັງບໍ່ໄດ້ເຂົ້າສູ່ລະບົບ</h4>
@@ -192,17 +216,39 @@
     @include('layouts.footer')
 @endsection
 @section('scripting')
+@include('toastrMessage')
     <script>
-        function selectPhotoOnClick(){
+        function selectPhotoOnClick() {
             document.getElementById('photo').click();
         }
-        function onPreviewChange(){
-            var inputPhoto = document.getElementById('photo');
+
+        function onPreviewChange() {
+            var inputPhoto = document.getElementById('reference_photo');
             var fileReader = new FileReader();
             fileReader.readAsDataURL(inputPhoto.files[0]);
-            fileReader.onload = function(event){
-                document.getElementById('img_preview').src = event.target.result;
+            fileReader.onload = function(event) {
+                document.getElementById('img_preview').src = event.target.result; 
             };
+        }
+
+        function onSelectedProvince() {
+            var std_Province = document.getElementById('province');
+            var selectedProvinceId = std_Province.options[std_Province.selectedIndex].value;
+            var std_district = document.getElementById('district');
+            //clear option element
+            std_district.innerHTML = "";
+            var url = "{{route('JSONDistrict','')}}/" + selectedProvinceId;
+
+            fetch(url).then(res => res.json()).then(data =>{
+               for(i = 0 ; i < data.length; i++){
+                   var option = document.createElement('option');
+                   option.value = data[i].id;
+                   option.text = data[i].district_name;
+                   std_district.append(option);
+               }
+            }).catch(error => {
+                console.log(error);
+            });
         }
     </script>
 @endsection

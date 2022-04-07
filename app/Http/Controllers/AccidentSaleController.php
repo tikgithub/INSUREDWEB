@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccidentInput;
 use App\Models\AccidentPlan;
 use App\Models\HeathCoverType;
+use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Utils\ImageCompress;
 
 class AccidentSaleController extends Controller
 {
@@ -53,6 +56,9 @@ class AccidentSaleController extends Controller
         INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
         $planData = collect(DB::select($queryAccidentData,[$plan_id]))->first();
 
+        //Query Province data
+        $provinceData = Province::all();
+
         //Show cover Item detail
          //Query the cover item and cover price
          $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details 
@@ -67,6 +73,52 @@ class AccidentSaleController extends Controller
         return view('insurances.accident.input_customer_info')
         ->with('planDatas',$planData)
         ->with('coverData',$coverData)
-        ->with('plan',$plan);
+        ->with('plan',$plan)
+        ->with('provinceData',$provinceData);
+    }
+
+    public function storeInput(Request $req){
+        //Validate input data
+        //all data should be required
+        $sexRequire = ['F','M'];
+        $req->validate([
+            'firstname'=>'required',
+            'lastname'=>'required',
+            'sex'=>'required|in:' .implode(',',$sexRequire),
+            'tel'=>'required',
+            'dob'=>'required',
+            'identity'=>'required',
+            'province'=>'required',
+            'district'=>'required',
+            'address'=>'required',
+            'reference_photo' => 'required'
+        ]);
+        /** Validate user policy here but now stop */
+
+        /** *************************************** */
+
+        //Create new Object for store user input information
+        $obj = new AccidentInput();
+        $obj->firstname = $req->input('firstname');
+        $obj->lastname = $req->input('lastname');
+        $obj->sex = $req->input('sex');
+        $obj->tel = $req->input('tel');
+        $obj->identity = $req->input('identity');
+        $obj->dob = $req->input('dob');
+        $obj->province = $req->input('province');
+        $obj->district = $req->input('district');
+        $obj->address = $req->input('address');
+        //Image upload
+        if($req->file('reference_photo')){
+          $obj->referernce_photo =   ImageCompress::notCompressImage($req->file('reference_photo'),'Insurances/people');
+        }else{
+            return redirect()->back()->with('error', 'Photo not found');
+        }
+
+        if($obj->save()){
+            dd('OK');
+        }{
+            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
     }
 }

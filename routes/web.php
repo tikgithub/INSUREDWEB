@@ -101,7 +101,7 @@ Route::group(['prefix' => 'api/json'], function () {
     Route::get('/vehicledetail/{v_id}', [JSONServiceController::class, 'jsonVehicleDetail']);
 
     /** Route to response District detail By Province */
-    Route::get('/district/{province_id}', [JSONServiceController::class, 'jsonDistrict']);
+    Route::get('/district/{province_id}', [JSONServiceController::class, 'jsonDistrict'])->name('JSONDistrict');
 });
 
 /** Route Group for customer who already the member or Route which require to SignIn First */
@@ -168,6 +168,9 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
 
     /** Route to update payment detail of third party insurnace */
     Route::post('/customer/thirparty/paymentconfirm', [InsuranceFlowController::class, 'updatePaymentDetailOfThirdParty'])->name('InsuranceFlowController.updatePaymentDetailOfThirdParty');
+
+    /** Route to store the input information of accident insurance */
+    Route::post('/customer/accudent/store',[AccidentSaleController::class,'storeInput'])->name('AccidentSaleController.storeInput');
 });
 
 
