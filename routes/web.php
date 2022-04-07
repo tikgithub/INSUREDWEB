@@ -170,7 +170,16 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     Route::post('/customer/thirparty/paymentconfirm', [InsuranceFlowController::class, 'updatePaymentDetailOfThirdParty'])->name('InsuranceFlowController.updatePaymentDetailOfThirdParty');
 
     /** Route to store the input information of accident insurance */
-    Route::post('/customer/accudent/store',[AccidentSaleController::class,'storeInput'])->name('AccidentSaleController.storeInput');
+    Route::post('/customer/accident/store',[AccidentSaleController::class,'storeInput'])->name('AccidentSaleController.storeInput');
+
+    /** Route to show confirmation page of accident insurance */
+    Route::get('/customer/accident/confirm',[AccidentSaleController::class,'showConfirmationPage'])->name('AccidentSaleController.showConfirmationPage');
+
+    /** Route to update confirmation input from customer of accident insurance */
+    Route::post('/customer/accident/confrim/update',[AccidentSaleController::class,'updateConfirmation'])->name('AccidentSaleController.updateConfirmation');
+
+    //** Route to show payment provinder list for accident insurance */
+    Route::get('/customer/accident/paymentlist',[AccidentSaleController::class,'showPlaymentProviderList'])->name('AccidentController.paymentProvider');
 });
 
 

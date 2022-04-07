@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\AccidentInput;
 use App\Models\AccidentPlan;
+use App\Models\District;
 use App\Models\HeathCoverType;
+use App\Models\PaymentProvider;
 use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Utils\ImageCompress;
+use Illuminate\Contracts\Session\Session;
 
 class AccidentSaleController extends Controller
 {
@@ -18,79 +21,83 @@ class AccidentSaleController extends Controller
         $companyQueryDatas = DB::select($companyQuery);
 
         return view('insurances.accident.select_company')
-        ->with('companyQueryDatas',$companyQueryDatas);
+            ->with('companyQueryDatas', $companyQueryDatas);
     }
 
-    public function showPackagePlan($company_id){
-        $accidentType = HeathCoverType::where('company_id','=',$company_id)->get();
+    public function showPackagePlan($company_id)
+    {
+        $accidentType = HeathCoverType::where('company_id', '=', $company_id)->get();
 
-        return view('insurances.accident.select_package')->with('accidentDetails',$accidentType);
+        return view('insurances.accident.select_package')->with('accidentDetails', $accidentType);
     }
 
-    public function showPlanDetail($plan_id){
+    public function showPlanDetail($plan_id)
+    {
 
         $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans
         INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id
         INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
-        $planDatas = collect(DB::select($queryAccidentData,[$plan_id]))->first();
+        $planDatas = collect(DB::select($queryAccidentData, [$plan_id]))->first();
 
         //Query the cover item and cover price
         $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details
         INNER JOIN accident_plans on accident_plans.id = accident_plan_details.plan_id
         INNER JOIN accident_cover_items on accident_plan_details.item_id = accident_cover_items.id WHERE accident_plan_details.plan_id = ?;";
-        $coverData = DB::select($queryCoverData,[$plan_id]);
+        $coverData = DB::select($queryCoverData, [$plan_id]);
 
         //Query the plan detail
         $plan = AccidentPlan::find($plan_id);
 
         return view('insurances.accident.show_selected_package')
-        ->with('planDatas',$planDatas)
-        ->with('coverData',$coverData)
-        ->with('plan',$plan);
+            ->with('planDatas', $planDatas)
+            ->with('coverData', $coverData)
+            ->with('plan', $plan);
     }
 
-    public function showInputInformationPage($plan_id){
+    public function showInputInformationPage($plan_id)
+    {
 
         $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans
         INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id
         INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
-        $planData = collect(DB::select($queryAccidentData,[$plan_id]))->first();
+        $planData = collect(DB::select($queryAccidentData, [$plan_id]))->first();
 
         //Query Province data
         $provinceData = Province::all();
 
         //Show cover Item detail
-         //Query the cover item and cover price
-         $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details
+        //Query the cover item and cover price
+        $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details
          INNER JOIN accident_plans on accident_plans.id = accident_plan_details.plan_id
          INNER JOIN accident_cover_items on accident_plan_details.item_id = accident_cover_items.id WHERE accident_plan_details.plan_id = ?;";
-         $coverData = DB::select($queryCoverData,[$plan_id]);
+        $coverData = DB::select($queryCoverData, [$plan_id]);
 
-         //Query the plan detail
-         $plan = AccidentPlan::find($plan_id);
+        //Query the plan detail
+        $plan = AccidentPlan::find($plan_id);
 
 
         return view('insurances.accident.input_customer_info')
-        ->with('planDatas',$planData)
-        ->with('coverData',$coverData)
-        ->with('plan',$plan)
-        ->with('provinceData',$provinceData);
+            ->with('planDatas', $planData)
+            ->with('coverData', $coverData)
+            ->with('plan', $plan)
+            ->with('provinceData', $provinceData);
     }
 
-    public function storeInput(Request $req){
+    public function storeInput(Request $req)
+    {
         //Validate input data
         //all data should be required
-        $sexRequire = ['F','M'];
+        $sexRequire = ['F', 'M'];
         $req->validate([
-            'firstname'=>'required',
-            'lastname'=>'required',
-            'sex'=>'required|in:' .implode(',',$sexRequire),
-            'tel'=>'required',
-            'dob'=>'required',
-            'identity'=>'required',
-            'province'=>'required',
-            'district'=>'required',
-            'address'=>'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'sex' => 'required|in:' . implode(',', $sexRequire),
+            'tel' => 'required',
+            'dob' => 'required',
+            'identity' => 'required',
+            'province' => 'required',
+            'district' => 'required',
+            'address' => 'required',
             'reference_photo' => 'required'
         ]);
         /** Validate user policy here but now stop */
@@ -110,18 +117,125 @@ class AccidentSaleController extends Controller
         $obj->address = $req->input('address');
         $obj->plan_id = $req->input('plan_id');
         //Image upload
-        if($req->file('reference_photo')){
-          $obj->reference_photo =   ImageCompress::notCompressImage($req->file('reference_photo'),'Insurances/people');
-        }else{
+        if ($req->file('reference_photo')) {
+            $obj->reference_photo =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+        } else {
             return redirect()->back()->with('error', 'Photo not found');
         }
 
-        if($obj->save()){
-           //Set Session
-           Session(['accident_id'=>$obj->id]);
-           return redirect()->route('');
-        }{
-            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        if ($obj->save()) {
+            //Set Session
+            Session(['accident_id' => $obj->id]);
+            return redirect()->route('AccidentSaleController.showConfirmationPage');
+        } {
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
+    }
+    public function showConfirmationPage()
+    {
+        if (Session('accident_id')) {
+            $accident_id = Session('accident_id');
+
+            $accidentData = AccidentInput::find($accident_id);
+            $plan_id = $accidentData->plan_id;
+
+            $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans
+            INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id
+            INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
+            $planData = collect(DB::select($queryAccidentData, [$plan_id]))->first();
+
+            //Query Province data
+            $provinceData = Province::all();
+
+            $districtData = District::where('province_id', '=', $accidentData->province)->get();
+
+
+            //Show cover Item detail
+            //Query the cover item and cover price
+            $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details
+             INNER JOIN accident_plans on accident_plans.id = accident_plan_details.plan_id
+             INNER JOIN accident_cover_items on accident_plan_details.item_id = accident_cover_items.id WHERE accident_plan_details.plan_id = ?;";
+            $coverData = DB::select($queryCoverData, [$plan_id]);
+
+            //Query the plan detail
+            $plan = AccidentPlan::find($plan_id);
+
+            return view('insurances.accident.confirm_information')
+                ->with('planDatas', $planData)
+                ->with('coverData', $coverData)
+                ->with('plan', $plan)
+                ->with('provinceData', $provinceData)
+                ->with('accidentData', $accidentData)
+                ->with('districtData', $districtData);
+        } else {
+            return redirect()->route('welcome');
+        }
+    }
+
+    public function updateConfirmation(Request $req)
+    {
+        if (Session('accident_id')) {
+            //Validate input data
+            //all data should be required expec reference photo
+            $sexRequire = ['F', 'M'];
+            $req->validate([
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'sex' => 'required|in:' . implode(',', $sexRequire),
+                'tel' => 'required',
+                'dob' => 'required',
+                'identity' => 'required',
+                'province' => 'required',
+                'district' => 'required',
+                'address' => 'required',
+                'update_id' => 'required'
+            ]);
+            /** Validate user policy here but now stop */
+
+            /** *************************************** */
+
+            //Create new Object for store user input information
+            $obj = AccidentInput::find($req->input('update_id'));
+            $obj->firstname = $req->input('firstname');
+            $obj->lastname = $req->input('lastname');
+            $obj->sex = $req->input('sex');
+            $obj->tel = $req->input('tel');
+            $obj->identity = $req->input('identity');
+            $obj->dob = $req->input('dob');
+            $obj->province = $req->input('province');
+            $obj->district = $req->input('district');
+            $obj->address = $req->input('address');
+            $obj->plan_id = $req->input('plan_id');
+
+            //Image upload
+            if ($req->file('reference_photo')) {
+                $obj->reference_photo =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+            }
+            if ($obj->save()) {
+                //Set Session
+                Session(['accident_id' => $obj->id]);
+                return redirect()->route('AccidentController.paymentProvider');
+            } {
+                return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+            }
+        } else {
+
+            return redirect()->route('welcome');
+        }
+    }
+    
+
+    public function showPlaymentProviderList()
+    {
+        
+        if(Session('accident_id')){
+            $paymentProviders = PaymentProvider::all();
+
+            return view('insurances.accident.showPayment_providerList')
+            ->with('paymentProviders', $paymentProviders);
+        }else{
+            return redirect()->route('welcome');
+        }
+       
     }
 }
