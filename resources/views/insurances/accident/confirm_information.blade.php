@@ -11,7 +11,7 @@ use App\Utils\ImageCompress;
 
         <div class="notosanLao col-md-12 text-center">
             <img src="{{ asset($planDatas->logo) }}" class="rounded mb-2" style="width: auto;height: 70px;">
-            <h2>ປ້ອນຂໍ້ມູນລາຍລະອຽດຂອງປະພັນໄພ</h2>
+            <h2>ຢືນຢັນ ແລະ ກວດສອບຂໍ້ມູນລາຍລະອຽດຂອງປະພັນໄພ</h2>
         </div>
     </div>
     <div class="row">
@@ -71,7 +71,7 @@ use App\Utils\ImageCompress;
                 {{-- Show Input form --}}
                 <div class="card">
                     <div class="card-header bg-blue">
-                        <h5 class="text-white"> - ປ້ອນຂໍ້ມູນປະກັນໄພ</h5>
+                        <h5 class="text-white"> - ຢືນຢັນຂໍ້ມູນອີກຄັ້ງ</h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('AccidentSaleController.updateConfirmation') }}" method="POST" id="updateForm"

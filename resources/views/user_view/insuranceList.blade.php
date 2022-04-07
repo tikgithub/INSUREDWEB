@@ -31,21 +31,24 @@ use App\Utils\ImageCompress;
         </ol>
     </nav>
     <!-- Tab links -->
-   <div class="row notosanLao">
-       <div class="col-md-12">
-        <div class="tab">
-            <button class="tablinks text-center" onclick="openCity(event, 'normal')">ປະກັນໄພຍານພາຫະນະ<br>
-                <img src="{{asset('assets/image/car_tab.png')}}" style="width: auto;height: 30px;">
-            </button>
-            <button class="tablinks active" onclick="openCity(event, 'thirdparty')">ປະກັນໄພບຸກຄົນທີ 3 <br>
-                <img src="{{asset('assets/image/bike_tab.png')}}" style="width: auto;height: 30px;">
-            </button>
-            <button class="tablinks" onclick="openCity(event, 'thirdparty')">ປະກັນໄພສຸຂະພາບ <br>
-                <img src="{{asset('assets/image/people_tab.png')}}" style="width: auto;height: 30px;">
-            </button>
+    <div class="row notosanLao">
+        <div class="col-md-12">
+            <div class="tab">
+                <button class="tablinks text-center" onclick="openCity(event, 'normal')">ປະກັນໄພຍານພາຫະນະ<br>
+                    <img src="{{ asset('assets/image/car_tab.png') }}" style="width: auto;height: 30px;">
+                </button>
+                <button class="tablinks active" onclick="openCity(event, 'thirdparty')">ປະກັນໄພບຸກຄົນທີ 3 <br>
+                    <img src="{{ asset('assets/image/bike_tab.png') }}" style="width: auto;height: 30px;">
+                </button>
+                <button class="tablinks" onclick="openCity(event, 'thirdparty')">ປະກັນໄພອຸບັດຕິເຫດ <br>
+                    <img src="{{ asset('assets/image/people_tab.png') }}" style="width: auto;height: 30px;">
+                </button>
+                <button class="tablinks" onclick="openCity(event, 'thirdparty')">ປະກັນໄພສຸຂະພາບ <br>
+                    <img src="{{ asset('assets/image/people_tab.png') }}" style="width: auto;height: 30px;">
+                </button>
+            </div>
         </div>
-       </div>
-   </div>
+    </div>
 
     <div class="row tabcontent" id="normal">
         <div class="col-md-12">
@@ -105,8 +108,8 @@ use App\Utils\ImageCompress;
                     <div class="row">
                         <div class="col-md-2 text-center">
                             {{-- Image --}}
-                            <img class="car-image rounded"
-                                src="{{ ImageCompress::getThumnailImage($item->front_image) }}" alt="" srcset="">
+                            <img class="car-image rounded" src="{{ ImageCompress::getThumnailImage($item->front_image) }}"
+                                alt="" srcset="">
                             {{-- End Image --}}
                         </div>
                         <div class="col-md-5">
@@ -193,104 +196,103 @@ use App\Utils\ImageCompress;
     {{-- Third Party Tab Content --}}
     <div class="row tabcontent notosanLao" id="thirdparty" style="display: block">
         <div class="col-md-12">
-            @if(sizeof($thirdPartyList)==0)
+            @if (sizeof($thirdPartyList) == 0)
                 <div class="pt-5"></div>
                 <div class="d-flex justify-content-center">
-                    <img src="{{asset('assets/image/cross.png')}}" style="width: auto; height: 150px;">
+                    <img src="{{ asset('assets/image/cross.png') }}" style="width: auto; height: 150px;">
                 </div>
                 <h3 class="text-center pt-4">ທ່ານບໍ່ມີລາຍການ</h3>
-            @else 
+            @else
                 @foreach ($thirdPartyList as $item)
-                <div class="bg-white border item-container rounded">
-                   {{-- Card header --}}
-                    <div class="row">
-                        <div class="col-md-1 align-self-center">
-                            <img src="{{asset($item->logo)}}" class="company-logo rounded">
-                        </div>
-                        <div class="col-md-8 align-self-center">
-                           <p class="text-center fs-4">{{$item->company_name}} {{$item->package_name}}</p>
-                        </div>
-                        <div class="col-md-3 align-self-center">
-                            <h3 class="notosanLao text-center fs-4 fw-bolder text-danger">₭: {{number_format($item->total_price,0)}}</h3>
-                        </div>
-                    </div>
-                    <hr>
-                    {{-- Card body --}}
-                    <div class="row">
-                        <div class="col-md-4 ">
-                            <div class="ms-2 notosanLao mb-5">
-                                <table>
-                                    <tr>
-                                        <td width="100" class="fw-bold">ຍີ່ຫໍ້ລົດ</td>
-                                        <td>{{ $item->vehicle_brand }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold">ເລກທະບຽນ</td>
-                                        <td>{{ $item->registered_province }}
-                                            {{ $item->number_plate }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold">ເລກຈັກ</td>
-                                        <td>{{ $item->engine_number }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold">ເລກຖັງ</td>
-                                        <td>{{ $item->chassic_number }}</td>
-                                    </tr>
-                                </table>
-
+                    <div class="bg-white border item-container rounded">
+                        {{-- Card header --}}
+                        <div class="row">
+                            <div class="col-md-1 align-self-center">
+                                <img src="{{ asset($item->logo) }}" class="company-logo rounded">
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <p class="text-center fs-4">{{ $item->company_name }} {{ $item->package_name }}</p>
+                            </div>
+                            <div class="col-md-3 align-self-center">
+                                <h3 class="notosanLao text-center fs-4 fw-bolder text-danger">₭:
+                                    {{ number_format($item->total_price, 0) }}</h3>
                             </div>
                         </div>
-                        <div class="col-md-5 text-center">
-                            @if ($item->payment_time)
-                                <h4 class="notosanLao">ວັນທີຈ່າຍເງິນ
-                                    {{ date('d/m/Y H:i:A', strtotime($item->payment_time)) }}</h4>
+                        <hr>
+                        {{-- Card body --}}
+                        <div class="row">
+                            <div class="col-md-4 ">
+                                <div class="ms-2 notosanLao mb-5">
+                                    <table>
+                                        <tr>
+                                            <td width="100" class="fw-bold">ຍີ່ຫໍ້ລົດ</td>
+                                            <td>{{ $item->vehicle_brand }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">ເລກທະບຽນ</td>
+                                            <td>{{ $item->registered_province }}
+                                                {{ $item->number_plate }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">ເລກຈັກ</td>
+                                            <td>{{ $item->engine_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">ເລກຖັງ</td>
+                                            <td>{{ $item->chassic_number }}</td>
+                                        </tr>
+                                    </table>
 
-                                <img id="slip-{{ $item->id }}"
-                                    onclick="showImageFullScreen('slip-{{ $item->id }}')"
-                                    src="{{ $item->slip_confirmed }}" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" style="width: auto; height: 120px; cursor: pointer;">
-                            @endif
+                                </div>
+                            </div>
+                            <div class="col-md-5 text-center">
+                                @if ($item->payment_time)
+                                    <h4 class="notosanLao">ວັນທີຈ່າຍເງິນ
+                                        {{ date('d/m/Y H:i:A', strtotime($item->payment_time)) }}</h4>
+
+                                    <img id="slip-{{ $item->id }}"
+                                        onclick="showImageFullScreen('slip-{{ $item->id }}')"
+                                        src="{{ $item->slip_confirmed }}" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" style="width: auto; height: 120px; cursor: pointer;">
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Notification --}}
+                        <div class="row notosanLao pt-3">
+                            <div class="col-md-12 text-center">
+                                <table>
+                                    <tr class="text-center">
+                                        <td><a href="{{ route('InsuranceFlowController.showThirdPartyInsuranceCoverItem', ['id' => $item->third_package_id]) }}"
+                                                class="btn btn-sm btn-primary"><i class="bi bi-info-circle"></i>
+                                                ການຄຸ້ມຄອງ</a></td>
+                                        @if ($item->payment_confirm == 'WAIT_FOR_APPROVED')
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-warning ms-1"><i
+                                                        class="bi bi-clock-history"></i> ລໍຖ້າການອານຸມັດ</button>
+                                            </td>
+                                        @elseif($item->payment_confirm == 'APPROVED_OK')
+                                            <td>
+                                                <a target="_blank" href="{{ asset('tmpfolder/simple.jpeg') }}"
+                                                    class="btn btn-sm btn-success ms-1"><i class="bi bi-journal-check"></i>
+                                                    ເລກທີ່ສັນຍາ {{ $item->contract_no }}</a>
+                                            </td>
+                                        @else
+                                            <td><a href="{{ route('InsuranceFlowController.showThirdPartyAgreement', ['package_id' => $item->id]) }}"
+                                                    class="btn btn-sm btn-success"><i class="bi bi-cash-stack"></i>
+                                                    ຈ່າຍເງິນ</a></td>
+                                            <td><a data-bs-toggle="modal" onclick="showDeleteModal({{ $item->id }})"
+                                                    data-bs-target="#deleteModal" class="btn btn-sm btn-danger"><i
+                                                        class="bi bi-x-square"></i> ຍົກເລີກ</a></td>
+                                        @endif
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
-
-                    {{-- Notification --}}
-                    <div class="row notosanLao pt-3">
-                        <div class="col-md-12 text-center">
-                            <table>
-                                <tr class="text-center">
-                                    <td><a href="{{route('InsuranceFlowController.showThirdPartyInsuranceCoverItem',['id'=>$item->third_package_id])}}"
-                                            class="btn btn-sm btn-primary"><i class="bi bi-info-circle"></i>
-                                            ການຄຸ້ມຄອງ</a></td>
-                                    @if ($item->payment_confirm == 'WAIT_FOR_APPROVED')
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-warning ms-1"><i
-                                                    class="bi bi-clock-history"></i> ລໍຖ້າການອານຸມັດ</button>
-                                        </td>
-                                    @elseif($item->payment_confirm == 'APPROVED_OK')
-                                        <td>
-                                            <a target="_blank" href="{{ asset('tmpfolder/simple.jpeg') }}"
-                                                class="btn btn-sm btn-success ms-1"><i class="bi bi-journal-check"></i>
-                                                ເລກທີ່ສັນຍາ {{ $item->contract_no }}</a>
-                                        </td>
-                                    @else
-                                        <td><a href="{{ route('InsuranceFlowController.showThirdPartyAgreement', ['package_id' => $item->id]) }}"
-                                                class="btn btn-sm btn-success"><i class="bi bi-cash-stack"></i>
-                                                ຈ່າຍເງິນ</a></td>
-                                        <td><a data-bs-toggle="modal" onclick="showDeleteModal({{ $item->id }})"
-                                                data-bs-target="#deleteModal" class="btn btn-sm btn-danger"><i
-                                                    class="bi bi-x-square"></i> ຍົກເລີກ</a></td>
-                                    @endif
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                           
- 
                 @endforeach
             @endif
-           
+
         </div>
     </div>
     {{-- Modal --}}
@@ -334,9 +336,7 @@ use App\Utils\ImageCompress;
     </div>
 @endsection
 @section('footer')
-    <div class="">
-        @include('layouts.footer')
-    </div>
+    @include('layouts.footer')
 @endsection
 @section('scripting')
     <script>
@@ -379,7 +379,7 @@ use App\Utils\ImageCompress;
         }
     </script>
 @endsection
-@section('styles')
+@section('style')
     <style>
         .item-container {
             padding-left: 10px;

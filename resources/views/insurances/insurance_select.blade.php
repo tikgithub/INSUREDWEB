@@ -30,7 +30,7 @@
                     <a href="{{route('AccidentSaleController.showSelectCompany')}}" class="text-decoration-none text-dark">
                         <img src="{{ asset('assets/image/personal_accident.png') }}" style="width: auto;height: 200px;">
                         <h4 class="mt-2">
-                            ປະກັນໄພອຸບັດຕິເຫດບຸກຄົນ PA/OPA
+                            ປະກັນໄພອຸບັດຕິເຫດບຸກຄົນ
                         </h4>
                     </a>
                 </div>

@@ -238,4 +238,43 @@ class AccidentSaleController extends Controller
         }
        
     }
+    public function showPaymentSubmitPage($id){
+        if(Session('accident_id')){
+            $provider = PaymentProvider::find($id);
+            return view('insurances.accident.showPaymentSubmit')
+            ->with('provider',$provider);
+        }else{
+            return redirect()->route('welcome');
+        }
+    }
+
+    public function submitAccidentPayment(Request $req){
+        if(Session('accident_id')){
+
+            $req->validate([
+                'slipUploaded'=>'required'
+            ]);
+            $accident_id = Session('accident_id');
+
+            $accidentData = AccidentInput::find($accident_id);
+            $extension = $req->file('slipUploaded')->getClientOriginalExtension();
+            $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
+            $imageData = file_get_contents($newImageCompress);
+            $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($imageData);
+
+            $accidentData->slipUploaded = $base64SlipImage;
+
+            $accidentData->payment_time = now();
+
+            $accidentData->save();
+            
+            session(['payment_status' => 'WAIT_FOR_APPROVED']);
+
+            return redirect()->route('InsuranceFlowController.showComplete');
+
+
+        }else{
+            return redirect()->route('welcome');
+        }
+    }
 }

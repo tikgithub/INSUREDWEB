@@ -16,10 +16,10 @@
             <div class="col-md-12 text-center pb-4">
                 <h2 class="notosanLao">{{ $provider->name }}</h2>
                 <div>
-                    <span><img src="{{ asset($provider->logo) }}" class="provider-logo"></span>
+                    <span><img src="{{ asset($provider->logo) }}" style="width: auto; height: 100px;"></span>
                     <span class="notosanLao">ເລກບັນຊີ: <u>{{ $provider->account }}</u></span>
                 </div>
-
+                <div class="pt-4"></div>
                 <img src="{{ asset($provider->qrscan) }}" class="shadow img-fluid pt-4">
             </div>
 
@@ -39,7 +39,7 @@
         {{-- Form Submit --}}
         <div class="row">
             <div class="col-md-12 text-center">
-                <form action="{{route('InsuranceFlowController.updatePaymentDetailOfThirdParty')}}" enctype="multipart/form-data" method="post" id="submitForm">
+                <form action="{{route('AccidentSaleController.submitAccidentPayment')}}" enctype="multipart/form-data" method="post" id="submitForm">
                     @csrf
                     <input type="file" name="slipUploaded" id="slipUploaded" hidden onchange="formSubmit()">
                     <button onclick="onConfirmClick()" type="button" class="btn bg-blue text-white notosanLao btn-lg"><i class="bi bi-check2-circle"></i> ຢຶນຢັນການຈ່າຍເງິນ</button>
@@ -47,6 +47,7 @@
             </div>
         </div>
     </div>
+
     <div class="pt-3"></div>
 
 @endsection
@@ -57,17 +58,6 @@
 @endsection
 
 @section('styles')
-    <style>
-        .provider-logo {
-            width: auto;
-            height: 40px;
-        }
-
-        .provider-button {
-            width: 100%;
-        }
-
-    </style>
 @endsection
 @section('scripting')
     <script>

@@ -180,6 +180,12 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
 
     //** Route to show payment provinder list for accident insurance */
     Route::get('/customer/accident/paymentlist',[AccidentSaleController::class,'showPlaymentProviderList'])->name('AccidentController.paymentProvider');
+
+    /** Route to show the payment submit page for accident insurance */
+    Route::get('/customer/accident/submitPayment/{id}',[AccidentSaleController::class,'showPaymentSubmitPage'])->name('AccidentSaleController.showPaymentSubmitPage');
+
+    /** Route To update the payment slip of Accident insurance */
+    Route::post('customer/accident/submitPayment',[AccidentSaleController::class,'submitAccidentPayment'])->name('AccidentSaleController.submitAccidentPayment');
 });
 
 
