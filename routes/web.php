@@ -88,7 +88,7 @@ Route::group(['prefix' => 'insurance'], function () {
     Route::get('/accident/select_company', [AccidentSaleController::class, 'showSelectCompany'])->name('AccidentSaleController.showSelectCompany');
     Route::get('/accident/select_insurance_type/{company_id}', [AccidentSaleController::class, 'showPackagePlan'])->name('AccidentSaleController.showPackagePlan');
     Route::get('/accident/show_package_detail/{plan_id}', [AccidentSaleController::class, 'showPlanDetail'])->name('AccidentSaleController.showPlanDetail');
-    Route::get('/accident/customer_information_input/{plan_id}',[AccidentSaleController::class,'showInputInformationPage'])->name('AccidentSaleController.showInputInformationPage');
+    Route::get('/accident/customer_information_input/{plan_id}', [AccidentSaleController::class, 'showInputInformationPage'])->name('AccidentSaleController.showInputInformationPage');
 });
 
 /** JsonResponse Route Group */
@@ -117,6 +117,9 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
 
     /** Route to show user insurance list that being to customer */
     Route::get('/customer/order', [UserController::class, 'userListInsurance'])->name('UserController.userListInsurance');
+
+    /** Route to show user insurance list that being to customer */
+    Route::get('/customer/order', [UserController::class, 'showUserInsuranceList'])->name('UserController.showUserInsuranceList');
 
     /** Route to show user profile page */
     Route::get('/customer/profile', [UserController::class, 'showUserProfilePage'])->name('UserController.showUserProfilePage');
@@ -170,22 +173,22 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     Route::post('/customer/thirparty/paymentconfirm', [InsuranceFlowController::class, 'updatePaymentDetailOfThirdParty'])->name('InsuranceFlowController.updatePaymentDetailOfThirdParty');
 
     /** Route to store the input information of accident insurance */
-    Route::post('/customer/accident/store',[AccidentSaleController::class,'storeInput'])->name('AccidentSaleController.storeInput');
+    Route::post('/customer/accident/store', [AccidentSaleController::class, 'storeInput'])->name('AccidentSaleController.storeInput');
 
     /** Route to show confirmation page of accident insurance */
-    Route::get('/customer/accident/confirm',[AccidentSaleController::class,'showConfirmationPage'])->name('AccidentSaleController.showConfirmationPage');
+    Route::get('/customer/accident/confirm', [AccidentSaleController::class, 'showConfirmationPage'])->name('AccidentSaleController.showConfirmationPage');
 
     /** Route to update confirmation input from customer of accident insurance */
-    Route::post('/customer/accident/confrim/update',[AccidentSaleController::class,'updateConfirmation'])->name('AccidentSaleController.updateConfirmation');
+    Route::post('/customer/accident/confrim/update', [AccidentSaleController::class, 'updateConfirmation'])->name('AccidentSaleController.updateConfirmation');
 
     //** Route to show payment provinder list for accident insurance */
-    Route::get('/customer/accident/paymentlist',[AccidentSaleController::class,'showPlaymentProviderList'])->name('AccidentController.paymentProvider');
+    Route::get('/customer/accident/paymentlist', [AccidentSaleController::class, 'showPlaymentProviderList'])->name('AccidentController.paymentProvider');
 
     /** Route to show the payment submit page for accident insurance */
-    Route::get('/customer/accident/submitPayment/{id}',[AccidentSaleController::class,'showPaymentSubmitPage'])->name('AccidentSaleController.showPaymentSubmitPage');
+    Route::get('/customer/accident/submitPayment/{id}', [AccidentSaleController::class, 'showPaymentSubmitPage'])->name('AccidentSaleController.showPaymentSubmitPage');
 
     /** Route To update the payment slip of Accident insurance */
-    Route::post('customer/accident/submitPayment',[AccidentSaleController::class,'submitAccidentPayment'])->name('AccidentSaleController.submitAccidentPayment');
+    Route::post('customer/accident/submitPayment', [AccidentSaleController::class, 'submitAccidentPayment'])->name('AccidentSaleController.submitAccidentPayment');
 });
 
 
@@ -194,6 +197,7 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
 Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], function () {
     /** Route to show admin dashboard */
     Route::get('/welcome', [AdminController::class, 'showAdminDashBoard'])->name('AdminController.showAdminDashBoard');
+    Route::get('/welcome_admin', [AdminController::class, 'showNewAdminDashBoard'])->name('AdminController.showNewAdminDashBoard');
 
     /** Route to allow admin to view detail of insurance customer selected */
     Route::get('/insurance/view/{id}', [AdminController::class, 'showCustomerInput'])->name('AdminController.showCustomerInput');
@@ -374,5 +378,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get("/datamanager/accidentplan/plandetail/{plan_id}", [AccidentPlanController::class, 'showPlanDetail'])->name("AccidentPlanController.showPlanDetail");
     Route::post('/datamanager/accidentplan/plandetail', [AccidentPlanController::class, 'updatePrice'])->name('AccidentPlanController.updatePrice');
     /** End Accident Plan */
+
+    Route::get('/insuranceList', [AdminController::class, 'showInsuranceList'])->name('AdminController.showInsuranceList');
+
+
     /************************************************ End Data Manager **************************************/
 });

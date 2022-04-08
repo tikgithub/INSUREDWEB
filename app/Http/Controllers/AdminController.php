@@ -60,6 +60,10 @@ class AdminController extends Controller
             ->with('inContracts',$inContracts);
     }
 
+    public function showNewAdminDashBoard(){
+        return view('admin.newDashBoard');
+    }
+
     /** Function to allow admin to view input data from customer (readonly customer can edit only) */
     public function showCustomerInput($id)
     {
@@ -609,5 +613,9 @@ class AdminController extends Controller
          return view('admin.curd.accidentCoverType.index')
          ->with('companies',$companies)
          ->with('heathCoverTypes',$heathCoverTypes);
+     }
+
+     public function showInsuranceList(){
+         return view('admin.insuranceList');
      }
 }

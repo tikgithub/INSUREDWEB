@@ -79,7 +79,7 @@ class UserController extends Controller
         /** Send to Laravel Sign */
         if (Auth::attempt(['email' => $req->input('email'), 'password' => $req->input('password')])) {
             if (Auth::user()->role == 'admin') {
-                return redirect()->route('AdminController.showAdminDashBoard');
+                return redirect()->route('AdminController.showNewAdminDashBoard');
             } else {
                 return redirect()->route('welcome');
             }
@@ -200,5 +200,9 @@ class UserController extends Controller
         $user->save();
         Auth::attempt(['email' => $user->email, 'password' => $user->password]);
         return redirect()->route('UserController.showUserProfilePage')->with('success', 'ດຳເນີນການສຳເລັດ');
+    }
+
+    public function showUserInsuranceList(){
+        return view('user_view.userInsuranceList');
     }
 }

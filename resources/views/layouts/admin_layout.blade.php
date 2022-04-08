@@ -118,8 +118,8 @@
 
     <div class="sidenav notosanLao">
         {{-- Menu Index DashBoard --}}
-        <a href="{{ route('AdminController.showAdminDashBoard') }}" @php
-            if (Request::url() == route('AdminController.showAdminDashBoard')) {
+        <a href="{{ route('AdminController.showNewAdminDashBoard') }}" @php
+            if (Request::url() == route('AdminController.showNewAdminDashBoard')) {
                 echo "class='text-dark bg-white'";
             }
         @endphp>
@@ -131,7 +131,7 @@
 
         {{-- Menu Index Datamanager --}}
         <a href="{{ route('AdminController.indexDataManager') }}" @php
-            if(strpos(Request::url(),"datamanager")){
+            if (strpos(Request::url(), 'datamanager')) {
                 echo "class='text-dark bg-white'";
             }
         @endphp>
@@ -142,6 +142,12 @@
         <a href="#clients"><i class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
         {{-- End Menu Index Of Website Information --}}
 
+        {{-- Menu Index Of Website Information --}}
+        <a href="{{route('AdminController.showInsuranceList')}}" class="{{Request::url() == route('AdminController.showInsuranceList')? 'text-dark bg-white' :''}}"><i class="bi bi-envelope-paper me-2"></i> ກວດສອບຂໍ້ມູນປະກັນໄພ</a>
+        {{-- End Menu Index Of Website Information --}}
+
+        
+
         {{-- Padding HR --}}
         <hr style="color: #fff">
 
@@ -150,9 +156,9 @@
         {{-- End Menu Reporting System --}}
     </div>
     <div class="main">
-       <div class="container-fluid">
-        @yield('content')
-       </div>
+        <div class="container-fluid">
+            @yield('content')
+        </div>
     </div>
     {{-- End NavBar --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -163,7 +169,7 @@
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous">
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="{{asset('assets/js/toastr.js')}}"></script>
+    <script src="{{ asset('assets/js/toastr.js') }}"></script>
     @yield('scripting')
 
 </body>
