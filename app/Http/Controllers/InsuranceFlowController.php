@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CarBrand;
 use App\Models\District;
 use App\Models\InsuranceCompany;
+use App\Models\InsuranceInformation;
 use App\Models\Level;
 use App\Models\PaymentProvider;
 use App\Models\Province;
@@ -53,11 +54,11 @@ class InsuranceFlowController extends Controller
             case "THIRD_PARTY":
                 /** Query the package which relate to Third party only */
                 $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
-                tpp.fee, tpp.final_price, ic.logo 
-                FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
-                INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+                tpp.fee, tpp.final_price, ic.logo
+                FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
+                INNER JOIN vehicle__types vt on vt.id = vd.v_id
                 INNER JOIN insurance_companies ic on ic.id = tpp.company_id
-                INNER JOIN levels l on l.id = tpp.`level` 
+                INNER JOIN levels l on l.id = tpp.`level`
                 AND vt.id = ? AND  tpp.status = 1 AND l.id = ?";
 
                 $thirdPartyPackage = DB::select($query, [$req->input('vehicle_type'), $req->input('level')]);
@@ -213,7 +214,7 @@ class InsuranceFlowController extends Controller
         $saleData = SaleOption::find($req->input('sale_id'));
 
         //create new eqloquent object
-        $newInput = new VehicleInsuranceDetail();
+        $newInput = new InsuranceInformation();
 
         $newInput->firstname = trim($req->input('firstname'));
         $newInput->lastname = trim($req->input('lastname'));
@@ -241,7 +242,8 @@ class InsuranceFlowController extends Controller
         $newInput->right_image = ImageCompress::notCompressImage($req->file('right'), $uploadPath);
         $newInput->rear_image = ImageCompress::notCompressImage($req->file('rear'), $uploadPath);
         $newInput->yellow_book_image = ImageCompress::notCompressImage($req->file('yellow_book'), $uploadPath);
-        $newInput->sale_options_id = $req->input('sale_id');
+        $newInput->insurance_type_id = $req->input('sale_id');
+        $newInput->insurance_type = "HIGH-VALUEABLE";
         $newInput->save();
         //Set Session for new Input ID
         session(['input_id' => $newInput->id]);
@@ -255,10 +257,12 @@ class InsuranceFlowController extends Controller
         //Get session id
         $input_id = session('input_id');
 
+
         //Get Input Data after submit
-        $inputData = VehicleInsuranceDetail::find($input_id);
+        $inputData = InsuranceInformation::find($input_id);
+
         //Get Sale option data
-        $saleOption = SaleOption::find($inputData->sale_options_id);
+        $saleOption = SaleOption::find($inputData->insurance_type_id);
         $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
         $level = Level::find($vehiclePackage->lvl_id);
         $company = InsuranceCompany::find($vehiclePackage->c_id);
@@ -321,7 +325,7 @@ class InsuranceFlowController extends Controller
         //Find Sale ID
         $saleData = SaleOption::find($req->input('sale_id'));
         //Find eqloquent object for perform the update operation
-        $newInput = VehicleInsuranceDetail::find($req->input('id'));
+        $newInput = InsuranceInformation::find($req->input('id'));
 
         $newInput->firstname = trim($req->input('firstname'));
         $newInput->lastname = trim($req->input('lastname'));
@@ -367,7 +371,7 @@ class InsuranceFlowController extends Controller
             $newInput->yellow_book_image = ImageCompress::compressImage($req->file('yellow_book'), 70, $uploadPath, 800);
         }
 
-        $newInput->sale_options_id = $req->input('sale_id');
+        $newInput->insurance_type_id = $req->input('sale_id');
         $newInput->save();
         //Set Session for new Input ID
         session(['input_id' => $newInput->id]);
@@ -413,7 +417,7 @@ class InsuranceFlowController extends Controller
         if (!session('input_id')) {
             return redirect()->route('welcome');
         }
-        $inputData = VehicleInsuranceDetail::find(session('input_id'));
+        $inputData = InsuranceInformation::find(session('input_id'));
 
         $extension = $req->file('slipUploaded')->getClientOriginalExtension();
         $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
@@ -421,7 +425,7 @@ class InsuranceFlowController extends Controller
         $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($data);
         File::delete($newImageCompress);
 
-        $inputData->slip_confirmed = $base64SlipImage;
+        $inputData->slipUploaded = $base64SlipImage;
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
 
@@ -477,11 +481,11 @@ class InsuranceFlowController extends Controller
     public function showThirdPartyInsuranceCoverItem($id)
     {
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
-        tpp.fee, tpp.final_price, ic.logo 
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        tpp.fee, tpp.final_price, ic.logo
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
-        INNER JOIN levels l on l.id = tpp.`level` 
+        INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
         //Get Package Detail
         $packageDetail = collect(DB::select($query, [$id]))->first();
@@ -498,11 +502,11 @@ class InsuranceFlowController extends Controller
     {
 
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
-        tpp.fee, tpp.final_price, ic.logo 
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        tpp.fee, tpp.final_price, ic.logo
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
-        INNER JOIN levels l on l.id = tpp.`level` 
+        INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
 
         //Get Package Detail
@@ -527,11 +531,11 @@ class InsuranceFlowController extends Controller
     {
         //session(['third_id'=>$id]);
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
-        tpp.fee, tpp.final_price, ic.logo 
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        tpp.fee, tpp.final_price, ic.logo
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
-        INNER JOIN levels l on l.id = tpp.`level` 
+        INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
 
         $thirdPartyPackage = collect(DB::select($query, [$id]))->first();
@@ -577,7 +581,7 @@ class InsuranceFlowController extends Controller
         /////////////////////////////////
 
         //Create new object
-        $object = new ThirdPartyCustomerInput();
+        $object = new InsuranceInformation();
         $object->firstname = $req->input('firstname');
         $object->lastname = $req->input('lastname');
         $object->sex = $req->input('sex');
@@ -598,7 +602,8 @@ class InsuranceFlowController extends Controller
 
         $object->fee_charge = $thirdPackage->fee;
         $object->total_price = $thirdPackage->final_price;
-        $object->third_package_id = $req->input('package_id');
+        $object->insurance_type_id = $req->input('package_id');
+        $object->insurance_type = "THIRD-PARTY";
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
         $object->user_id = Auth::user()->id;
 
@@ -611,25 +616,25 @@ class InsuranceFlowController extends Controller
         }
     }
 
-   
+
     /** Function to show agreement of thirdParty after input */
     public function showThirdPartyAgreement($package_id)
     {
-        
+
         //Get section information
         session(['third_package_id'=>$package_id]);
 
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo, tpp.term
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id 
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id 
+        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle__types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
-        INNER JOIN levels l on l.id = tpp.`level` 
+        INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
 
-        $customerPackage = ThirdPartyCustomerInput::find(session('third_package_id'));
+        $customerPackage = InsuranceInformation::find(session('third_package_id'));
 
-        $thirdPartyPackage = collect(DB::select($query, [$customerPackage->third_package_id]))->first();
+        $thirdPartyPackage = collect(DB::select($query, [$customerPackage->insurance_type_id]))->first();
 
         //Get cover item detail
         $coverDetail = ThirdPartyCoverItem::where('third_package_id', '=', $customerPackage->third_package_id)->get();
@@ -650,7 +655,7 @@ class InsuranceFlowController extends Controller
     /** Function to customer to confirm customer information */
     public function updateConfirmThirdParty(Request $req)
     {
-    
+
         //Get section information
         if (!Session::has('third_package_id')) {
             return redirect()->back()->with('error', 'ເກິດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່ພາຍຫຼັງ');
@@ -674,7 +679,7 @@ class InsuranceFlowController extends Controller
         ]);
 
         //Find the object
-        $object = ThirdPartyCustomerInput::find(session('third_package_id'));
+        $object = InsuranceInformation::find(session('third_package_id'));
         $object->firstname = $req->input('firstname');
         $object->lastname = $req->input('lastname');
         $object->sex = $req->input('sex');
@@ -690,8 +695,6 @@ class InsuranceFlowController extends Controller
         $object->engine_number = $req->input('engine_number');
         $object->chassic_number = $req->input('chassic_number');
         $object->registered_province = $req->input('registeredProvince');
-
-        $object->third_package_id = $req->input('package_id');
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
         if($object->save()){
 
@@ -699,7 +702,7 @@ class InsuranceFlowController extends Controller
         }else{
             return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
-        
+
     }
 
     /** Function to show the payment provider detail */
@@ -722,7 +725,7 @@ class InsuranceFlowController extends Controller
 
         //When session not set then send back to welcome page
         if (!Session::has('third_package_id')) {
-        
+
             return redirect()->route('welcome');
         }
         $provider = PaymentProvider::find($provider_id);
@@ -741,11 +744,11 @@ class InsuranceFlowController extends Controller
 
         //When session not set then send back to welcome page
         if (!Session::has('third_package_id')) {
-           
+
             return redirect()->route('welcome');
         }
 
-        $inputData = ThirdPartyCustomerInput::find(session('third_package_id'));
+        $inputData = InsuranceInformation::find(session('third_package_id'));
 
         $extension = $req->file('slipUploaded')->getClientOriginalExtension();
         $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
@@ -753,7 +756,7 @@ class InsuranceFlowController extends Controller
         $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($data);
         File::delete($newImageCompress);
 
-        $inputData->slip_confirmed = $base64SlipImage;
+        $inputData->slipUploaded = $base64SlipImage;
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
 

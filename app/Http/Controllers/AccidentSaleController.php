@@ -6,6 +6,7 @@ use App\Models\AccidentInput;
 use App\Models\AccidentPlan;
 use App\Models\District;
 use App\Models\HeathCoverType;
+use App\Models\InsuranceInformation;
 use App\Models\PaymentProvider;
 use App\Models\Province;
 use Illuminate\Http\Request;
@@ -105,7 +106,7 @@ class AccidentSaleController extends Controller
         /** *************************************** */
 
         //Create new Object for store user input information
-        $obj = new AccidentInput();
+        $obj = new InsuranceInformation();
         $obj->firstname = $req->input('firstname');
         $obj->lastname = $req->input('lastname');
         $obj->sex = $req->input('sex');
@@ -115,10 +116,16 @@ class AccidentSaleController extends Controller
         $obj->province = $req->input('province');
         $obj->district = $req->input('district');
         $obj->address = $req->input('address');
-        $obj->plan_id = $req->input('plan_id');
+        $obj->insurance_type_id = $req->input('plan_id');
+        $obj->insurance_type = "ACIIDENT";
+        //Add free charge and Total price of each plan Id
+        $accidentPlanDetail = AccidentPlan::find($req->input('plan_id'));
+        $obj->fee_charge = $accidentPlanDetail->fee;
+        $obj->total_price = $accidentPlanDetail->sale_price;
+
         //Image upload
         if ($req->file('reference_photo')) {
-            $obj->reference_photo =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+            $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
         } else {
             return redirect()->back()->with('error', 'Photo not found');
         }
@@ -134,16 +141,17 @@ class AccidentSaleController extends Controller
     public function showConfirmationPage()
     {
         if (Session('accident_id')) {
-            $accident_id = Session('accident_id');
 
-            $accidentData = AccidentInput::find($accident_id);
-            $plan_id = $accidentData->plan_id;
+            $accident_id = Session('accident_id');
+           // dd($accident_id);
+            $accidentData = InsuranceInformation::find($accident_id);
+            $plan_id = $accidentData->insurance_type_id;
 
             $queryAccidentData = "SELECT accident_plans.id, accident_plans.name as planName, insurance_companies.name as companyName, insurance_companies.logo, heath_cover_types.name as coverType FROM accident_plans
             INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id
             INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
             $planData = collect(DB::select($queryAccidentData, [$plan_id]))->first();
-
+           
             //Query Province data
             $provinceData = Province::all();
 
@@ -195,7 +203,7 @@ class AccidentSaleController extends Controller
             /** *************************************** */
 
             //Create new Object for store user input information
-            $obj = AccidentInput::find($req->input('update_id'));
+            $obj = InsuranceInformation::find($req->input('update_id'));
             $obj->firstname = $req->input('firstname');
             $obj->lastname = $req->input('lastname');
             $obj->sex = $req->input('sex');
@@ -205,11 +213,10 @@ class AccidentSaleController extends Controller
             $obj->province = $req->input('province');
             $obj->district = $req->input('district');
             $obj->address = $req->input('address');
-            $obj->plan_id = $req->input('plan_id');
 
             //Image upload
             if ($req->file('reference_photo')) {
-                $obj->reference_photo =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+                $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
             }
             if ($obj->save()) {
                 //Set Session
@@ -223,11 +230,11 @@ class AccidentSaleController extends Controller
             return redirect()->route('welcome');
         }
     }
-    
+
 
     public function showPlaymentProviderList()
     {
-        
+
         if(Session('accident_id')){
             $paymentProviders = PaymentProvider::all();
 
@@ -236,7 +243,7 @@ class AccidentSaleController extends Controller
         }else{
             return redirect()->route('welcome');
         }
-       
+
     }
     public function showPaymentSubmitPage($id){
         if(Session('accident_id')){
@@ -256,7 +263,7 @@ class AccidentSaleController extends Controller
             ]);
             $accident_id = Session('accident_id');
 
-            $accidentData = AccidentInput::find($accident_id);
+            $accidentData = InsuranceInformation::find($accident_id);
             $extension = $req->file('slipUploaded')->getClientOriginalExtension();
             $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
             $imageData = file_get_contents($newImageCompress);
@@ -267,7 +274,7 @@ class AccidentSaleController extends Controller
             $accidentData->payment_time = now();
 
             $accidentData->save();
-            
+
             session(['payment_status' => 'WAIT_FOR_APPROVED']);
 
             return redirect()->route('InsuranceFlowController.showComplete');

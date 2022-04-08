@@ -56,7 +56,7 @@
 </div>
 @endsection
 
-@section('styles')
+@section('style')
     <style>
         .provider-logo {
             width: auto;

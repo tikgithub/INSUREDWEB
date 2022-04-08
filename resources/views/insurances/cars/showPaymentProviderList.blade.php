@@ -18,7 +18,7 @@
                     <div class="pt-2"></div>
                     <span><b class="fs-5">{{$item->account}}</b></span>
                 </a>
-               
+
             </div>
         @endforeach
     </div>
@@ -30,7 +30,7 @@
     @include('layouts.footer')
 </div>
 @endsection
-@section('styles')
+@section('style')
     <style>
         .provider-logo{
             width: auto;

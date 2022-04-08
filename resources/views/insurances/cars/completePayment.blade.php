@@ -9,7 +9,7 @@
             <p class="fs-4 notosanLao text-center">
                 ທີມງານຈະຕິດຕໍ່ພາຍຫຼັງ ຫຼັງຈາກກວດສອບສຳເລັດ
             </p>
-            <div class="text-center pt-5 pb-5"> 
+            <div class="text-center pt-5 pb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="#36ba59"
                     class="bi bi-check2-circle" viewBox="0 0 16 16">
                     <path
@@ -19,7 +19,7 @@
                 </svg>
             </div>
             <div class="text-center">
-                <a href="{{ route('UserController.userListInsurance') }}" class="btn bg-blue btn-lg text-white notosanLao">
+                <a href="{{ route('UserController.showUserInsuranceList') }}" class="btn bg-blue btn-lg text-white notosanLao">
                     ລາຍການຊື້ປະກັນໄພ</a>
             </div>
         </div>

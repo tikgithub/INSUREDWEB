@@ -176,10 +176,10 @@ use App\Utils\ImageCompress;
                                     <button type="button" onclick="selectPhotoOnClick()"
                                         class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
                                         ເລືອກຮູບ</button><br>
-                                    <img id="img_preview" src="{{ImageCompress::getThumnailImage($accidentData->reference_photo)}}" alt="" srcset="" class="border rounded img-fluid">
+                                    <img id="img_preview" src="{{ImageCompress::getThumnailImage($accidentData->front_image)}}" alt="" srcset="" class="border rounded img-fluid">
                                 </div>
                             </div>
-                           
+
                             <hr>
                             <div class="mb-3 fs-4 text-center">
                                 <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-lg bg-blue text-white"><i class="bi bi-cash me-3"></i>ຈ່າຍເງິນ</button>
@@ -227,7 +227,7 @@ use App\Utils\ImageCompress;
               <h5 class="modal-title" id="staticBackdropLabel">ເງືອນໄຂຂອງປະກັນໄພ</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">    
+            <div class="modal-body">
                 <textarea name="" id="" cols="30" rows="10" class="form-control">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde molestiae labore sapiente quam, iusto voluptas. Dolore ea consequatur sapiente autem culpa, rerum dolor ut voluptas quisquam quibusdam corrupti magnam odit.
                 </textarea>
@@ -240,7 +240,7 @@ use App\Utils\ImageCompress;
         </div>
       </div>
 
-      
+
 @endsection
 @section('footer')
     @include('layouts.footer')
