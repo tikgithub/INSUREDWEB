@@ -102,3 +102,7 @@ legend {
       display: none;
     }
   }
+
+  .fr-line{
+    line-height : 20px;
+  }

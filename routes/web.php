@@ -189,6 +189,9 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
 
     /** Route To update the payment slip of Accident insurance */
     Route::post('customer/accident/submitPayment', [AccidentSaleController::class, 'submitAccidentPayment'])->name('AccidentSaleController.submitAccidentPayment');
+
+    /** Route to show insurance user information detail */
+    Route::get('/user/vehicle_detail/{id}',[UserController::class,'showVehicleInsuranceDetailPage'])->name('UserController.showVehicleInsuranceDetailPage');
 });
 
 

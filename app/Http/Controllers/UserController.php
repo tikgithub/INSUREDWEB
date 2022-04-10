@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\InsuranceCompany;
+use App\Models\InsuranceInformation;
 use App\Models\SaleOption;
 use App\Models\User;
 use App\Models\VehicleInsuranceDetail;
@@ -106,28 +107,28 @@ class UserController extends Controller
         }
     }
     /** List all the insurance data which customer having now */
-    public function userListInsurance()
-    {
-        //Get user Information
-        $user = Auth::user();
+    // public function userListInsurance()
+    // {
+    //     //Get user Information
+    //     $user = Auth::user();
 
-        //Get Information of Normal insurance
-        $insuranceData = VehicleInsuranceDetail::where('user_id', '=', $user->id)->get();
-        //Get ThirdParty Insurance data of user
-        $query = "SELECT tpci.id, tpp.name  as package_name, ic.name  as company_name, ic.logo, tpci.total_price, c.name as vehicle_brand, pro.province_name as registered_province,
-        tpci .number_plate ,tpci.engine_number , tpci.chassic_number, tpci.payment_time, tpci .payment_confirm, tpci .slip_confirmed, tpci.third_package_id, tpci.contract_no
-        FROM third_party_customer_inputs tpci inner join provinces p on p.id = tpci.id
-        inner join third_party_packages tpp on tpp.id = tpci.third_package_id
-        INNER join insurance_companies ic on ic.id = tpp.company_id
-        INNER join carbrands c on c.id = tpci.vehicle_brand
-        inner join provinces pro on pro.id = tpci.registered_province
-        Where tpci .user_id  = ?";
-        $thirdPartyList = (DB::select($query,[Auth::user()->id]));
+    //     //Get Information of Normal insurance
+    //     $insuranceData = VehicleInsuranceDetail::where('user_id', '=', $user->id)->get();
+    //     //Get ThirdParty Insurance data of user
+    //     $query = "SELECT tpci.id, tpp.name  as package_name, ic.name  as company_name, ic.logo, tpci.total_price, c.name as vehicle_brand, pro.province_name as registered_province,
+    //     tpci .number_plate ,tpci.engine_number , tpci.chassic_number, tpci.payment_time, tpci .payment_confirm, tpci .slip_confirmed, tpci.third_package_id, tpci.contract_no
+    //     FROM third_party_customer_inputs tpci inner join provinces p on p.id = tpci.id
+    //     inner join third_party_packages tpp on tpp.id = tpci.third_package_id
+    //     INNER join insurance_companies ic on ic.id = tpp.company_id
+    //     INNER join carbrands c on c.id = tpci.vehicle_brand
+    //     inner join provinces pro on pro.id = tpci.registered_province
+    //     Where tpci .user_id  = ?";
+    //     $thirdPartyList = (DB::select($query,[Auth::user()->id]));
 
-        return view('user_view.insuranceList')
-            ->with('orderData', $insuranceData)
-            ->with('thirdPartyList',$thirdPartyList);
-    }
+    //     return view('user_view.insuranceList')
+    //         ->with('orderData', $insuranceData)
+    //         ->with('thirdPartyList',$thirdPartyList);
+    // }
 
     /** User Profile viewer */
     public function showUserProfilePage()
@@ -203,6 +204,34 @@ class UserController extends Controller
     }
 
     public function showUserInsuranceList(){
-        return view('user_view.userInsuranceList');
+
+        $vehicleSQLQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
+        ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+        ii.color, ii.front_image , so.name as option_name , vp.name as package_name, l.name as level_name
+        from insurance_information ii inner join sale_options so on ii.insurance_type_id = so.id 
+        inner join vehicle_packages vp on vp.id = so.vp_id 
+        inner join insurance_companies ic on ic.id = vp.c_id
+        inner join levels l on l.id = vp.lvl_id 
+        where ii.insurance_Type  = 'HIGH-VALUEABLE' and ii.user_id = ?";
+
+        $thirdPartyQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
+        ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, 
+        (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+        ii.color, ii.front_image, tpp.name as package_name , tpo.name as option_name, l.name  as level_name
+        from insurance_information ii inner join third_party_options tpo on ii.insurance_type_id = tpo.id
+        inner join  levels l on l.id = tpo.lvl_id 
+        inner join  third_party_packages tpp on tpp.id = ii.insurance_type_id 
+        inner join insurance_companies ic on ic.id = tpp.company_id 
+        where ii.insurance_Type  = 'THIRD-PARTY' and user_id = ?";
+
+        $vehicleInsurance = DB::select($vehicleSQLQuery,[Auth::user()->id]);
+
+        $thirdPartyInsurance = DB::select($thirdPartyQuery,[Auth::user()->id]);
+
+        return view('user_view.userInsuranceList')->with('vehicleInsurance',$vehicleInsurance)->with('thirdPartyInsurance',$thirdPartyInsurance);
+    }
+
+    public function showVehicleInsuranceDetailPage($id){
+        return view('user_view.vehicleinsuranceDetailView');
     }
 }
