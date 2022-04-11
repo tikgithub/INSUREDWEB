@@ -1,100 +1,99 @@
 @extends('layouts.public_layout')
 @section('content')
-    <div class="pt-3">
-
-    </div>
+    <div class="pt-5"></div>
     <div class="row">
         <div class="col-md-12 fw-bold fs-3 text-center">
             ລາຍການປະກັນໄພຂອງທ່ານ {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
         </div>
     </div>
-    {{-- Display Vehicle Insurance detail --}}
-    @if (isset($vehicleInsurance))
+    <div class="pt-3"></div>
+    <div class="w3-bar w3-black text-center">
+        @if (isset($vehicleInsurance))
+            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('vihecle')">ປະກັນໄພຍານພາຫະນະ</button>
+        @endif
+        @if (isset($vehicleInsurance))
+            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('thirdParty')">ປະກັນໄພບຸກຄົນທີສາມ</button>
+        @endif
+        @if (isset($accidentInsurance))
+            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('accident')">ປະພັນໄພອຸບັດຕິເຫດ</button>
+        @endif
+        @if (isset($accidentInsurance))
+            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('heath')">ປະກັນໄພສຸຂະພາບ</button>
+        @endif
+
+    </div>
+    <div class="pt-5"></div>
+    <div id="vihecle" class="tab">
+        {{-- Display Vehicle Insurance detail --}}
+
         <div class="row">
             <div class="col-md-12 pt-1 bg-blue">
                 <h3 class="text-white">ປະກັນໄພຍານພາຫະນະ</h3>
             </div>
         </div>
-    @endif
-    <hr>
-    @foreach ($vehicleInsurance as $item)
-        <a class="row text-decoration-none text-dark mouse-over pt-2"
-            href="{{ route('UserController.showVehicleInsuranceDetailPage', ['id' => $item->insurance_id]) }}"
-            style="cursor: pointer">
-            <div class="col-md-4 text-center ">
-                <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}" class="company-logo border">
-                <h4 class="mt-2">
+        @foreach ($vehicleInsurance as $item)
+            <a class="row text-decoration-none text-dark mouse-over pt-2"
+                href="{{ route('UserController.showVehicleInsuranceDetailPage', ['id' => $item->insurance_id]) }}"
+                style="cursor: pointer">
+                <div class="col-md-4 text-center ">
+                    <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
+                        class="company-logo border">
+                    <h4 class="mt-2">
 
-                    <b>{{ $item->company_name }}</b><br><br>{{ $item->level_name }}<br>{{ $item->package_name }}
-                    {{ $item->option_name }}
-                </h4>
-            </div>
-            <div class="col-md-4 text-center align-self-center">
+                        <b>{{ $item->company_name }}</b><br><br>{{ $item->level_name }}<br>{{ $item->package_name }}
+                        {{ $item->option_name }}
+                    </h4>
+                </div>
+                <div class="col-md-4 text-center align-self-center">
 
-                <span style="" class="fs-2 fw-bold text-danger"><u>{{ $item->number_plate }}</u></span> <br>
-                <span class="fs-4 fr-line">{{ $item->registeredProvince }}</span>
+                    <span style="" class="fs-2 fw-bold text-danger"><u>{{ $item->number_plate }}</u></span> <br>
+                    <span class="fs-4 fr-line">{{ $item->registeredProvince }}</span>
 
-            </div>
-            <div class="col-md-4 text-center align-self-center mt-2">
+                </div>
+                <div class="col-md-4 text-center align-self-center mt-2">
 
-              @include('user_view.alertComponent')
+                    @include('user_view.alertComponent')
 
-            </div>
-        </a>
-        <hr>
-        <div class="pt-2"></div>
-    @endforeach
+                </div>
+            </a>
+            <hr>
+        @endforeach
+
+    </div>
 
 
-    {{-- Display ThirdParty Insurance Detail --}}
-    @if (isset($vehicleInsurance))
+    <div id="thirdParty" class="tab" style="display:none">
+        {{-- Display ThirdParty Insurance Detail --}}
+
         <div class="row ">
             <div class="col-md-12 pt-1 bg-blue">
                 <h3 class="text-white">ປະກັນໄພບຸກຄົນທີ 3</h3>
             </div>
         </div>
-        <hr>
-    @endif
+        @foreach ($thirdPartyInsurance as $item)
+            <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
+                <div class="col-md-4 text-center ">
+                    <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
+                        class="company-logo border">
+                    <h4 class="mt-2">
 
-    @foreach ($thirdPartyInsurance as $item)
-        <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
-            <div class="col-md-4 text-center ">
-                <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
-                    class="company-logo border">
-                <h4 class="mt-2">
+                        <b>{{ $item->company_name }}</b><br><br>{{ $item->level_name }}<br>{{ $item->package_name }}
+                        {{ $item->option_name }}
+                    </h4>
+                </div>
+                <div class="col-md-4 text-center align-self-center">
 
-                    <b>{{ $item->company_name }}</b><br><br>{{ $item->level_name }}<br>{{ $item->package_name }}
-                    {{ $item->option_name }}
-                </h4>
-            </div>
-            <div class="col-md-4 text-center align-self-center">
+                    <span style="" class="fs-2 fw-bold text-danger"><u>{{ $item->number_plate }}</u></span> <br>
+                    <span class="fs-4 fr-line">{{ $item->registeredProvince }}</span>
 
-                <span style="" class="fs-2 fw-bold text-danger"><u>{{ $item->number_plate }}</u></span> <br>
-                <span class="fs-4 fr-line">{{ $item->registeredProvince }}</span>
+                </div>
+                <div class="col-md-4 text-center align-self-center mt-2">
+                    @include('user_view.alertComponent')
+                </div>
+            </a>
+            <hr>
+        @endforeach
 
-            </div>
-            <div class="col-md-4 text-center align-self-center mt-2">
-                @include('user_view.alertComponent')
-            </div>
-        </a>
-        <hr>
-        <div class="pt-2"></div>
-    @endforeach
-
-    <div class="w3-bar w3-black">
-        <button class="w3-bar-item w3-button" onclick="openCity('vihecle')">ປະກັນໄພຍານພາຫະນະ</button>
-        <button class="w3-bar-item w3-button" onclick="openCity('thirdParty')">ປະກັນໄພບຸກຄົນທີສາມ</button>
-        <button class="w3-bar-item w3-button" onclick="openCity('accident')">ປະພັນໄພອຸບັດຕິເຫດ</button>
-        <button class="w3-bar-item w3-button" onclick="openCity('heath')">ປະກັນໄພສຸຂະພາບ</button>
-    </div>
-    <div id="vihecle" class="tab">
-        <h2>London</h2>
-        <p>London is the capital of England.</p>
-    </div>
-
-    <div id="thirdParty" class="tab" style="display:none">
-        <h2>Paris</h2>
-        <p>Paris is the capital of France.</p>
     </div>
 
     <div id="accident" class="tab" style="display:none">
@@ -108,9 +107,10 @@
 
     {{-- Display Insurance Accident Insurance Detail --}}
 @endsection
-{{-- @section('footer')
+
+@section('footer')
     @include('layouts.footer')
-@endsection --}}
+@endsection
 
 @section('scripting')
     <script>
@@ -144,9 +144,10 @@
         .mouse-over:hover {
             background-color: #ccc;
         }
-        .tab{
+
+        .tab {
             background-color: #fff;
-            border-block-color: #fff;
+            border-color: #fff;
         }
 
     </style>
