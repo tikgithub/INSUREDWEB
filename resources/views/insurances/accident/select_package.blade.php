@@ -20,7 +20,7 @@
 
                 <div class="card mb-4">
                     <div class="card-header bg-blue">
-                        <h3 class="card-title text-white text-center"><b>{{ $item->name }} {{ $item->id }}</b></h3>
+                        <h3 class="card-title text-white text-center"><b>{{ $item->name }}</b></h3>
                     </div>
                     <div class="card-body text-center">
                         @php

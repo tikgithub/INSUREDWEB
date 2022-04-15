@@ -224,11 +224,24 @@ class UserController extends Controller
         inner join insurance_companies ic on ic.id = tpp.company_id 
         where ii.insurance_Type  = 'THIRD-PARTY' and user_id = ?";
 
-        $vehicleInsurance = DB::select($vehicleSQLQuery,[Auth::user()->id]);
+        $accidentInsuranceQuery = "SELECT ii.id as insurance_id, ic.name  as company_name, ap.name as plan_name, hct.name as package_name, concat(case ii.sex when('M') then 'ທ້າວ. ' when('F') then 'ນາງ. ' End ,' ',ii.firstname,' ', ii.lastname) as insuredName,
+        ic.logo  as company_logo, ii.payment_confirm, (select province_name from provinces where id = ii.province) as province
+        FROM insurance_information ii
+        inner join accident_plans ap on ap.id = ii.insurance_type_id 
+        inner JOIN  heath_cover_types hct  on hct.id = ap.cover_type_id
+        INNER JOIN  insurance_companies ic  on ic.id  = hct.company_id
+        Where ii.insurance_Type ='ACIIDENT' And user_id=?";
 
+        $vehicleInsurance = DB::select($vehicleSQLQuery,[Auth::user()->id]);
+ 
         $thirdPartyInsurance = DB::select($thirdPartyQuery,[Auth::user()->id]);
 
-        return view('user_view.userInsuranceList')->with('vehicleInsurance',$vehicleInsurance)->with('thirdPartyInsurance',$thirdPartyInsurance);
+        $accidentInsurance = DB::select($accidentInsuranceQuery,[Auth::user()->id]);
+
+        return view('user_view.userInsuranceList')
+        ->with('vehicleInsurance',$vehicleInsurance)
+        ->with('thirdPartyInsurance',$thirdPartyInsurance)
+        ->with('accidentInsurance',$accidentInsurance);
     }
 
     public function showVehicleInsuranceDetailPage($id){

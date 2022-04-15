@@ -129,6 +129,12 @@
         {{-- Padding HR --}}
         <hr style="color: #fff">
 
+         {{-- Menu Index Of Website Information --}}
+         <a href="{{ route('AdminController.showInsuranceList') }}"
+         class="{{ Request::url() == route('AdminController.showInsuranceList') ? 'text-dark bg-white' : '' }}"><i
+             class="bi bi-envelope-paper me-2"></i> ກວດສອບລາຍການປະກັນໄພ</a>
+     {{-- End Menu Index Of Website Information --}}
+
         {{-- Menu Index Datamanager --}}
         <a href="{{ route('AdminController.indexDataManager') }}" @php
             if (strpos(Request::url(), 'datamanager')) {
@@ -141,12 +147,6 @@
         {{-- Menu Index Of Website Information --}}
         <a href="#clients"><i class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
         {{-- End Menu Index Of Website Information --}}
-
-        {{-- Menu Index Of Website Information --}}
-        <a href="{{route('AdminController.showInsuranceList')}}" class="{{Request::url() == route('AdminController.showInsuranceList')? 'text-dark bg-white' :''}}"><i class="bi bi-envelope-paper me-2"></i> ກວດສອບຂໍ້ມູນປະກັນໄພ</a>
-        {{-- End Menu Index Of Website Information --}}
-
-        
 
         {{-- Padding HR --}}
         <hr style="color: #fff">

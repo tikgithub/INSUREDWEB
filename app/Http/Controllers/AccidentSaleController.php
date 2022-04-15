@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Utils\ImageCompress;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Auth;
 
 class AccidentSaleController extends Controller
 {
@@ -118,10 +119,12 @@ class AccidentSaleController extends Controller
         $obj->address = $req->input('address');
         $obj->insurance_type_id = $req->input('plan_id');
         $obj->insurance_type = "ACIIDENT";
+        $obj->payment_confirm = "WAIT_FOR_PAYMENT";
         //Add free charge and Total price of each plan Id
         $accidentPlanDetail = AccidentPlan::find($req->input('plan_id'));
         $obj->fee_charge = $accidentPlanDetail->fee;
         $obj->total_price = $accidentPlanDetail->sale_price;
+        $obj->user_id = Auth::user()->id;
 
         //Image upload
         if ($req->file('reference_photo')) {
@@ -213,6 +216,7 @@ class AccidentSaleController extends Controller
             $obj->province = $req->input('province');
             $obj->district = $req->input('district');
             $obj->address = $req->input('address');
+            $obj->payment_confirm = "WAIT_FOR_APPROVED";
 
             //Image upload
             if ($req->file('reference_photo')) {

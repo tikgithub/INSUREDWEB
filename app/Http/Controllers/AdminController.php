@@ -43,24 +43,25 @@ class AdminController extends Controller
         /************************** End Vehicle Insurance Information ***************/
 
         /******************************* Third Party Insurance *******************************/
-        $thirPartyNewPurchase = ThirdPartyCustomerInput::where('payment_confirm','=','WAIT_FOR_PAYMENT')->get();
-        $thirdPartyWaitForApprove = ThirdPartyCustomerInput::where('payment_confirm','=','WAIT_FOR_APPROVED')->get();
-        $inContracts = ThirdPartyCustomerInput::where('payment_confirm','=','APPROVED_OK','AND')->where('end_date','>',now())->get();
+        $thirPartyNewPurchase = ThirdPartyCustomerInput::where('payment_confirm', '=', 'WAIT_FOR_PAYMENT')->get();
+        $thirdPartyWaitForApprove = ThirdPartyCustomerInput::where('payment_confirm', '=', 'WAIT_FOR_APPROVED')->get();
+        $inContracts = ThirdPartyCustomerInput::where('payment_confirm', '=', 'APPROVED_OK', 'AND')->where('end_date', '>', now())->get();
         /******************************* End Third Party Insurance *******************************/
 
         return view('admin.dashboard')
-        //Vehicle Insurance Detail
+            //Vehicle Insurance Detail
             ->with('newPurchase', $newPurchase)
             ->with('paymentItems', $paymentItems)
             ->with('contracts', $contracts)
             ->with('outOfContracts', $outOfContracts)
-        //Third Party Insurance Detail
-            ->with('thirPartyNewPurchase',$thirPartyNewPurchase)
-            ->with('thirdPartyWaitForApprove',$thirdPartyWaitForApprove)
-            ->with('inContracts',$inContracts);
+            //Third Party Insurance Detail
+            ->with('thirPartyNewPurchase', $thirPartyNewPurchase)
+            ->with('thirdPartyWaitForApprove', $thirdPartyWaitForApprove)
+            ->with('inContracts', $inContracts);
     }
 
-    public function showNewAdminDashBoard(){
+    public function showNewAdminDashBoard()
+    {
         return view('admin.newDashBoard');
     }
 
@@ -355,104 +356,114 @@ class AdminController extends Controller
             ->with('districts', $districts);
     }
 
-     /** Function to show all  out of contract () */
-     public function showAllOutOfContract()
-     {
-         //Find new purchase order not payment
-         //Find where approved and not out of contract
-         $outOfContracts = VehicleInsuranceDetail::where('contract_status', '=', 'IN_CONTRACT', 'AND')
+    /** Function to show all  out of contract () */
+    public function showAllOutOfContract()
+    {
+        //Find new purchase order not payment
+        //Find where approved and not out of contract
+        $outOfContracts = VehicleInsuranceDetail::where('contract_status', '=', 'IN_CONTRACT', 'AND')
             ->where(DB::raw('now()'), '>=', DB::raw("DATE_SUB(end_date,INTERVAL 7 DAY)"), 'AND')
             ->where(DB::raw('now()'), '<=', DB::raw("DATE_ADD(end_date,INTERVAL 7 DAY)"))->get();
 
-         //$outOfContracts = VehicleInsuranceDetail::where('payment_confirm', '=', 'APPROVED_OK', 'AND')->where('end_date', '>', now())->get();
+        //$outOfContracts = VehicleInsuranceDetail::where('payment_confirm', '=', 'APPROVED_OK', 'AND')->where('end_date', '>', now())->get();
 
-         return view('admin.viewAllOutOfContracts')
-             ->with('outOfContracts', $outOfContracts);
-     }
+        return view('admin.viewAllOutOfContracts')
+            ->with('outOfContracts', $outOfContracts);
+    }
 
-     /** Show Index Page of Datamanager */
-     public function indexDataManager(){
-         return view('admin.curd.index');
-     }
+    /** Show Index Page of Datamanager */
+    public function indexDataManager()
+    {
+        return view('admin.curd.index');
+    }
 
-     /** Show Index of CarBrand */
-     public function indexCarbrand(){
-         $carbrands = CarBrand::paginate(10);
-         return view('admin.curd.carbrand.index')
-         ->with('carbrand',$carbrands);
-     }
+    /** Show Index of CarBrand */
+    public function indexCarbrand()
+    {
+        $carbrands = CarBrand::paginate(10);
+        return view('admin.curd.carbrand.index')
+            ->with('carbrand', $carbrands);
+    }
 
-     /** Store Carbrand */
-     public function storeCarbrand(Request $req){
-         $req->validate([
-             'carbrand'=>'required|unique:carbrands,name'
+    /** Store Carbrand */
+    public function storeCarbrand(Request $req)
+    {
+        $req->validate([
+            'carbrand' => 'required|unique:carbrands,name'
         ]);
 
-         $carbrand = new CarBrand();
-         $carbrand->name = $req->input('carbrand');
-         if($carbrand->save()){
-            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
-         }
-         return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
-     }
+        $carbrand = new CarBrand();
+        $carbrand->name = $req->input('carbrand');
+        if ($carbrand->save()) {
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+        }
+        return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+    }
 
-     /** Update Carbrand */
-     public function updateCarbrand(Request $req){
-         $carbrand = CarBrand::find($req->input('editId'));
-         $req->validate([
-             'editName'=>'required'
+    /** Update Carbrand */
+    public function updateCarbrand(Request $req)
+    {
+        $carbrand = CarBrand::find($req->input('editId'));
+        $req->validate([
+            'editName' => 'required'
         ]);
         $carbrand->name = $req->input('editName');
 
-        if($carbrand->save()){
-            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
-         }
-         return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
-     }
+        if ($carbrand->save()) {
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+        }
+        return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+    }
 
-     /** Show Insurance Company index page */
-     public function indexInsuranceCompany(){
-         $companies = InsuranceCompany::paginate(10);
-         return view('admin.curd.insuranceCompany.index')
-         ->with('companies',$companies);
-     }
+    /** Show Insurance Company index page */
+    public function indexInsuranceCompany()
+    {
+        $companies = InsuranceCompany::paginate(10);
+        return view('admin.curd.insuranceCompany.index')
+            ->with('companies', $companies);
+    }
 
-     /** Show Insurance Level index page */
-     public function indexInsuranceLevel(){
-         $levels = Level::orderBy('name','asc')->paginate(10);
-         return view('admin.curd.level.index')
-         ->with('levels',$levels);
-     }
+    /** Show Insurance Level index page */
+    public function indexInsuranceLevel()
+    {
+        $levels = Level::orderBy('name', 'asc')->paginate(10);
+        return view('admin.curd.level.index')
+            ->with('levels', $levels);
+    }
 
-     /** Show Vehicle Type Index Page */
-     public function indexVehicleType(){
-         $vehicleTypes = Vehicle_Type::paginate(10);
-         return view('admin.curd.vehicle_type.index')
-         ->with('vehicleTypes',$vehicleTypes);
-     }
+    /** Show Vehicle Type Index Page */
+    public function indexVehicleType()
+    {
+        $vehicleTypes = Vehicle_Type::paginate(10);
+        return view('admin.curd.vehicle_type.index')
+            ->with('vehicleTypes', $vehicleTypes);
+    }
 
-     /** Show Vehicle Detail Index page */
-     public function indexVehicleDetail(){
-         $vehicleTypes = Vehicle_Type::all();
-         return view('admin.curd.vehicle_detail.index')
-         ->with('vehicleTypes',$vehicleTypes);
-     }
+    /** Show Vehicle Detail Index page */
+    public function indexVehicleDetail()
+    {
+        $vehicleTypes = Vehicle_Type::all();
+        return view('admin.curd.vehicle_detail.index')
+            ->with('vehicleTypes', $vehicleTypes);
+    }
 
-     /** Show VehiclePackage Information */
-     public function createVehiclePackage(){
+    /** Show VehiclePackage Information */
+    public function createVehiclePackage()
+    {
 
-         $levels = Level::where('menu_type','!=','THIRD_PARTY')->orderBy('name','asc')->get();
-         $companies = InsuranceCompany::all();
-         $vehicleTypes = Vehicle_Type::all();
+        $levels = Level::where('menu_type', '!=', 'THIRD_PARTY')->orderBy('name', 'asc')->get();
+        $companies = InsuranceCompany::all();
+        $vehicleTypes = Vehicle_Type::all();
 
-         return view('admin.curd.vehicleInsurancePackage.create')->with('levels',$levels)
-         ->with('companies',$companies)
-         ->with('vehicleTypes',$vehicleTypes);
-     }
+        return view('admin.curd.vehicleInsurancePackage.create')->with('levels', $levels)
+            ->with('companies', $companies)
+            ->with('vehicleTypes', $vehicleTypes);
+    }
 
-     /** Show ThirdPartyInsuranceDetail for "WAIT FOR PAYMENT" */
-     public function thirdPartyWaitForPaymentDetail($id){
-        
+    /** Show ThirdPartyInsuranceDetail for "WAIT FOR PAYMENT" */
+    public function thirdPartyWaitForPaymentDetail($id)
+    {
+
 
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo, tpp.term
@@ -480,32 +491,35 @@ class AdminController extends Controller
             ->with('provinces', $provinces)
             ->with('vehicleBrand', $vehicleBrand)
             ->with('customerPackage', $customerPackage);
-     }
+    }
 
-     /** Function to delete customer of third party */
-    public function deleteThirdPartyInsurance($id){
+    /** Function to delete customer of third party */
+    public function deleteThirdPartyInsurance($id)
+    {
         $deleteObject = ThirdPartyCustomerInput::find($id);
 
-        if($deleteObject->delete()){
-            return redirect()->route('AdminController.showAdminDashBoard')->with('success','ດຳເນີນການສຳເລັດ');
-        }else{
-            return redirect()->route('AdminController.showAdminDashBoard')->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        if ($deleteObject->delete()) {
+            return redirect()->route('AdminController.showAdminDashBoard')->with('success', 'ດຳເນີນການສຳເລັດ');
+        } else {
+            return redirect()->route('AdminController.showAdminDashBoard')->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
     }
 
     /** Function to show List of third party insurance which are wait for payment */
-    public function listOfThirdPartyInsuranceWaitForPayment(){
+    public function listOfThirdPartyInsuranceWaitForPayment()
+    {
 
-        $thirdPartyNewPurchase = ThirdPartyCustomerInput::where('payment_confirm','=','WAIT_FOR_PAYMENT')->get();
+        $thirdPartyNewPurchase = ThirdPartyCustomerInput::where('payment_confirm', '=', 'WAIT_FOR_PAYMENT')->get();
 
         return view('admin.thirdPartyInsurance.listOfThirdPartyInsuranceWaitForPayment')
-        ->with('thirdPartyNewPurchase',$thirdPartyNewPurchase);
+            ->with('thirdPartyNewPurchase', $thirdPartyNewPurchase);
     }
 
- 
+
     /** Show ThirdPartyInsuranceDetail for "WAIT FOR APPROVED" */
-    public function thirdPartyWaitForApproveDetail($id){
-        
+    public function thirdPartyWaitForApproveDetail($id)
+    {
+
 
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo, tpp.term
@@ -533,11 +547,12 @@ class AdminController extends Controller
             ->with('provinces', $provinces)
             ->with('vehicleBrand', $vehicleBrand)
             ->with('customerPackage', $customerPackage);
-     }
+    }
 
-     /** Function to update third party information by admin */
-     public function updateThirdPartyInformationForCustomer(Request $req){
-          //Validate the information
+    /** Function to update third party information by admin */
+    public function updateThirdPartyInformationForCustomer(Request $req)
+    {
+        //Validate the information
         $req->validate([
             'firstname' => 'required',
             'lastname' => 'required',
@@ -574,48 +589,89 @@ class AdminController extends Controller
         $object->chassic_number = $req->input('chassic_number');
         $object->registered_province = $req->input('registeredProvince');
 
-        if($object->save()){
+        if ($object->save()) {
 
-            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
-        }else{
-            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+        } else {
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
-     }
+    }
 
-     /** Function Approve Third Party Insurance */
-     public function approveThirdPartyInsurance(Request $req){
-         $req->validate([
-            'contract_no'=>'required|unique:third_party_customer_inputs,contract_no',
-            'start_date'=>'required',
-            'third_package_id'=> 'required'
-         ]);
+    /** Function Approve Third Party Insurance */
+    public function approveThirdPartyInsurance(Request $req)
+    {
+        $req->validate([
+            'contract_no' => 'required|unique:third_party_customer_inputs,contract_no',
+            'start_date' => 'required',
+            'third_package_id' => 'required'
+        ]);
 
-         //Find the object from DB
-         $object = ThirdPartyCustomerInput::find($req->input('third_package_id'));
-         $object->contract_no = $req->input('contract_no');
-         $object->start_date = $req->input('start_date');
-         $object->end_date = date('Y-m-d', strtotime('+1 year'));
-         $object->approved_time = now();
-         $object->payment_confirm = "APPROVED_OK";
-         $object->approve_by = Auth::user()->id;
+        //Find the object from DB
+        $object = ThirdPartyCustomerInput::find($req->input('third_package_id'));
+        $object->contract_no = $req->input('contract_no');
+        $object->start_date = $req->input('start_date');
+        $object->end_date = date('Y-m-d', strtotime('+1 year'));
+        $object->approved_time = now();
+        $object->payment_confirm = "APPROVED_OK";
+        $object->approve_by = Auth::user()->id;
 
-         if($object->save()){
-            return redirect()->route('AdminController.showAdminDashBoard')->with('success','ດຳເນີນການສຳເລັດ');
-         }else{
-            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
-         }
-     }
+        if ($object->save()) {
+            return redirect()->route('AdminController.showAdminDashBoard')->with('success', 'ດຳເນີນການສຳເລັດ');
+        } else {
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
+    }
 
-     /** Function to show index page of HeathCoverType */
-     public function heathCoverType(){
-         $companies = InsuranceCompany::all();
-         $heathCoverTypes = HeathCoverType::paginate(10);
-         return view('admin.curd.accidentCoverType.index')
-         ->with('companies',$companies)
-         ->with('heathCoverTypes',$heathCoverTypes);
-     }
+    /** Function to show index page of HeathCoverType */
+    public function heathCoverType()
+    {
+        $companies = InsuranceCompany::all();
+        $heathCoverTypes = HeathCoverType::paginate(10);
+        return view('admin.curd.accidentCoverType.index')
+            ->with('companies', $companies)
+            ->with('heathCoverTypes', $heathCoverTypes);
+    }
 
-     public function showInsuranceList(){
-         return view('admin.insuranceList');
-     }
+    public function showInsuranceList()
+    {
+        $vehicleSQLQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
+        ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+        ii.color, ii.front_image , so.name as option_name , vp.name as package_name, l.name as level_name, (select concat(firstname,' ',lastname) from users where id = ii.user_id) as accountName, ii.payment_time, ii.insurance_type
+        from insurance_information ii inner join sale_options so on ii.insurance_type_id = so.id 
+        inner join vehicle_packages vp on vp.id = so.vp_id 
+        inner join insurance_companies ic on ic.id = vp.c_id
+        inner join levels l on l.id = vp.lvl_id 
+        where ii.insurance_Type  = 'HIGH-VALUEABLE' and ii.contract_status IS NULL";
+
+        $vehicleInsuranceData = DB::select($vehicleSQLQuery);
+
+
+        $thirdPartyQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
+        ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, 
+        (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+        ii.color, ii.front_image, tpp.name as package_name , tpo.name as option_name, l.name  as level_name, (select concat(firstname,' ',lastname) from users where id = ii.user_id) as accountName, ii.payment_time, ii.insurance_type
+        from insurance_information ii inner join third_party_options tpo on ii.insurance_type_id = tpo.id
+        inner join  levels l on l.id = tpo.lvl_id 
+        inner join  third_party_packages tpp on tpp.id = ii.insurance_type_id 
+        inner join insurance_companies ic on ic.id = tpp.company_id 
+        where ii.insurance_Type  = 'THIRD-PARTY' and ii.contract_status IS NULL ";
+
+        $thirdPartyInsuranceData = DB::select($thirdPartyQuery);
+
+        $accidentInsuranceQuery = "SELECT ii.id as insurance_id, ic.name  as company_name, ap.name as plan_name, hct.name as package_name, concat(case ii.sex when('M') then 'ທ້າວ. ' when('F') then 'ນາງ. ' End ,' ',ii.firstname,' ', ii.lastname) as insuredName,
+        ic.logo  as company_logo, ii.payment_confirm, (select province_name from provinces where id = ii.province) as province,(select concat(firstname,' ',lastname) from users where id = ii.user_id) as accountName, ii.payment_time, ii.insurance_type
+        FROM insurance_information ii
+        inner join accident_plans ap on ap.id = ii.insurance_type_id 
+        inner JOIN  heath_cover_types hct  on hct.id = ap.cover_type_id
+        INNER JOIN  insurance_companies ic  on ic.id  = hct.company_id
+        Where ii.insurance_Type ='ACCIDENT' and ii.contract_status IS NULL ";
+
+        $accidentInsuranceData = DB::select($accidentInsuranceQuery);
+
+
+        return view('admin.insuranceNeedToCheck.insuranceList')
+            ->with('vehichelInsuranceData', $vehicleInsuranceData)
+            ->with('thirdPartyInsuranceData',$thirdPartyInsuranceData)
+            ->with('accidentInsuranceData',$accidentInsuranceData);
+    }
 }

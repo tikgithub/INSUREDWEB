@@ -16,6 +16,8 @@ use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\AccidentItemController;
 use App\Http\Controllers\AccidentPlanController;
 use App\Http\Controllers\AccidentSaleController;
+use App\Http\Controllers\HeathCoverController;
+use App\Http\Controllers\HeathCoverItemController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 /** Route Call Index Of Web APP */
 Route::get('/', [IndexController::class, 'index'])->name('welcome');
+Route::get('/error',[IndexController::class,'errorPage'])->name('errorPage');
 
 /** Group route for user operation */
 Route::group(['prefix' => 'user'], function () {
@@ -383,6 +386,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     /** End Accident Plan */
 
     Route::get('/insuranceList', [AdminController::class, 'showInsuranceList'])->name('AdminController.showInsuranceList');
+
+    /** HeathCoverType Controller */
+    Route::get('/datamanager/heath_cover/index',[HeathCoverController::class,'index'])->name('HeathCoverController.Index');
+    Route::post('/datamanager/heath_cover/store',[HeathCoverController::class,'store'])->name('HeathCoverController.Store');
+    Route::get('/datamanager/heath_cover/update/{id}/{status}',[HeathCoverController::class,'changeStatus'])->name('HeathCoverController.ChangeStatus');
+    Route::post('/datamanager/heath_cover/update',[HeathCoverController::class,'update'])->name('HeathCoverController.Update');
+    /** HeathCoverType Controller End */
+
+    /** HeathCoverItem Controller */
+    Route::get('/datamanager/heath_cover_item/index',[HeathCoverItemController::class,'index'])->name('HeathCoverItemController.Index');
+    Route::get('/datamanager/heath_cover_item/search/{company_id}',[HeathCoverItemController::class,'getCoverTypeByCompany'])->name('HeathCoverItemController.getCoverTypeByCompany');
+    Route::get('/datamanager/head_cover_item/create/{cover_type_id}',[HeathCoverItemController::class,'create'])->name('HeathCoverItemController.Create');
+    Route::post('/datamanager/head_cover_item/store/',[HeathCoverItemController::class,'store'])->name('HeathCoverItemController.Store');
+    /** HeathCoverItem Controller End */
 
 
     /************************************************ End Data Manager **************************************/

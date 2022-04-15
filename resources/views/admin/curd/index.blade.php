@@ -140,7 +140,7 @@
     </div> --}}
     {{-- End Package Insurance for Vehicle --}}
 
-    {{-- Package and Insurance for Heath --}}
+    {{-- Package and Insurance for Accident --}}
     <div class="row p-3">
         <div class="col-md-12 ">
             <div class="card notosanLao shadow">
@@ -177,7 +177,47 @@
             </div>
         </div>
     </div>
+    {{-- End Package and Insurance for Accident --}}
+
+     {{-- Package and Insurance for Heath --}}
+     <div class="row p-3">
+        <div class="col-md-12 ">
+            <div class="card notosanLao shadow">
+                <div class="card-header">
+                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i>ປະກັນໄພສຸຂະພາບ</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {{-- Create New Heath Cover Type --}}
+                        <div class="col-md-3 mb-5 text-center">
+                            <a href="{{ route('HeathCoverController.Index') }}"
+                                class="text-decoration-none text-dark"><img src="{{ asset('assets/image/new.png') }}"
+                                    class="menu_image">
+                                <br>ສ້າງປະເພດການຄຸ້ມຄອງ</a>
+                        </div>
+
+                        <div class="col-md-3 mb-5 text-center">
+                            <a href="{{route('HeathCoverItemController.Index')}}"
+                                class="text-decoration-none text-dark">
+                                <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
+                                ກຳນົດລາຍການທີ່ຄຸ້ມຄອງ</a>
+                        </div>
+
+                        <div class="col-md-3 mb-5 text-center">
+                            <a href="{{route('AccidentPlanController.index')}}"
+                                class="text-decoration-none text-dark">
+                                <img src="{{ asset('assets/image/price.png') }}" class="menu_image"><br>
+                                ສ້າງແຜນ ແລະ ກຳນົດລາຄາຄຸ້ມຄອງ</a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {{-- End Package and Insurance for Heath --}}
+
 @endsection
 
 @section('styles')
