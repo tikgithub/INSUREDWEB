@@ -12,13 +12,12 @@
             <li class="breadcrumb-item"><a href="{{ route('AdminController.showAdminDashBoard') }}">ໜ້າຫຼັກ</a></li>
             <li class="breadcrumb-item"><a href="{{ route('AdminController.indexDataManager') }}">ຈັດການຂໍ້ມູນ</a></li>
             <li class="breadcrumb-item"><a href="{{ route('HeathCoverItemController.Index') }}">ປະເພດການຄຸ້ມຄອງ</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ຈັດການຂໍ້ມູນລາຍການທີ່ຄຸ້ມຄອງ
+            <li class="breadcrumb-item active" aria-current="page">ແຜນ ແລະ ລາຄາຄຸ້ມຄອງ
                 ({{ $headerTitleData->cover_name }})</li>
         </ol>
     </nav>
     <hr>
     {{-- End Navigator bar --}}
-
     <div class="row">
         <div class="col-md-12 text-center">
             <img src="{{ asset($headerTitleData->logo) }}" alt="{{ $headerTitleData->company_name }}"
@@ -27,37 +26,11 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-md-6 offset-md-3">
-            <button onclick="onClickAdd('{{ $headerTitleData->id }}')" data-bs-toggle="modal" data-bs-target="#addModal"
-                type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>ເພີ່ມ</button>
-        </div>
-    </div>
-    <div class="row pt-3">
-        <div class="col-md-6 offset-md-3">
-            <table class="table table-hover">
-                <thead>
-                    <th>#</th>
-                    <th>ລາຍການ</th>
-                    <th class="text-center"><i class="bi bi-gear"></i></th>
-                </thead>
-                <tbody>
-                    @foreach ($items as $item)
-                        <tr>
-                            <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td class="text-center">
-                                <button onclick="onEditModal({{ collect($item) }})" data-bs-toggle="modal"
-                                    data-bs-target="#editModal" class="btn btn-warning btn-sm"><i
-                                        class="bi bi-pencil me-2"></i>ແກ້ໄຂ</button>
-                                <button onclick="onDeleteModal({{collect($item)}})" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                    class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                    @endforeach
-
-                </tbody>
-            </table>
+            <button onclick="onAddModalClick('{{ $headerTitleData->id }}')" type="button" data-bs-toggle="modal"
+                data-bs-target="#addModal" class="btn btn-success">
+                <i class="bi bi-plus-circle me-2"></i>ເພີ່ມ</button>
         </div>
     </div>
 
@@ -70,12 +43,12 @@
                     <h5 class="modal-title" id="addModalLabel">ເພີ່ມຂໍ້ມູນ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('HeathCoverItemController.Store') }}" method="POST">
+                <form action="{{ route('HeathPlanController.Store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <input type="hidden" name="cover_type_id" id="add_cover_type_id">
                         <div class="mb-3">
-                            <label for="" class="fs-4">ລາຍການ</label>
+                            <label for="" class="fs-4">ແຜນ</label>
                             <input type="text" name="name" id="name" class="form-control form-control-lg">
                         </div>
                     </div>
@@ -98,12 +71,12 @@
                     <h5 class="modal-title" id="editModalLabel">ແກ້ໄຂຂໍ້ມູນ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('HeathCoverItemController.Update') }}" method="POST">
+                <form action="{{ route('HeathPlanController.Update') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <input type="hidden" name="id" id="editId">
                         <div class="mb-3">
-                            <label for="" class="fs-4">ລາຍການ</label>
+                            <label for="" class="fs-4">ແຜນ</label>
                             <input type="text" name="name" id="editName" class="form-control form-control-lg">
                         </div>
                     </div>
@@ -117,51 +90,31 @@
         </div>
     </div>
 
-    {{-- Delete Modal --}}
-    <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">ລຶບຂໍ້ມູນ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h2 class="text-center">ຕ້ອງການລຶບລາຍການນີ້ແມ່ນບໍ່ ?</h2>
-                    <div class="mb-3">
-                        <label for="" class="fs-4">ລາຍການ</label>
-                        <input readonly type="text" name="deleteName" id="deleteName" class="form-control form-control-lg">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal"><i
-                            class="me-2 bi bi-x-circle"></i>ອອກ</button>
-                    <a id="deleteLink" href="#" class="btn btn-danger"><i class="bi bi-trash me-2"></i>ລຶບ</a>
-                </div>
-
-            </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <table class="table table-hover">
+                <thead>
+                    <th>#</th>
+                    <th>ແຜນ</th>
+                    <th class="text-center"><i class="bi bi-gear"></i></th>
+                </thead>
+                <tbody>
+                    @foreach ($plans as $item)
+                        <tr>
+                            <td>{{ $loop->index + 1 }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td class="text-center">
+                                <button onclick="onEditModalClick({{collect($item)}})" class="btn btn-warning btn-sm" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editModal"><i class="bi bi-pencil me-2"></i>ແກ້ໄຂ</button>
+                                <a href="{{route('HeathPlanDetailController.Index',['plan_id'=>$item->id])}}" class="btn btn-sm btn-info"><i
+                                        class="bi bi-cash me-2"></i>ວົງເງິນຄຸ້ມຄອງ</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
-@endsection
-@section('scripting')
-    @include('toastrMessage')
-    <script>
-        function onClickAdd(id) {
-            document.getElementById('add_cover_type_id').value = id;
-        }
-
-        function onEditModal(item) {
-            document.getElementById('editId').value = item.id;
-            document.getElementById('editName').value = item.name;
-        }
-        function onDeleteModal(item){
-            document.getElementById('deleteName').value = item.name;
-            var delURL = "{{route('HeathCoverItemController.Delete',['id'=>':id'])}}";
-            delURL = delURL.replace(':id',item.id);
-            var deleteBtn = document.getElementById('deleteLink');
-            deleteBtn.href = delURL;
-        }
-    </script>
 @endsection
 @section('styles')
     <style>
@@ -171,4 +124,18 @@
         }
 
     </style>
+@endsection
+
+@section('scripting')
+    @include('toastrMessage')
+    <script>
+        function onAddModalClick(cover_type_id) {
+            document.getElementById('add_cover_type_id').value = cover_type_id;
+        }
+
+        function onEditModalClick(item) {
+            document.getElementById('editId').value = item.id;
+            document.getElementById('editName').value = item.name;
+        }
+    </script>
 @endsection

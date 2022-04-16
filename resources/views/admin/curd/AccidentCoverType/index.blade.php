@@ -7,7 +7,7 @@
     {{-- Header --}}
     <div class="row">
         <div class="col-md-12 text-center notosanLao">
-            <h3>ຂໍ້ມູນປະເພດການຄຸ້ມຄອງ PA/OPA</h3>
+            <h3>ຂໍ້ມູນປະເພດການຄຸ້ມຄອງ</h3>
         </div>
     </div>
     {{-- End Header --}}
@@ -16,7 +16,7 @@
         <ol class="breadcrumb notosanLao">
             <li class="breadcrumb-item"><a href="{{ route('AdminController.showAdminDashBoard') }}">ໜ້າຫຼັກ</a></li>
             <li class="breadcrumb-item"><a href="{{ route('AdminController.indexDataManager') }}">ຈັດການຂໍ້ມູນ</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ຂໍ້ມູນປະເພດການຄຸ້ມຄອງ PA/OPA</li>
+            <li class="breadcrumb-item active" aria-current="page">ຂໍ້ມູນປະເພດການຄຸ້ມຄອງ</li>
         </ol>
     </nav>
     {{-- End Navigator bar --}}

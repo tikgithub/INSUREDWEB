@@ -18,6 +18,8 @@ use App\Http\Controllers\AccidentPlanController;
 use App\Http\Controllers\AccidentSaleController;
 use App\Http\Controllers\HeathCoverController;
 use App\Http\Controllers\HeathCoverItemController;
+use App\Http\Controllers\HeathPlanController;
+use App\Http\Controllers\HeathPlanDetailController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -397,9 +399,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     /** HeathCoverItem Controller */
     Route::get('/datamanager/heath_cover_item/index',[HeathCoverItemController::class,'index'])->name('HeathCoverItemController.Index');
     Route::get('/datamanager/heath_cover_item/search/{company_id}',[HeathCoverItemController::class,'getCoverTypeByCompany'])->name('HeathCoverItemController.getCoverTypeByCompany');
-    Route::get('/datamanager/head_cover_item/create/{cover_type_id}',[HeathCoverItemController::class,'create'])->name('HeathCoverItemController.Create');
-    Route::post('/datamanager/head_cover_item/store/',[HeathCoverItemController::class,'store'])->name('HeathCoverItemController.Store');
+    Route::get('/datamanager/heath_cover_item/create/{cover_type_id}',[HeathCoverItemController::class,'create'])->name('HeathCoverItemController.Create');
+    Route::post('/datamanager/heath_cover_item/store/',[HeathCoverItemController::class,'store'])->name('HeathCoverItemController.Store');
+    Route::post('/datamanger/heath_cover_item/update',[HeathCoverItemController::class,'update'])->name('HeathCoverItemController.Update');
+    Route::get('/datamanager/heath_cover_item/delete/{id}',[HeathCoverItemController::class,'delete'])->name('HeathCoverItemController.Delete');
     /** HeathCoverItem Controller End */
+
+    /** HeathPlan Controller */
+    Route::get('/datamanager/heath_plan/create/{cover_type_id}',[HeathPlanController::class,'create'])->name('HeathPlanController.Create');
+    Route::post('/datamanager/heath_plan/store',[HeathPlanController::class,'store'])->name('HeathPlanController.Store');
+    Route::post('/datamanager/heath_plan/update',[HeathPlanController::class,'update'])->name('HeathPlanController.Update');
+    /** HeathPlan Controller End */
+
+    /** HeathPlanDetail Controller */
+    Route::get('/datamanager/heath_plan_detail/{plan_id}',[HeathPlanDetailController::class,'index'])->name('HeathPlanDetailController.Index');
+    Route::get('/datamanager/heath_plan_detail/update/{plan_detail_id}',[HeathPlanDetailController::class,'update'])->name('HeathPlanDetailController.Update');
+    /** HeathPlanDetail Controller End */
 
 
     /************************************************ End Data Manager **************************************/

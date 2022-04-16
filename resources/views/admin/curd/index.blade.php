@@ -163,13 +163,13 @@
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
                                 ກຳນົດລາຍການທີ່ຄຸ້ມຄອງ</a>
                         </div>
-
+{{-- 
                         <div class="col-md-3 mb-5 text-center">
                             <a href="{{route('AccidentPlanController.index')}}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/price.png') }}" class="menu_image"><br>
                                 ສ້າງແຜນ ແລະ ກຳນົດລາຄາຄຸ້ມຄອງ</a>
-                        </div>
+                        </div> --}}
 
 
                     </div>
@@ -203,14 +203,12 @@
                                 ກຳນົດລາຍການທີ່ຄຸ້ມຄອງ</a>
                         </div>
 
-                        <div class="col-md-3 mb-5 text-center">
+                        {{-- <div class="col-md-3 mb-5 text-center">
                             <a href="{{route('AccidentPlanController.index')}}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/price.png') }}" class="menu_image"><br>
                                 ສ້າງແຜນ ແລະ ກຳນົດລາຄາຄຸ້ມຄອງ</a>
-                        </div>
-
-
+                        </div> --}}
                     </div>
                 </div>
             </div>

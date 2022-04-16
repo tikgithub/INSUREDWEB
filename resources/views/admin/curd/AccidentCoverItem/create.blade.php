@@ -6,8 +6,8 @@
         <ol class="breadcrumb notosanLao">
             <li class="breadcrumb-item"><a href="{{ route('AdminController.showAdminDashBoard') }}">ໜ້າຫຼັກ</a></li>
             <li class="breadcrumb-item"><a href="{{ route('AdminController.indexDataManager') }}">ຈັດການຂໍ້ມູນ</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('AccidentItemController@index') }}">ກຳນົດລາຍການ PA/OPA</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ກຳນົດລາຍການທີ່ຈະຄຸ້ມຄອງ PA/OPA</li>
+            <li class="breadcrumb-item"><a href="{{ route('AccidentItemController@index') }}">ປະເພດການຄຸ້ມຄອງ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ລາຍການຄຸ້ມຄອງ</li>
         </ol>
     </nav>
     {{-- End Navigator bar --}}

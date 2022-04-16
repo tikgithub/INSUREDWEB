@@ -23,44 +23,17 @@
             <select name="company_id" id="company_id" class="form-select form-select-lg" onchange="onSelectCompany()">
                 <option value="">ເລືອກ</option>
                 @foreach ($companies as $item)
-                    @if(@isset($selected_company_id))
-                        <option value="{{ $item->id }}" {{$item->id == $selected_company_id? 'selected':''}}>{{ $item->name }}</option>
+                    @if (@isset($selected_company_id))
+                        <option value="{{ $item->id }}" {{ $item->id == $selected_company_id ? 'selected' : '' }}>
+                            {{ $item->name }}</option>
                     @else
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                     @endif
-                    
                 @endforeach
             </select>
         </div>
     </div>
 
-    {{-- Add Modal --}}
-    <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="addModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">ເພີ່ມຂໍ້ມູນ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{route('HeathCoverItemController.Store')}}" method="POST">
-                    <div class="modal-body">
-                        @csrf
-                       <input type="hidden" name="cover_type_id" id="add_cover_type_id">
-                       <div class="mb-3">
-                           <label for="" class="fs-4">ລາຍການ</label>
-                           <input type="text" name="name" id="name" class="form-control form-control-lg">
-                       </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i
-                                class="me-2 bi bi-x-circle"></i>ອອກ</button>
-                        <button type="submit" class="btn btn-success"><i class="bi bi-save me-2"></i>ຕົກລົງ</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     {{-- display table --}}
     <div class="row">
@@ -75,11 +48,15 @@
                 <tbody>
                     @foreach ($coverTypes as $item)
                         <tr>
-                            <td>{{$loop->index + 1}}</td>
-                            <td>{{$item->name}}</td>
-                            <td>{{$item->company_name}}</td>
-                            <td class="text-center" >
-                                <a href="{{route('HeathCoverItemController.Create',['cover_type_id'=>$item->id])}}" class="btn btn-success"><i class="bi bi-plus-circle"></i></a>
+                            <td>{{ $loop->index + 1 }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->company_name }}</td>
+                            <td class="text-center">
+                                <a href="{{ route('HeathCoverItemController.Create', ['cover_type_id' => $item->id]) }}"
+                                    class="btn btn-success btn-sm"><i class="bi bi-plus-circle me-2"></i>ລາຍການຄຸ້ມຄອງ</a>
+                                <a href="{{ route('HeathPlanController.Create', ['cover_type_id' => $item->id]) }}"
+                                    class="btn btn-success btn-sm"><i class="bi bi-plus-circle me-2"></i>ແຜນ ແລະ ລາຄາ</a>
+
                             </td>
                         </tr>
                     @endforeach
@@ -90,22 +67,23 @@
 @endsection
 
 @section('scripting')
-@include('toastrMessage')
+    @include('toastrMessage')
     <script>
-        function callAddModal(item){
+        function callAddModal(item) {
             document.getElementById('add_cover_type_id').value = item.id;
         }
-        function onSelectCompany(){
+
+        function onSelectCompany() {
             var selection = document.getElementById('company_id');
             var selectedId = selection.options[selection.selectedIndex].value;
             console.log(selectedId);
-            if(selectedId==""){
-                var indexURL = "{{route('HeathCoverItemController.Index')}}";
-                window.location.href= indexURL;
+            if (selectedId == "") {
+                var indexURL = "{{ route('HeathCoverItemController.Index') }}";
+                window.location.href = indexURL;
                 return;
             }
-            var url = "{{route('HeathCoverItemController.getCoverTypeByCompany',['company_id'=>':company_id'])}}";
-            url = url.replace(':company_id',selectedId);
+            var url = "{{ route('HeathCoverItemController.getCoverTypeByCompany', ['company_id' => ':company_id']) }}";
+            url = url.replace(':company_id', selectedId);
 
             window.location.href = url;
         }

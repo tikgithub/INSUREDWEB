@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CoverItem;
 use App\Models\HeathCover;
 use App\Models\HeathCoverItem;
 use App\Models\InsuranceCompany;
@@ -39,9 +40,12 @@ class HeathCoverItemController extends Controller
         FROM heath_covers hc inner join insurance_companies ic on hc.company_id = ic.id 
         where hc.id =?";
         $headerTitleData = collect(DB::select($headerTitleQuery,[$cover_type_id]))->first();
+
+        $items = HeathCoverItem::where('cover_type_id','=',$cover_type_id)->get();
        
 
-        return view('admin.curd.heathCoverItem.create')->with('headerTitleData',$headerTitleData);
+        return view('admin.curd.heathCoverItem.create')->with('headerTitleData',$headerTitleData)
+        ->with('items',$items);
     }
 
     public function store(Request $req){
@@ -55,6 +59,32 @@ class HeathCoverItemController extends Controller
         $item->cover_type_id = $req->input('cover_type_id');
         $item->name = $req->input('name');
         if($item->save()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with('error','ດຳເນີນການບໍ່ສຳເລັດກະລຸນາລອງໃໝ່');
+        }
+    }
+
+    public function update(Request $req){
+        $req->validate([
+            'id' => 'required',
+            'name' => 'required'
+        ]);
+
+        $item = HeathCoverItem::find($req->id);
+
+        $item->name = $req->input('name');
+
+        if($item->save()){
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        }else{
+            return redirect()->back()->with('error','ດຳເນີນການບໍ່ສຳເລັດກະລຸນາລອງໃໝ່');
+        }
+    }
+    public function delete($id){
+        $item = HeathCoverItem::find($id);
+
+        if($item->delete()){
             return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
         }else{
             return redirect()->back()->with('error','ດຳເນີນການບໍ່ສຳເລັດກະລຸນາລອງໃໝ່');

@@ -14,6 +14,7 @@ class AccidentItemController extends Controller
 {
     public function index()
     {
+        
         $companies = InsuranceCompany::all();
 
         return view('admin.curd.AccidentCoverItem.index')
