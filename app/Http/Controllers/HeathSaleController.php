@@ -6,6 +6,7 @@ use App\Models\District;
 use App\Models\HeathCover;
 use App\Models\HeathPlan;
 use App\Models\InsuranceInformation;
+use App\Models\PaymentProvider;
 use App\Models\Province;
 use App\Utils\ImageCompress;
 use Illuminate\Http\Request;
@@ -136,6 +137,7 @@ class HeathSaleController extends Controller
         if (Session('health')) {
 
             $heath_id = Session('health');
+            
            // dd($accident_id);
             $heathData = InsuranceInformation::find($heath_id);
             $plan_id = $heathData->insurance_type_id;
@@ -211,8 +213,7 @@ class HeathSaleController extends Controller
             if ($obj->save()) {
                 //Set Session
                 Session(['health' => $obj->id]);
-                dd('OK');
-                return redirect()->route('AccidentController.paymentProvider');
+                return redirect()->route('HeathSaleController.ShowPaymentProvider');
             } {
                 return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
             }
@@ -221,4 +222,58 @@ class HeathSaleController extends Controller
             return redirect()->route('welcome');
         }
     }
+
+    public function showPaymentProvider(){
+    
+        if(Session('health')){
+            $paymentProviders = PaymentProvider::all();
+
+            return view('insurances.heath.showPayment_providerList')
+            ->with('paymentProviders', $paymentProviders);
+        }else{
+            return redirect()->route('welcome');
+        }
+    }
+
+    public function showPaymentSubmitPage($id){
+  
+        if(Session('health')){
+            $provider = PaymentProvider::find($id);
+            return view('insurances.heath.showPaymentSubmit')
+            ->with('provider',$provider);
+        }else{
+            return redirect()->route('welcome');
+        }
+    }
+
+    public function submitHeathPayment(Request $req){
+        if(Session('health')){
+
+            $req->validate([
+                'slipUploaded'=>'required'
+            ]);
+            $health_id = Session('health');
+
+            $heathData = InsuranceInformation::find($health_id);
+            $extension = $req->file('slipUploaded')->getClientOriginalExtension();
+            $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
+            $imageData = file_get_contents($newImageCompress);
+            $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($imageData);
+
+            $heathData->slipUploaded = $base64SlipImage;
+
+            $heathData->payment_time = now();
+
+            $heathData->save();
+
+            session(['payment_status' => 'WAIT_FOR_APPROVED']);
+
+            return redirect()->route('InsuranceFlowController.showComplete');
+
+
+        }else{
+            return redirect()->route('welcome');
+        }
+    }
+
 }

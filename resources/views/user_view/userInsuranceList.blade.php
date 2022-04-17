@@ -7,20 +7,40 @@
         </div>
     </div>
     <div class="pt-3"></div>
-    <div class="w3-bar w3-black text-center">
-        @if (isset($vehicleInsurance))
-            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('vihecle')">ປະກັນໄພຍານພາຫະນະ</button>
-        @endif
-        @if (isset($vehicleInsurance))
-            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('thirdParty')">ປະກັນໄພບຸກຄົນທີສາມ</button>
-        @endif
-        @if (isset($accidentInsurance))
-            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('accident')">ປະພັນໄພອຸບັດຕິເຫດ</button>
-        @endif
-        @if (isset($heathInsurance))
-            <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('heath')">ປະກັນໄພສຸຂະພາບ</button>
-        @endif
+    <div class="row text-center">
+        <div class="col-md-3 d-grid gap-2">
+            @if (isset($vehicleInsurance))
+                <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('vihecle')">
+                    <img src="{{ asset('assets/image/insurance_vehicle.png') }}" class="tab-logo me-2"><br>
+                    ປະກັນໄພຍານພາຫະນະ
+                </button>
+            @endif
+        </div>
+        <div class="col-md-3 d-grid gap-2">
+            @if (isset($vehicleInsurance))
+                <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('thirdParty')">
+                    <img src="{{ asset('assets/image/thirdpary_insurance.png') }}" class="tab-logo me-2"><br>
+                    ປະກັນໄພບຸກຄົນທີສາມ
+                </button>
+            @endif
+        </div>
 
+        <div class="col-md-3 d-grid gap-2">
+            @if (isset($accidentInsurance))
+                <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('accident')">
+                    <img src="{{ asset('assets/image/personal_accident.png') }}" class="tab-logo me-2"><br>
+                    ປະພັນໄພອຸບັດຕິເຫດ
+                </button>
+            @endif
+        </div>
+        <div class="col-md-3 d-grid gap-2">
+            @if (isset($heathInsurance))
+                <button class="btn btn-lg bg-blue text-white mt-2" onclick="openCity('heath')">
+                    <img src="{{ asset('assets/image/heath.png') }}" class="tab-logo me-2"><br>
+                    ປະກັນໄພສຸຂະພາບ
+                </button>
+            @endif
+        </div>
     </div>
     <div class="pt-5"></div>
     <div id="vihecle" class="tab">
@@ -28,12 +48,12 @@
 
         <div class="row">
             <div class="col-md-12 pt-1 bg-blue">
-                <h3 class="text-white">ປະກັນໄພຍານພາຫະນະ</h3>
+                <h3 class="text-white ms-2">ປະກັນໄພຍານພາຫະນະ</h3>
             </div>
         </div>
         @foreach ($vehicleInsurance as $item)
             <a class="row text-decoration-none text-dark mouse-over pt-2"
-                href="{{ route('UserController.showVehicleInsuranceDetailPage', ['id' => $item->insurance_id]) }}"
+                href="{{ route('UserController.InsuranceViewDetail', ['id' => $item->insurance_id]) }}"
                 style="cursor: pointer">
                 <div class="col-md-4 text-center ">
                     <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
@@ -66,7 +86,7 @@
         {{-- Display ThirdParty Insurance Detail --}}
         <div class="row ">
             <div class="col-md-12 pt-1 bg-blue">
-                <h3 class="text-white">ປະກັນໄພບຸກຄົນທີ 3</h3>
+                <h3 class="text-white ms-2">ປະກັນໄພບຸກຄົນທີ 3</h3>
             </div>
         </div>
         @foreach ($thirdPartyInsurance as $item)
@@ -96,47 +116,76 @@
     </div>
 
     <div id="accident" class="tab" style="display:none">
-         {{-- Display ThirdParty Insurance Detail --}}
-         <div class="row ">
+        {{-- Display ThirdParty Insurance Detail --}}
+        <div class="row ">
             <div class="col-md-12 pt-1 bg-blue">
-                <h3 class="text-white">ປະກັນໄພອຸບັດຕິເຫດ</h3>
+                <h3 class="text-white ms-2">ປະກັນໄພອຸບັດຕິເຫດ</h3>
             </div>
         </div>
         @foreach ($accidentInsurance as $item)
-        <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
-            <div class="col-md-4 text-center ">
-                <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
-                    class="company-logo border">
-                <h4 class="mt-2">
+            <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
+                <div class="col-md-4 text-center ">
+                    <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
+                        class="company-logo border">
+                    <h4 class="mt-2">
 
-                    <b>{{ $item->company_name }}</b><br>{{ $item->package_name }}
-                    
-                </h4>
-            </div>
-            <div class="col-md-4 text-center align-self-center">
+                        <b>{{ $item->company_name }}</b><br>{{ $item->package_name }}
 
-                <span style="" class="fs-2 fw-bold text-danger"><u>{{$item->insuredName}}</u></span> <br>
-                <span class="fs-4 fr-line">{{$item->province}}</span>
+                    </h4>
+                </div>
+                <div class="col-md-4 text-center align-self-center">
 
-            </div>
-            <div class="col-md-4 text-center align-self-center mt-2">
-                @include('user_view.alertComponent')
-            </div>
-        </a>
-        <hr>
-    @endforeach
+                    <span style="" class="fs-2 fw-bold text-danger"><u>{{ $item->insuredName }}</u></span> <br>
+                    <span class="fs-4 fr-line">{{ $item->province }}</span>
+
+                </div>
+                <div class="col-md-4 text-center align-self-center mt-2">
+                    @include('user_view.alertComponent')
+                </div>
+            </a>
+            <hr>
+        @endforeach
     </div>
 
     <div id="heath" class="tab" style="display: none">
-        <h2>heath</h2>
+        {{-- Display ThirdParty Insurance Detail --}}
+        <div class="row ">
+            <div class="col-md-12 pt-1 bg-blue">
+                <h3 class="text-white ms-2">ປະກັນໄພສຸຂະພາບ</h3>
+            </div>
+        </div>
+        @foreach ($heathInsurance as $item)
+            <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
+                <div class="col-md-4 text-center ">
+                    <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
+                        class="company-logo border">
+                    <h4 class="mt-2">
+
+                        <b>{{ $item->company_name }}</b><br>{{ $item->package_name }}
+
+                    </h4>
+                </div>
+                <div class="col-md-4 text-center align-self-center">
+
+                    <span style="" class="fs-2 fw-bold text-danger"><u>{{ $item->insuredName }}</u></span> <br>
+                    <span class="fs-4 fr-line">{{ $item->province }}</span>
+
+                </div>
+                <div class="col-md-4 text-center align-self-center mt-2">
+                    @include('user_view.alertComponent')
+                </div>
+            </a>
+            <hr>
+        @endforeach
+
     </div>
 
     {{-- Display Insurance Accident Insurance Detail --}}
 @endsection
 
-@section('footer')
+{{-- @section('footer')
     @include('layouts.footer')
-@endsection
+@endsection --}}
 
 @section('scripting')
     <script>
@@ -174,6 +223,11 @@
         .tab {
             background-color: #fff;
             border-color: #fff;
+        }
+
+        .tab-logo {
+            width: 40px;
+            height: 40px;
         }
 
     </style>

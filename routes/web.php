@@ -204,12 +204,15 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     Route::post('customer/accident/submitPayment', [AccidentSaleController::class, 'submitAccidentPayment'])->name('AccidentSaleController.submitAccidentPayment');
 
     /** Route to show insurance user information detail */
-    Route::get('/user/vehicle_detail/{id}',[UserController::class,'showVehicleInsuranceDetailPage'])->name('UserController.showVehicleInsuranceDetailPage');
+    Route::get('/user/insurance_view_detail/{id}',[UserController::class,'insuranceViewDetail'])->name('UserController.InsuranceViewDetail');
 
     /** HeathSaleController */
     Route::post('/customer/heath/store',[HeathSaleController::class,'storeUserInformation'])->name('HeathSaleController.StoreUserInformation');
     Route::get('/customer/heath/confirmation',[HeathSaleController::class,'showUserConfirmationPage'])->name('HeathSaleController.ShowUserConfirmationPage');
     Route::post('/customer/heath/confirmatio/update',[HeathSaleController::class,'updateUserConfirmationData'])->name('HeathSaleController.UpdateUserConfirmationData');
+    Route::get('/customer/heath/paymentprovider',[HeathSaleController::class,'showPaymentProvider'])->name('HeathSaleController.ShowPaymentProvider');
+    Route::get('/customer/heath/payment_submit/{id}',[HeathSaleController::class,'showPaymentSubmitPage'])->name('HeathSaleController.ShowPaymentSubmitPage');
+    Route::post('/customer/heath/payment_submit',[HeathSaleController::class,'submitHeathPayment'])->name('HeathSaleController.SubmitHeathPayment');
     /** HeathSaleController End */
 });
 

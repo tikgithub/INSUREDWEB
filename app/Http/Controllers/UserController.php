@@ -232,16 +232,38 @@ class UserController extends Controller
         INNER JOIN  insurance_companies ic  on ic.id  = hct.company_id
         Where ii.insurance_Type ='ACIIDENT' And user_id=?";
 
+        $heathInsuranceQuery = "SELECT ii.id as insurance_id, ic.name  as company_name, hp.name as plan_name, hc.name as package_name, concat(case ii.sex when('M') then 'ທ້າວ. ' when('F') then 'ນາງ. ' End ,' ',ii.firstname,' ', ii.lastname) as insuredName,
+        ic.logo  as company_logo, ii.payment_confirm, (select province_name from provinces where id = ii.province) as province
+        FROM insurance_information ii
+        inner join heath_plans hp on hp.id = ii.insurance_type_id 
+        inner JOIN  heath_covers hc on hc.id = hp.cover_type_id
+        INNER JOIN  insurance_companies ic  on ic.id  = hc.company_id
+        Where ii.insurance_Type ='HEATH' And user_id = ?";
+
         $vehicleInsurance = DB::select($vehicleSQLQuery,[Auth::user()->id]);
  
         $thirdPartyInsurance = DB::select($thirdPartyQuery,[Auth::user()->id]);
 
         $accidentInsurance = DB::select($accidentInsuranceQuery,[Auth::user()->id]);
 
+        $heathInsurance = DB::select($heathInsuranceQuery,[Auth::user()->id]);
+
         return view('user_view.userInsuranceList')
         ->with('vehicleInsurance',$vehicleInsurance)
         ->with('thirdPartyInsurance',$thirdPartyInsurance)
-        ->with('accidentInsurance',$accidentInsurance);
+        ->with('accidentInsurance',$accidentInsurance)
+        ->with('heathInsurance',$heathInsurance);
+    }
+
+    public function insuranceViewDetail($insurance_id){
+        $insurace = InsuranceInformation::find($insurance_id);
+        //Check which type of insurance
+        if($insurace->insurance_type==""){
+            
+        }
+        $headerTitleQuery = "";
+
+        return view('user_view.insuranceViewDetail');
     }
 
     public function showVehicleInsuranceDetailPage($id){
