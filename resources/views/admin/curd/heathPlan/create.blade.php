@@ -51,6 +51,23 @@
                             <label for="" class="fs-4">ແຜນ</label>
                             <input type="text" name="name" id="name" class="form-control form-control-lg">
                         </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ລາຄາຂາຍ</label>
+                            <input type="number" name="sale_price" id="sale_price" class="form-control-lg form-control">    
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ຄາທຳນຽມ</label>
+                            <input type="number" name="fee" id="fee" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ຊ່ວງອາຍຸເລີ່ມຕົ້ນ</label>
+                            <input type="number" name="start_age" id="start_age" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ຊ່ວງອາຍຸສິນສຸດ</label>
+                            <input type="number" name="end_age" id="end_age" class="form-control form-control-lg">
+                        </div>
+                    
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i
@@ -78,6 +95,22 @@
                         <div class="mb-3">
                             <label for="" class="fs-4">ແຜນ</label>
                             <input type="text" name="name" id="editName" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ລາຄາຂາຍ</label>
+                            <input type="number" name="sale_price" id="editSalePrice" class="form-control-lg form-control">    
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ຄາທຳນຽມ</label>
+                            <input type="number" name="fee" id="editFee" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ຊ່ວງອາຍຸເລີ່ມຕົ້ນ</label>
+                            <input type="number" name="start_age" id="editStartAge" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="fs-4">ຊ່ວງອາຍຸສິນສຸດ</label>
+                            <input type="number" name="end_age" id="editEndAge" class="form-control form-control-lg">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -134,8 +167,14 @@
         }
 
         function onEditModalClick(item) {
+            console.log(item);
             document.getElementById('editId').value = item.id;
             document.getElementById('editName').value = item.name;
+            document.getElementById('editSalePrice').value = item.sale_price;
+            document.getElementById('editFee').value = item.fee;
+            document.getElementById('editStartAge').value = item.start_age;
+            document.getElementById('editEndAge').value = item.end_age;
+        
         }
     </script>
 @endsection

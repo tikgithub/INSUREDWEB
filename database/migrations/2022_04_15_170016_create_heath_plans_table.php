@@ -17,6 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('cover_type_id');
+            $table->decimal('sale_price',18,2);
+            $table->decimal('fee',18,2);
+            $table->integer('start_age');
+            $table->integer('end_age');
             $table->timestamps();
         });
     }

@@ -28,12 +28,21 @@ class HeathPlanController extends Controller
     public function store(Request $req){
         $req->validate([
             'cover_type_id'=>'required',
-            'name'=>'required'
+            'name'=>'required',
+            'sale_price'=>'required',
+            'fee'=>'required',
+            'start_age'=>'required',
+            'end_age'=>'required'
         ]);
 
         $item = new HeathPlan();
         $item->cover_type_id = $req->input('cover_type_id');
         $item->name = $req->input('name');
+        $item->sale_price = $req->input('sale_price');
+        $item->fee = $req->input('fee');
+        $item->start_age = $req->input('start_age');
+        $item->end_age = $req->input('end_age');
+
         if($item->save()){
             //Find the cover items and save them to db
             $coverItems = HeathCoverItem::where('cover_type_id','=',$req->input('cover_type_id'))->get();
@@ -57,11 +66,19 @@ class HeathPlanController extends Controller
     public function update(Request $req){
         $req->validate([
             'id'=>'required',
-            'name'=>'required'
+            'name'=>'required',
+            'sale_price'=>'required',
+            'fee'=>'required',
+            'start_age'=>'required',
+            'end_age'=>'required'
         ]);
 
         $item = HeathPlan::find($req->input('id'));
         $item->name = $req->input('name');
+        $item->sale_price = $req->input('sale_price');
+        $item->fee = $req->input('fee');
+        $item->start_age = $req->input('start_age');
+        $item->end_age = $req->input('end_age');
 
         if($item->save()){
             return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');

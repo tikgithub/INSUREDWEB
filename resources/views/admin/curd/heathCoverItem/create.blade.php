@@ -78,6 +78,8 @@
                             <label for="" class="fs-4">ລາຍການ</label>
                             <input type="text" name="name" id="name" class="form-control form-control-lg">
                         </div>
+                    <div>
+                    </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i
