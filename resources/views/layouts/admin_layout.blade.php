@@ -17,6 +17,11 @@
     {{-- Toastr CDN --}}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.4.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+
+
+
     <title>{{ config('app.name') }}</title>
     <style>
         .sidenav {
@@ -129,11 +134,11 @@
         {{-- Padding HR --}}
         <hr style="color: #fff">
 
-         {{-- Menu Index Of Website Information --}}
-         <a href="{{ route('AdminController.showInsuranceList') }}"
-         class="{{ Request::url() == route('AdminController.showInsuranceList') ? 'text-dark bg-white' : '' }}"><i
-             class="bi bi-envelope-paper me-2"></i> ກວດສອບລາຍການປະກັນໄພ</a>
-     {{-- End Menu Index Of Website Information --}}
+        {{-- Menu Index Of Website Information --}}
+        <a href="{{ route('AdminController.showInsuranceList') }}"
+            class="{{ Request::url() == route('AdminController.showInsuranceList') ? 'text-dark bg-white' : '' }}"><i
+                class="bi bi-envelope-paper me-2"></i> ກວດສອບລາຍການປະກັນໄພ</a>
+        {{-- End Menu Index Of Website Information --}}
 
         {{-- Menu Index Datamanager --}}
         <a href="{{ route('AdminController.indexDataManager') }}" @php
@@ -170,6 +175,15 @@
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ asset('assets/js/toastr.js') }}"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
     @yield('scripting')
 
 </body>

@@ -118,7 +118,7 @@ class AccidentSaleController extends Controller
         $obj->district = $req->input('district');
         $obj->address = $req->input('address');
         $obj->insurance_type_id = $req->input('plan_id');
-        $obj->insurance_type = "ACIIDENT";
+        $obj->insurance_type = "ACCIDENT";
         $obj->payment_confirm = "WAIT_FOR_PAYMENT";
         //Add free charge and Total price of each plan Id
         $accidentPlanDetail = AccidentPlan::find($req->input('plan_id'));

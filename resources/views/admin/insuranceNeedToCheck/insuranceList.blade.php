@@ -2,42 +2,48 @@
 @section('content')
     <div class="pt-5"></div>
 
-    <div class="row mb-3">
-        <div class="col-md-12 border rounded">
-            <h4>Filter</h4>
-        </div>
-    </div>
-    
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-sm table-hover">
+            <table class="table table-sm table-hover" id="table">
                 <thead class="fw-bold">
-                    
+
                     <th>ບໍລິສັດປະກັນ</th>
                     <th>Package</th>
                     <th>ຜູ້ເອົາປະກັນ</th>
                     <th>ເລກທະບຽນລົດ/ຂຶ້ນທະບຽນທີ່</th>
                     <th>User ທີ່ຊື້ປະກັນໄພ</th>
                     <th>ວັນທີ່ຈ່າຍເງິນ</th>
-                    <th>ປະເພດປະກັນໄພ</th>
+                    <th>ອັບເດດລ່າສຸດ</th>
+                    {{-- <th>ປະເພດປະກັນໄພ</th> --}}
                     <th>ສະຖານະ</th>
-                    
                     <th class="text-end"><i class="bi bi-gear"></i></th>
                 </thead>
                 <tbody>
                     @foreach ($vehichelInsuranceData as $item)
                         <tr>
-                            <td>{{$item->company_name}}</td>
-                            <td>{{$item->package_name}} {{$item->level_name}}</td>
-                            <td>{{$item->insuredName}}</td>
-                            <td><span class="text-danger fw-bold lead"><u>{{$item->number_plate}}</u></span> {{$item->registeredProvince}}</td>
-                            <td>{{$item->accountName}}</td>
-                            <td>{{$item->payment_time}}</td>
-                            <td>
-                                @include('admin.insuranceNeedToCheck.insuranceStatus')
+                            {{-- {{ $item->package_name }} {{ $item->level_name }} --}}
+                            <td>{{ $item->company_name }} </td>
+                            <td>@include(
+                                'admin.insuranceNeedToCheck.insuranceStatus'
+                            )</td>
+                            <td>{{ $item->insuredName }}</td>
+                            <td><span class="text-danger fw-bold lead"><u>{{ $item->number_plate }}</u></span>
+                                {{ $item->registeredProvince }}</td>
+                            <td>{{ $item->accountName }}</td>
+                            <td class="text-center">
+                                {{ $item->payment_time ? \Carbon\Carbon::parse($item->payment_time)->format('d/m/Y | H:m') : 'N/A' }}
+
+                                {{ $item->payment_time ? '|' . \Carbon\Carbon::parse($item->payment_time)->diffForHumans(null, true) : '' }}
                             </td>
+                            <td>{{ $item->updated_at ? \Carbon\Carbon::parse($item->updated_at)->format('d/m/Y | H:m') : '' }}
+                                {{ \Carbon\Carbon::parse($item->updated_at)->diffForHumans(null, true) }}</td>
+                            {{-- <td>
+                                @include('admin.insuranceNeedToCheck.insuranceStatus')
+                            </td> --}}
                             <td>
-                                @include('admin.insuranceNeedToCheck.alertComponent')
+                                @include(
+                                    'admin.insuranceNeedToCheck.alertComponent'
+                                )
                             </td>
                             <td>
                                 <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
@@ -47,17 +53,28 @@
 
                     @foreach ($thirdPartyInsuranceData as $item)
                         <tr>
-                            <td>{{$item->company_name}}</td>
-                            <td>{{$item->package_name}} {{$item->level_name}}</td>
-                            <td>{{$item->insuredName}}</td>
-                            <td><span class="text-danger fw-bold lead"><u>{{$item->number_plate}}</u></span> {{$item->registeredProvince}}</td>
-                            <td>{{$item->accountName}}</td>
-                            <td>{{$item->payment_time}}</td>
-                            <td>
-                                @include('admin.insuranceNeedToCheck.insuranceStatus')
+                            <td>{{ $item->company_name }}</td>
+                            <td>@include(
+                                'admin.insuranceNeedToCheck.insuranceStatus'
+                            )</td>
+                            <td>{{ $item->insuredName }}</td>
+                            <td><span class="text-danger fw-bold lead"><u>{{ $item->number_plate }}</u></span>
+                                {{ $item->registeredProvince }}</td>
+                            <td>{{ $item->accountName }}</td>
+                            <td class="text-center">
+                                {{ $item->payment_time ? \Carbon\Carbon::parse($item->payment_time)->format('d/m/Y | H:m') : 'N/A' }}
+
+                                {{ $item->payment_time ? '|' . \Carbon\Carbon::parse($item->payment_time)->diffForHumans(null, true) : '' }}
                             </td>
+                            <td>{{ $item->updated_at ? \Carbon\Carbon::parse($item->updated_at)->format('d/m/Y | H:m') : '' }}
+                                {{ \Carbon\Carbon::parse($item->updated_at)->diffForHumans(null, true) }}</td>
+                            {{-- <td>
+                                @include('admin.insuranceNeedToCheck.insuranceStatus')
+                            </td> --}}
                             <td>
-                                @include('admin.insuranceNeedToCheck.alertComponent')
+                                @include(
+                                    'admin.insuranceNeedToCheck.alertComponent'
+                                )
                             </td>
                             <td>
                                 <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
@@ -67,17 +84,57 @@
 
                     @foreach ($accidentInsuranceData as $item)
                         <tr>
-                            <td>{{$item->company_name}}</td>
-                            <td>{{$item->package_name}} {{$item->plan_name}}</td>
-                            <td>{{$item->insuredName}}</td>
+                            <td>{{ $item->company_name }}</td>
+                            <td>@include(
+                                'admin.insuranceNeedToCheck.insuranceStatus'
+                            )</td>
+                            <td>{{ $item->insuredName }}</td>
                             <td class="text-center">--</td>
-                            <td>{{$item->accountName}}</td>
-                            <td>{{$item->payment_time}}</td>
-                            <td>
+                            <td>{{ $item->accountName }}</td>
+                            <td class="text-center">
+                                {{ $item->payment_time ? \Carbon\Carbon::parse($item->payment_time)->format('d/m/Y | H:m') : 'N/A' }}
+
+                                {{ $item->payment_time ? '|' . \Carbon\Carbon::parse($item->payment_time)->diffForHumans(null, true) : '' }}
+                            </td>
+                            <td>{{ $item->updated_at ? \Carbon\Carbon::parse($item->updated_at)->format('d/m/Y | H:m') : '' }}
+                                {{ \Carbon\Carbon::parse($item->updated_at)->diffForHumans(null, true) }}</td>
+                            {{-- <td>
                                 @include('admin.insuranceNeedToCheck.insuranceStatus')
+                            </td> --}}
+                            <td>
+                                @include(
+                                    'admin.insuranceNeedToCheck.alertComponent'
+                                )
                             </td>
                             <td>
-                                @include('admin.insuranceNeedToCheck.alertComponent')
+                                <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @foreach ($heathInsuranceData as $item)
+                        <tr>
+                            <td>{{ $item->company_name }}</td>
+                            <td>@include(
+                                'admin.insuranceNeedToCheck.insuranceStatus'
+                            )</td>
+                            <td>{{ $item->insuredName }}</td>
+                            <td class="text-center">--</td>
+                            <td>{{ $item->accountName }}</td>
+                            <td class="text-center">
+                                {{ $item->payment_time ? \Carbon\Carbon::parse($item->payment_time)->format('d/m/Y | H:m') : 'N/A' }}
+
+                                {{ $item->payment_time ? '|' . \Carbon\Carbon::parse($item->payment_time)->diffForHumans(null, true) : '' }}
+                            </td>
+                            <td>{{ $item->updated_at ? \Carbon\Carbon::parse($item->updated_at)->format('d/m/Y | H:m') : '' }}
+                                {{ \Carbon\Carbon::parse($item->updated_at)->diffForHumans(null, true) }}</td>
+                            {{-- <td>
+                                @include('admin.insuranceNeedToCheck.insuranceStatus')
+                            </td> --}}
+                            <td>
+                                @include(
+                                    'admin.insuranceNeedToCheck.alertComponent'
+                                )
                             </td>
                             <td>
                                 <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
@@ -88,4 +145,23 @@
                 </tbody>
         </div>
     </div>
+@endsection
+
+@section('scripting')
+    <script>
+        $(document).ready(function() {
+
+            $('#table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'csv',
+                    charset: 'UTF-8',
+                    fieldSeparator: ';',
+                    bom: true,
+                    filename: 'CsvTest',
+                    title: 'CsvTest'
+                }]
+            });
+        });
+    </script>
 @endsection

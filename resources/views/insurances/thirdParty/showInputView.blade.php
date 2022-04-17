@@ -50,7 +50,7 @@
             @if (Auth::check())
                 <h4 class="text-center">ປ້ອນຂໍ້ມູນປະກັນໄພ</h4>
                 <form autocomplete="off" method="POST"
-                    action="{{ route('InsuranceFlowController.thirdPartyStoreInput') }}">
+                    action="{{ route('InsuranceFlowController.thirdPartyStoreInput') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="package_id" value="{{ $package->id }}">
                     <fieldset class="border notosanLao">
@@ -156,6 +156,7 @@
                                         id="address" name="address" value="{{ old('address') }}">
                                 </div>
                             </div>
+
                         </div>
                     </fieldset>
                     {{-- Fieldset of insured Address --}}
@@ -231,6 +232,19 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3 fs-4">
+                                <label for="district" class="col-form-label col-sm-3">ຮູບຖ່າຍບັດປະຈຳໂຕ ຫຼື
+                                    ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
+                                <div class="col-sm-9 align-self-center text-center">
+                                    <input type="file" name="reference_photo" id="reference_photo" class="form-control-file"
+                                        hidden onchange="onPreviewChange()">
+                                    <button type="button" onclick="selectPhotoOnClick()"
+                                        class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
+                                        ເລືອກຮູບ</button>
+                                    <img id="img_preview" src="" alt="" srcset="" class="border rounded img-fluid">
+                                </div>
+                            </div>
+
 
                             {{-- Submit Botton --}}
                             <div class="mb-3 row">
@@ -244,7 +258,7 @@
                     </fieldset>
                 </form>
             @else
-            <h4 class="text-center">ທ່ານຍັງບໍ່ໄດ້ເຂົ້າສູ່ລະບົບ</h4>
+                <h4 class="text-center">ທ່ານຍັງບໍ່ໄດ້ເຂົ້າສູ່ລະບົບ</h4>
                 {{-- Login Session --}}
                 <form action="{{ route('UserController.validateUserBeforeBuying') }}" method="post"
                     class="notosanLao shadow pt-4 p-3 mx-auto text-center" style="width: 400px">
@@ -300,7 +314,7 @@
                 .then(data => {
                     if (data.length > 0) {
                         districtInsuredSelect.disabled = false;
-                        for(let i = 0; i < data.length; i++){
+                        for (let i = 0; i < data.length; i++) {
                             var option = document.createElement('option');
                             option.text = data[i].district_name;
                             option.value = data[i].id;
@@ -312,6 +326,19 @@
                 .catch(error => {
                     console.log(error);
                 });
+        }
+
+        function selectPhotoOnClick() {
+            document.getElementById('reference_photo').click();
+        }
+
+        function onPreviewChange() {
+            var inputPhoto = document.getElementById('reference_photo');
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(inputPhoto.files[0]);
+            fileReader.onload = function(event) {
+                document.getElementById('img_preview').src = event.target.result;
+            };
         }
     </script>
 @endsection

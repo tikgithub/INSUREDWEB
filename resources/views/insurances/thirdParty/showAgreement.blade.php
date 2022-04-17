@@ -39,8 +39,9 @@
                         </tbody>
                     </table>
                     </p>
-                    
-                    <p class="card-text text-dark fw-bold fs-5">ລວມຄ່າທຳນຽມ:{{number_format($customerPackage->fee_charge,0)}}</p>
+
+                    <p class="card-text text-dark fw-bold fs-5">
+                        ລວມຄ່າທຳນຽມ:{{ number_format($customerPackage->fee_charge, 0) }}</p>
                     <p class="card-text text-danger fw-bold fs-4">₭ {{ number_format($package->final_price, 0) }}</p>
                 </div>
             </div>
@@ -50,7 +51,8 @@
             <div style="width: 500px; margin:auto" class="">
                 @include('flashMessage')
             </div>
-            <form autocomplete="off" method="POST" action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}">
+            <form autocomplete="off" method="POST"
+                action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}">
                 @csrf
                 <input type="hidden" name="package_id" value="{{ $package->id }}">
                 <fieldset class="border notosanLao">
@@ -82,8 +84,8 @@
                             <div class="col-sm-8">
                                 <select name="sex" id="sex" required
                                     class="form-select form-select-lg {{ $errors->has('sex') ? 'border-danger' : '' }}">
-                                    <option value="M" {{$customerPackage->sex=='M'? 'selected':''}}>ຊາຍ</option>
-                                    <option value="F"  {{$customerPackage->sex=='F'? 'selected':''}}>ຍິງ</option>
+                                    <option value="M" {{ $customerPackage->sex == 'M' ? 'selected' : '' }}>ຊາຍ</option>
+                                    <option value="F" {{ $customerPackage->sex == 'F' ? 'selected' : '' }}>ຍິງ</option>
                                 </select>
                             </div>
                         </div>
@@ -120,7 +122,7 @@
                             </div>
                         </div>
                         <hr>
-               
+
                         {{-- Province --}}
                         <div class="mb-3 row">
                             <label for="province" class="col-sm-4 text-center fs-4 col-form-label">ແຂວງ</label>
@@ -129,7 +131,8 @@
                                     class="form-select form-select-lg {{ $errors->has('province') ? 'border-danger' : '' }}"
                                     onchange="onSelectInsuredProvince()" onfocus="this.selectedIndex = -1">
                                     @foreach ($provinces as $item)
-                                        <option value="{{ $item->id }}" {{$customerPackage->province==$item->id}}>{{ $item->province_name }}</option>
+                                        <option value="{{ $item->id }}" {{ $customerPackage->province == $item->id }}>
+                                            {{ $item->province_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -151,7 +154,7 @@
                             <div class="col-sm-8 align-self-center">
                                 <input type="text" required
                                     class="form-control form-control-lg {{ $errors->has('address') ? 'border-danger' : '' }}"
-                                    id="address" name="address" value="{{$customerPackage->address}}">
+                                    id="address" name="address" value="{{ $customerPackage->address }}">
                             </div>
                         </div>
                     </div>
@@ -167,7 +170,9 @@
                                 <select name="vehicleBrand" id="vehicleBrand" required
                                     class="form-select form-select-lg {{ $errors->has('vehicleBrand') ? 'border-danger' : '' }}">
                                     @foreach ($vehicleBrand as $item)
-                                        <option value="{{ $item->id }}" {{($customerPackage->vehicle_brand==$item->id)? 'selected':''}}>{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}"
+                                            {{ $customerPackage->vehicle_brand == $item->id ? 'selected' : '' }}>
+                                            {{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -180,7 +185,7 @@
                             <div class="col-sm-8 align-self-center">
                                 <input type="text" required
                                     class="form-control form-control-lg {{ $errors->has('number_plate') ? 'border-danger' : '' }}"
-                                    id="number_plate" name="number_plate" value="{{$customerPackage->number_plate}}">
+                                    id="number_plate" name="number_plate" value="{{ $customerPackage->number_plate }}">
                             </div>
                         </div>
                         {{-- Color --}}
@@ -189,7 +194,7 @@
                             <div class="col-sm-8 align-self-center">
                                 <input type="text" required
                                     class="form-control form-control-lg {{ $errors->has('color') ? 'border-danger' : '' }}"
-                                    id="color" name="color" value="{{$customerPackage->color}}">
+                                    id="color" name="color" value="{{ $customerPackage->color }}">
                             </div>
                         </div>
                         {{-- Engine Number --}}
@@ -199,7 +204,8 @@
                             <div class="col-sm-8 align-self-center">
                                 <input type="text" required
                                     class="form-control form-control-lg {{ $errors->has('engine_number') ? 'border-danger' : '' }}"
-                                    id="engine_number" name="engine_number" value="{{ $customerPackage->engine_number }}">
+                                    id="engine_number" name="engine_number"
+                                    value="{{ $customerPackage->engine_number }}">
                             </div>
                         </div>
 
@@ -210,7 +216,8 @@
                             <div class="col-sm-8 align-self-center">
                                 <input type="text" required
                                     class="form-control form-control-lg {{ $errors->has('chassic_number') ? 'border-danger' : '' }}"
-                                    id="chassic_number" name="chassic_number" value="{{ $customerPackage->chassic_number }}">
+                                    id="chassic_number" name="chassic_number"
+                                    value="{{ $customerPackage->chassic_number }}">
                             </div>
                         </div>
 
@@ -222,32 +229,50 @@
                                 <select name="registeredProvince" id="registeredProvince" required
                                     class="form-select form-select-lg {{ $errors->has('registeredProvince') ? 'border-danger' : '' }}">
                                     @foreach ($provinces as $item)
-                                        <option value="{{ $item->id }}" {{$customerPackage->registered_province==$item->id? 'selected':''}}>{{ $item->province_name }}</option>
+                                        <option value="{{ $item->id }}"
+                                            {{ $customerPackage->registered_province == $item->id ? 'selected' : '' }}>
+                                            {{ $item->province_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
+                        <div class="row mb-3 fs-4">
+                            <label for="district" class="col-form-label col-sm-3">ຮູບຖ່າຍບັດປະຈຳໂຕ ຫຼື
+                                ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
+                            <div class="col-sm-9 align-self-center text-center">
+                                <input type="file" name="reference_photo" id="reference_photo" class="form-control-file"
+                                    hidden onchange="onPreviewChange()">
+                                <button type="button" onclick="selectPhotoOnClick()" class="btn btn-warning btn-lg mb-2"><i
+                                        class="bi bi-image-alt"></i>
+                                    ເລືອກຮູບ</button>
+                                <img id="img_preview" src="{{asset($customerPackage->front_image)}}" alt="" srcset="" class="border rounded img-fluid">
+                            </div>
+                        </div>
+
+
                         {{-- Term and Condition --}}
                         <div class="mb-3 row">
-                            <label class="text-center fs-4 col-form-label" >ເງືອນໄຂການໃຫ້ບໍລິການ</label>
+                            <label class="text-center fs-4 col-form-label">ເງືອນໄຂການໃຫ້ບໍລິການ</label>
                             <div class="col-sm-12">
-                               <textarea name="term" id="term" rows="20" class="form-control bg-white" readonly>
-                                   {{$package->term}}
+                                <textarea name="term" id="term" rows="20" class="form-control bg-white" readonly>
+                                   {{ $package->term }}
                                </textarea>
                             </div>
                         </div>
                         {{-- CheckBox --}}
                         <div class="form-check">
-                            <input onchange="onAcceptCheck()" class="form-check-input" type="checkbox" id="acceptBox" style="cursor: pointer">
+                            <input onchange="onAcceptCheck()" class="form-check-input" type="checkbox" id="acceptBox"
+                                style="cursor: pointer">
                             <label class="form-check-label" for="acceptBox">
-                              ຂ້ອຍຍອມຮັບ ແລະ ເຂົ້າໃຈ
+                                ຂ້ອຍຍອມຮັບ ແລະ ເຂົ້າໃຈ
                             </label>
-                          </div>
+                        </div>
                         {{-- Submit Botton --}}
                         <div class="mb-3 row">
                             <div class="col-md-12 d-flex justify-content-center">
-                                <button disabled id="btnSubmit" type="submit" class="btn bg-blue btn-lg text-white"><i class="bi bi-wallet-fill"></i>
+                                <button disabled id="btnSubmit" type="submit" class="btn bg-blue btn-lg text-white"><i
+                                        class="bi bi-wallet-fill"></i>
                                     ຕົກລົງ</button>
                             </div>
                         </div>
@@ -266,20 +291,20 @@
         var baseURL = "{{ env('BASE_ROUTE') }}";
 
         //When load page complete
-        window.onload = function(){
+        window.onload = function() {
             var provinceInsuredSelect = document.getElementById('province');
             provinceInsuredSelect.selectedIndex = 0;
             onSelectInsuredProvince();
         }
 
         //On Accept Box Change
-        function onAcceptCheck(){
-            var checkBox =  document.getElementById('acceptBox');
+        function onAcceptCheck() {
+            var checkBox = document.getElementById('acceptBox');
             var btnSubmit = document.getElementById('btnSubmit');
 
-            if(checkBox.checked){
-                btnSubmit.disabled = false;    
-            }else{
+            if (checkBox.checked) {
+                btnSubmit.disabled = false;
+            } else {
                 btnSubmit.disabled = true;
             }
         }
@@ -298,10 +323,10 @@
                 .then(data => {
                     if (data.length > 0) {
                         districtInsuredSelect.disabled = false;
-                        for(let i = 0; i < data.length; i++){
+                        for (let i = 0; i < data.length; i++) {
                             var option = document.createElement('option');
-                            if(data[i].id == {{$customerPackage->district}}){
-                                option.setAttribute('selected',true);
+                            if (data[i].id == {{ $customerPackage->district }}) {
+                                option.setAttribute('selected', true);
                             }
                             option.text = data[i].district_name;
                             option.value = data[i].id;
@@ -313,6 +338,19 @@
                 .catch(error => {
                     console.log(error);
                 });
+        }
+
+        function selectPhotoOnClick() {
+            document.getElementById('reference_photo').click();
+        }
+
+        function onPreviewChange() {
+            var inputPhoto = document.getElementById('reference_photo');
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(inputPhoto.files[0]);
+            fileReader.onload = function(event) {
+                document.getElementById('img_preview').src = event.target.result;
+            };
         }
     </script>
 @endsection

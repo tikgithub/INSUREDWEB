@@ -244,6 +244,7 @@ class InsuranceFlowController extends Controller
         $newInput->yellow_book_image = ImageCompress::notCompressImage($req->file('yellow_book'), $uploadPath);
         $newInput->insurance_type_id = $req->input('sale_id');
         $newInput->insurance_type = "HIGH-VALUEABLE";
+        $newInput->payment_confirm = "WAIT_FOR_PAYMENT";
         $newInput->save();
         //Set Session for new Input ID
         session(['input_id' => $newInput->id]);
@@ -254,43 +255,45 @@ class InsuranceFlowController extends Controller
     /** Show the agreement page after customer input the detail */
     public function showAgreementPage()
     {
-        //Get session id
-        $input_id = session('input_id');
 
 
-        //Get Input Data after submit
-        $inputData = InsuranceInformation::find($input_id);
+        if (session('input_id')) {
+            //Get session id
+            $input_id = session('input_id');
+            //Get Input Data after submit
+            $inputData = InsuranceInformation::find($input_id);
 
-        //Get Sale option data
-        $saleOption = SaleOption::find($inputData->insurance_type_id);
-        $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
-        $level = Level::find($vehiclePackage->lvl_id);
-        $company = InsuranceCompany::find($vehiclePackage->c_id);
+            //Get Sale option data
+            $saleOption = SaleOption::find($inputData->insurance_type_id);
+            $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
+            $level = Level::find($vehiclePackage->lvl_id);
+            $company = InsuranceCompany::find($vehiclePackage->c_id);
 
-        //Get the package data
-        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
-        sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
-        WHERE so.id  = ?";
-        $saleOptionDetail = DB::select($query, [$inputData->sale_options_id]);
+            //Get the package data
+            $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+            sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
+            WHERE so.id  = ?";
+            $saleOptionDetail = DB::select($query, [$inputData->insurance_type_id]);
 
-        //Province data
-        $provinces = Province::all();
-        //District Data
-        $districts = District::where('province_id', '=', $inputData->province)->get();
+            //Province data
+            $provinces = Province::all();
+            //District Data
+            $districts = District::where('province_id', '=', $inputData->province)->get();
 
-        //Car Brand data
-        $carBrands = CarBrand::all();
+            //Car Brand data
+            $carBrands = CarBrand::all();
 
-        return view('insurances.cars.insuranceAgreement')
-            ->with('inputData', $inputData)
-            ->with('level', $level)
-            ->with('saleOption', $saleOption)
-            ->with('vehiclePackage', $vehiclePackage)
-            ->with('company', $company)
-            ->with('saleDetails', $saleOptionDetail)
-            ->with('Provinces', $provinces)
-            ->with('carBrands', $carBrands)
-            ->with('districts', $districts);
+            return view('insurances.cars.insuranceAgreement')
+                ->with('inputData', $inputData)
+                ->with('level', $level)
+                ->with('saleOption', $saleOption)
+                ->with('vehiclePackage', $vehiclePackage)
+                ->with('company', $company)
+                ->with('saleDetails', $saleOptionDetail)
+                ->with('Provinces', $provinces)
+                ->with('carBrands', $carBrands)
+                ->with('districts', $districts);
+        }
     }
 
     /** Set Session of Input ID and go to agreement page */
@@ -574,12 +577,13 @@ class InsuranceFlowController extends Controller
             'color' => 'required',
             'engine_number' => 'required',
             'chassic_number' => 'required',
-            'registeredProvince' => 'required'
+            'registeredProvince' => 'required',
+            'reference_photo' => 'required'
         ]);
         //More validate from here ///////
 
         /////////////////////////////////
-
+        
         //Create new object
         $object = new InsuranceInformation();
         $object->firstname = $req->input('firstname');
@@ -607,10 +611,12 @@ class InsuranceFlowController extends Controller
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
         $object->user_id = Auth::user()->id;
 
+        $uploadPath = "Insurances/thirdParty";
+        $object->front_image =  ImageCompress::notCompressImage($req->file('reference_photo'), $uploadPath);
 
         if ($object->save()) {
             session(['third_package_id' => $object->id]);
-            return redirect()->route('InsuranceFlowController.showThirdPartyAgreement',['package_id'=>$object->id]);
+            return redirect()->route('InsuranceFlowController.showThirdPartyAgreement', ['package_id' => $object->id]);
         } else {
             return redirect()->back()->withInput()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
@@ -622,7 +628,7 @@ class InsuranceFlowController extends Controller
     {
 
         //Get section information
-        session(['third_package_id'=>$package_id]);
+        session(['third_package_id' => $package_id]);
 
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo, tpp.term
@@ -696,13 +702,12 @@ class InsuranceFlowController extends Controller
         $object->chassic_number = $req->input('chassic_number');
         $object->registered_province = $req->input('registeredProvince');
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
-        if($object->save()){
+        if ($object->save()) {
 
             return redirect()->route('InsuranceFlowController.showPaymentProviderForThirdPartyPackage');
-        }else{
-            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        } else {
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
-
     }
 
     /** Function to show the payment provider detail */
@@ -720,7 +725,8 @@ class InsuranceFlowController extends Controller
     }
 
     /** Function to select payment provider for third party package */
-    public function showSubmitPaymentForThirdPartyPackage($provider_id){
+    public function showSubmitPaymentForThirdPartyPackage($provider_id)
+    {
         //dd(session('third_package_id'));
 
         //When session not set then send back to welcome page
@@ -733,7 +739,7 @@ class InsuranceFlowController extends Controller
         return view('insurances.thirdParty.showPaymentSubmit')->with('provider', $provider);
     }
 
-      /** Function update payment detail of third party package */
+    /** Function update payment detail of third party package */
     public function updatePaymentDetailOfThirdParty(Request $req)
     {
         //Validate the image should be upload
@@ -768,13 +774,14 @@ class InsuranceFlowController extends Controller
     }
 
     /** Function to delete customer of third party */
-    public function deleteThirdPartyInsurance($id){
+    public function deleteThirdPartyInsurance($id)
+    {
         $deleteObject = ThirdPartyCustomerInput::find($id);
 
-        if($deleteObject->delete()){
-            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
-        }else{
-            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        if ($deleteObject->delete()) {
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+        } else {
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
     }
 }

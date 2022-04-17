@@ -90,7 +90,9 @@
             </div>
         </div>
         @foreach ($thirdPartyInsurance as $item)
-            <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
+            <a class="row text-decoration-none text-dark mouse-over pt-2"
+                href="{{ route('UserController.InsuranceViewDetail', ['id' => $item->insurance_id]) }}"
+                style="cursor: pointer">
                 <div class="col-md-4 text-center ">
                     <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
                         class="company-logo border">
@@ -123,7 +125,9 @@
             </div>
         </div>
         @foreach ($accidentInsurance as $item)
-            <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
+            <a class="row text-decoration-none text-dark mouse-over pt-2"
+                href="{{ route('UserController.InsuranceViewDetail', ['id' => $item->insurance_id]) }}"
+                style="cursor: pointer">
                 <div class="col-md-4 text-center ">
                     <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
                         class="company-logo border">
@@ -155,7 +159,9 @@
             </div>
         </div>
         @foreach ($heathInsurance as $item)
-            <a class="row text-decoration-none text-dark mouse-over pt-2" href="" style="cursor: pointer">
+            <a class="row text-decoration-none text-dark mouse-over pt-2"
+                href="{{ route('UserController.InsuranceViewDetail', ['id' => $item->insurance_id]) }}"
+                style="cursor: pointer">
                 <div class="col-md-4 text-center ">
                     <img src="{{ asset($item->company_logo) }}" alt="{{ $item->company_name }}"
                         class="company-logo border">

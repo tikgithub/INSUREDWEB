@@ -214,6 +214,10 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     Route::get('/customer/heath/payment_submit/{id}',[HeathSaleController::class,'showPaymentSubmitPage'])->name('HeathSaleController.ShowPaymentSubmitPage');
     Route::post('/customer/heath/payment_submit',[HeathSaleController::class,'submitHeathPayment'])->name('HeathSaleController.SubmitHeathPayment');
     /** HeathSaleController End */
+
+    /** UserController  */
+    Route::get('/customer/view_vehicle_insurance_detail/{id}',[UserController::class,'setVehicleInsuranceID'])->name('UserController.SetVehicleInsuranceID');
+    /** UserController End */
 });
 
 
