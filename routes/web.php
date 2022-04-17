@@ -20,6 +20,7 @@ use App\Http\Controllers\HeathCoverController;
 use App\Http\Controllers\HeathCoverItemController;
 use App\Http\Controllers\HeathPlanController;
 use App\Http\Controllers\HeathPlanDetailController;
+use App\Http\Controllers\HeathSaleController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -94,6 +95,11 @@ Route::group(['prefix' => 'insurance'], function () {
     Route::get('/accident/select_insurance_type/{company_id}', [AccidentSaleController::class, 'showPackagePlan'])->name('AccidentSaleController.showPackagePlan');
     Route::get('/accident/show_package_detail/{plan_id}', [AccidentSaleController::class, 'showPlanDetail'])->name('AccidentSaleController.showPlanDetail');
     Route::get('/accident/customer_information_input/{plan_id}', [AccidentSaleController::class, 'showInputInformationPage'])->name('AccidentSaleController.showInputInformationPage');
+
+     /** Route group of HeathSaleController */
+     Route::get('/heath/company_select',[HeathSaleController::class,'selectCompany'])->name('HeathController.SelectCompany');
+     Route::get('/heath/package_select/{company_id}',[HeathSaleController::class,'showPackage'])->name('HeathSaleController.ShowPackage');
+     /** Route ground of heathSaleController End */
 });
 
 /** JsonResponse Route Group */
@@ -197,6 +203,8 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
 
     /** Route to show insurance user information detail */
     Route::get('/user/vehicle_detail/{id}',[UserController::class,'showVehicleInsuranceDetailPage'])->name('UserController.showVehicleInsuranceDetailPage');
+
+   
 });
 
 

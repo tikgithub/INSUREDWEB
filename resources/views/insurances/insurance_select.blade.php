@@ -39,7 +39,7 @@
         <div class="col-md-4 d-flex justify-content-center pt-2">
             <div class="card shadow notosanLao pt-2 zoom" style="width: 19.8rem">
                 <div class="card-body text-center">
-                    <a href="http://" class="text-decoration-none text-dark">
+                    <a href="{{route('HeathController.SelectCompany')}}" class="text-decoration-none text-dark">
                         <img src="{{ asset('assets/image/heath.png') }}" style="width: auto;height: 200px;">
                         
                         <h4 class="mt-2">
