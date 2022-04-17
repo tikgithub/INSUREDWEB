@@ -216,7 +216,7 @@ class AccidentSaleController extends Controller
             $obj->province = $req->input('province');
             $obj->district = $req->input('district');
             $obj->address = $req->input('address');
-            $obj->payment_confirm = "WAIT_FOR_APPROVED";
+
 
             //Image upload
             if ($req->file('reference_photo')) {

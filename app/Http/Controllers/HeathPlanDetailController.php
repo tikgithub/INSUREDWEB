@@ -29,7 +29,25 @@ class HeathPlanDetailController extends Controller
 
         $coverItems = collect(HeathCoverItem::where('cover_type_id','=', HeathPlan::find($plan_id)->cover_type_id)->get());
 
-        dd($coverItems,collect($priceUpdateData));
+        for($i = 0; $i < sizeof($coverItems); $i++){
+            $isInsert = true;
+            for($j = 0; $j < sizeof($priceUpdateData);$j++){
+                if($coverItems[$i]->name == $priceUpdateData[$j]->item_name){
+                    error_log($coverItems[$i]->name);
+                    $isInsert = false;
+                    continue;
+                }
+            }
+            if($isInsert==true){
+                $newItem = new HeathPlanDetail();
+                $newItem->item_id = $coverItems[$i]->id;
+                $newItem->plan_id = $plan_id;
+                $newItem->save();
+            }
+        }
+        
+        //Re fresh the data
+        $priceUpdateData = DB::select($priceUpdateQuery,[$plan_id]);
 
         return view('admin.curd.heathPlan.planDetail')
         ->with('headerTitleData',$headerTitleData)

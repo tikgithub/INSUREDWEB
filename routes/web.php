@@ -99,6 +99,8 @@ Route::group(['prefix' => 'insurance'], function () {
      /** Route group of HeathSaleController */
      Route::get('/heath/company_select',[HeathSaleController::class,'selectCompany'])->name('HeathController.SelectCompany');
      Route::get('/heath/package_select/{company_id}',[HeathSaleController::class,'showPackage'])->name('HeathSaleController.ShowPackage');
+     Route::get('/heath/package_select_detail/{plan_id}',[HeathSaleController::class,'showSelectedPackage'])->name('HeathSaleController.ShowSelectPackage');
+     Route::get('/heath/customer_input./{plan_id}',[HeathSaleController::class,'showCustomerInput'])->name('HeathSaleController.ShowCustomerInput');
      /** Route ground of heathSaleController End */
 });
 
@@ -204,7 +206,11 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     /** Route to show insurance user information detail */
     Route::get('/user/vehicle_detail/{id}',[UserController::class,'showVehicleInsuranceDetailPage'])->name('UserController.showVehicleInsuranceDetailPage');
 
-   
+    /** HeathSaleController */
+    Route::post('/customer/heath/store',[HeathSaleController::class,'storeUserInformation'])->name('HeathSaleController.StoreUserInformation');
+    Route::get('/customer/heath/confirmation',[HeathSaleController::class,'showUserConfirmationPage'])->name('HeathSaleController.ShowUserConfirmationPage');
+    Route::post('/customer/heath/confirmatio/update',[HeathSaleController::class,'updateUserConfirmationData'])->name('HeathSaleController.UpdateUserConfirmationData');
+    /** HeathSaleController End */
 });
 
 
