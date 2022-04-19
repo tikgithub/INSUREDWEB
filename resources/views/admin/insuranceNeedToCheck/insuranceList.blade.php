@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                     @foreach ($vehichelInsuranceData as $item)
-                        <tr>
+                        <tr class="cursor">
                             {{-- {{ $item->package_name }} {{ $item->level_name }} --}}
                             <td>{{ $item->company_name }} </td>
                             <td>@include(
@@ -46,13 +46,13 @@
                                 )
                             </td>
                             <td>
-                                <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
+                                <a href="{{route('AdminInsuranceController.ShowPageDetailForApprove',['id'=>$item->insurance_id])}}" class="btn btn-sm btn-warning">ກວດສອບ</a>
                             </td>
                         </tr>
                     @endforeach
 
                     @foreach ($thirdPartyInsuranceData as $item)
-                        <tr>
+                        <tr class="cursor">
                             <td>{{ $item->company_name }}</td>
                             <td>@include(
                                 'admin.insuranceNeedToCheck.insuranceStatus'
@@ -77,13 +77,13 @@
                                 )
                             </td>
                             <td>
-                                <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
+                                <a href="{{route('AdminInsuranceController.ShowPageDetailForApprove',['id'=>$item->insurance_id])}}" class="btn btn-sm btn-warning">ກວດສອບ</a>
                             </td>
                         </tr>
                     @endforeach
 
                     @foreach ($accidentInsuranceData as $item)
-                        <tr>
+                        <tr class="cursor">
                             <td>{{ $item->company_name }}</td>
                             <td>@include(
                                 'admin.insuranceNeedToCheck.insuranceStatus'
@@ -107,13 +107,13 @@
                                 )
                             </td>
                             <td>
-                                <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
+                                <a href="{{route('AdminInsuranceController.ShowPageDetailForApprove',['id'=>$item->insurance_id])}}" class="btn btn-sm btn-warning">ກວດສອບ</a>
                             </td>
                         </tr>
                     @endforeach
 
                     @foreach ($heathInsuranceData as $item)
-                        <tr>
+                        <tr class="cursor">
                             <td>{{ $item->company_name }}</td>
                             <td>@include(
                                 'admin.insuranceNeedToCheck.insuranceStatus'
@@ -137,11 +137,10 @@
                                 )
                             </td>
                             <td>
-                                <a href="http://" class="btn btn-sm btn-warning">ກວດສອບ</a>
+                                <a href="{{route('AdminInsuranceController.ShowPageDetailForApprove',['id'=>$item->insurance_id])}}" class="btn btn-sm btn-warning">ກວດສອບ</a>
                             </td>
                         </tr>
                     @endforeach
-
                 </tbody>
         </div>
     </div>
@@ -149,19 +148,14 @@
 
 @section('scripting')
     <script>
-        $(document).ready(function() {
-
-            $('#table').DataTable({
-                dom: 'Bfrtip',
-                buttons: [{
-                    extend: 'csv',
-                    charset: 'UTF-8',
-                    fieldSeparator: ';',
-                    bom: true,
-                    filename: 'CsvTest',
-                    title: 'CsvTest'
-                }]
-            });
-        });
+       
     </script>
+@endsection
+
+@section('styles')
+    <style>
+        .cursor{
+            cursor: pointer;
+        }
+    </style>
 @endsection

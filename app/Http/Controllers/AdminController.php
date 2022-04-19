@@ -677,9 +677,7 @@ class AdminController extends Controller
         Where ii.insurance_Type ='HEATH' and ii.contract_status IS NULL ";
 
         $heathInsuranceData = DB::select($heathInsuranceQuery);
-
-
-
+        
         return view('admin.insuranceNeedToCheck.insuranceList')
             ->with('vehichelInsuranceData', $vehicleInsuranceData)
             ->with('thirdPartyInsuranceData',$thirdPartyInsuranceData)

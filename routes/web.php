@@ -16,6 +16,7 @@ use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\AccidentItemController;
 use App\Http\Controllers\AccidentPlanController;
 use App\Http\Controllers\AccidentSaleController;
+use App\Http\Controllers\AdminInsuranceController;
 use App\Http\Controllers\HeathCoverController;
 use App\Http\Controllers\HeathCoverItemController;
 use App\Http\Controllers\HeathPlanController;
@@ -436,6 +437,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/datamanager/heath_plan_detail/{plan_id}',[HeathPlanDetailController::class,'index'])->name('HeathPlanDetailController.Index');
     Route::get('/datamanager/heath_plan_detail/update/{plan_detail_id}',[HeathPlanDetailController::class,'update'])->name('HeathPlanDetailController.Update');
     /** HeathPlanDetail Controller End */
+
+    /** AdminInsuranceController */
+    Route::get('/check_for_approve/{id}',[AdminInsuranceController::class,'showPageDetailForApprove'])->name('AdminInsuranceController.ShowPageDetailForApprove');
+    
+    /** AdminInsuranceController End */
 
 
     /************************************************ End Data Manager **************************************/
