@@ -145,13 +145,6 @@
         </div>
     </div>
 @endsection
-
-@section('scripting')
-    <script>
-       
-    </script>
-@endsection
-
 @section('styles')
     <style>
         .cursor{
@@ -159,3 +152,12 @@
         }
     </style>
 @endsection
+
+@section('scripting')
+@include('toastrMessage')
+    <script>
+       
+    </script>
+@endsection
+
+

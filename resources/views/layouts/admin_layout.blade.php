@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     {{-- Date Picker Third Party MC Date Picker --}}
     <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
-    @yield('styles')
+
     {{-- Toastr CDN --}}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
@@ -71,6 +71,7 @@
         }
 
     </style>
+    @yield('styles')
 
 </head>
 
@@ -170,6 +171,8 @@
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ asset('assets/js/toastr.js') }}"></script>
+
+    @yield('scripting')
 
 </body>
 

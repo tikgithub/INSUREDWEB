@@ -1,7 +1,7 @@
 @php
 use App\Utils\ImageCompress;
 @endphp
-@extends('layouts.public_layout')
+@extends('layouts.admin_layout')
 @section('content')
     <div class="pt-5"></div>
     <div class="row">
@@ -157,40 +157,66 @@ use App\Utils\ImageCompress;
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12 text-center">
+
+            <a href="{{ route('AdminInsuranceController.ShowEditPageOfVehicleInsurance', ['id' => $insurance->id]) }}"
+                class="btn btn-warning btn-lg"><i class="bi bi-pencil fs-4 me-2"></i>ແກ້ໄຂຂໍ້ມູນຜູ້ເອົາປະກັນ</a>
+        </div>
+    </div>
+
     <hr>
-    <h3 class="fw-bold">ສະຖານະຂອງປະກັນ</h3>
+    <h3 class="fw-bold">ຢືນຢັນປະກັນໄພ</h3>
     @switch($insurance->payment_confirm)
-        @case('WAIT_FOR_PAYMENT')
-            <div class="alert text-center fs-4 fw-bold alert-info me-2" role="alert">
-                <i class="bi bi-cash-stack me-2"></i> ກາລຸນາຢືນຢັນການສັ່ງຊື້
-                <a href="{{route('UserController.SetVehicleInsuranceID',['id'=>$insurance->id])}}" class="btn btn-success ms-2 btn-lg"><i class="bi bi-cash me-2"></i>ຈ່າຍເງິນ</a>
-            </div>
-        @break
-
         @case('WAIT_FOR_APPROVED')
-            <div class="alert fs-4 fw-bold alert-warning me-2" role="alert">
-                <i class="bi bi-clock-history me-2"></i> ກາລຸນາລໍຖ້າລາຍກຳລັງຢູ່ໃນການກວດສອບ
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <form action="{{ route('AdminInsuranceController.UpdateVehicleInsuranceContract') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $insurance->id }}">
+                        <div class="mb-3">
+                            <div class="mb-3 row">
+                                <label for="" class="col-form-label col-sm-5 fs-4">ເລກທີ່ສັນຍາ</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="contract_no" id="contract_no" class="form-control form-control-lg"
+                                        required value="{{ old('contract_no') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="" class="col-form-label col-sm-5 fs-5">ເວລາເລີ່ມສັນຍາ(MM/DD/YYYY)</label>
+                            <div class="col-sm-7">
+                                <input onchange="onAddEndDate()" type="datetime-local" name="start_date" id="start_date"
+                                    class="form-control form-control-lg" required value="{{ old('start_date') }}">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="" class="fs-5 col-form-label col-sm-5">ເວລາສິ້ນສຸດສັນຍາ(MM/DD/YYYY)</label>
+                            <div class="col-sm-7">
+                                <input type="datetime-local" name="" id="end_date" class="form-control form-control-lg" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="" class="fs-4 col-form-label col-sm-5">ໝາຍເຫດ</label>
+                            <div class="col-sm-7">
+                                <textarea name="contract_description" id="contract_description" class="form-control form-control-lg" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-7 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success btn-lg"><i
+                                        class=" fs-4 bi bi-check-circle me-2"></i>ອານຸມັດລາຍການ</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        @break
-
-        @case('APPROVED_OK')
         @break
     @endswitch
 @endsection
-@section('scripting')
-    <script>
-        function onClickThumnailImage(id) {
-            var sourceImage = document.getElementById(id);
-            var targetImage = document.getElementById('preview_image');
-            targetImage.src = sourceImage.getAttribute('img-data');
-        }
-    </script>
-@endsection
-@section('footer')
-    @include('layouts.footer')
-@endsection
 
-@section('style')
+@section('styles')
     <style>
         .company-logo {
             width: 100px;
@@ -212,4 +238,41 @@ use App\Utils\ImageCompress;
         }
 
     </style>
+@endsection
+
+@section('scripting')
+    @include('toastrMessage')
+    <script>
+        function onClickThumnailImage(id) {
+            var sourceImage = document.getElementById(id);
+            var targetImage = document.getElementById('preview_image');
+            targetImage.src = sourceImage.getAttribute('img-data');
+        }
+
+        function onAddEndDate() {
+            var startDate = (document.getElementById('start_date').value);
+            var parseStatDate = new Date(startDate);
+            var newDate = new Date(parseStatDate);
+
+            newDate.setFullYear(parseStatDate.getFullYear() + 1);
+
+            console.log(newDate);
+
+            var endDate = document.getElementById('end_date');
+            var year = newDate.getFullYear();
+            var month = (parseInt(newDate.getMonth()) + 1) > 10 ? parseInt(newDate.getMonth()) + 1 : '0' + (parseInt(newDate
+                .getMonth()) + 1);
+            var date = newDate.getDate() > 10 ? newDate.getDate() : '0' + newDate.getDate();
+            var hour = parseInt(newDate.getHours())>10? parseInt(newDate.getHours()): '0' + (newDate.getHours());
+            var minute = parseInt(newDate.getMinutes())>10? parseInt(newDate.getMinutes()) : '0' + (newDate.getMinutes());
+    
+            strEndDate = year + '-' + month + '-' + date + 'T'+ hour + ':' + minute;
+            console.log(strEndDate);
+            endDate.value = strEndDate;
+        }
+    </script>
+@endsection
+
+@section('footer')
+    @include('layouts.footer')
 @endsection

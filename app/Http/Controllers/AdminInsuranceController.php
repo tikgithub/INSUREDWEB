@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CarBrand;
+use App\Models\District;
+use App\Models\InsuranceCompany;
 use App\Models\InsuranceInformation;
+use App\Models\Level;
+use App\Models\Province;
+use App\Models\SaleOption;
 use App\Models\ThirdPartyCoverItem;
+use App\Models\VehiclePackage;
+use App\Utils\ImageCompress;
+use DateInterval;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class AdminInsuranceController extends Controller
 {
     public function showPageDetailForApprove($id)
     {
         $insurance = InsuranceInformation::find($id);
-      
+
         switch ($insurance->insurance_Type) {
             case "HIGH-VALUEABLE":
                 $vehicleSQLQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
@@ -67,7 +78,7 @@ class AdminInsuranceController extends Controller
                 inner JOIN  heath_cover_types hct  on hct.id = ap.cover_type_id
                 INNER JOIN  insurance_companies ic  on ic.id  = hct.company_id
                 Where ii.insurance_Type ='ACCIDENT' and ii.id = ?";
-                $accidentInsurance = collect(DB::select($accidentInsuranceQuery, [ $id]))->first();
+                $accidentInsurance = collect(DB::select($accidentInsuranceQuery, [$id]))->first();
 
                 //Query the cover item and cover price
                 $queryCoverData = "SELECT accident_plan_details.id, accident_cover_items.item, accident_plan_details.cover_price FROM accident_plan_details
@@ -108,5 +119,131 @@ class AdminInsuranceController extends Controller
 
                 break;
         }
+    }
+
+    public function showEditPageOfVehicleInsurance($id)
+    {
+        //Get Input Data after submit
+        $inputData = InsuranceInformation::find($id);
+        //Province data
+        $provinces = Province::all();
+        //District Data
+        $districts = District::where('province_id', '=', $inputData->province)->get();
+
+        //Car Brand data
+        $carBrands = CarBrand::all();
+
+        return view('admin.insuranceNeedToCheck.editVehicleInsurance')
+            ->with('inputData', $inputData)
+            ->with('Provinces', $provinces)
+            ->with('carBrands', $carBrands)
+            ->with('districts', $districts);
+    }
+
+    public function updateVehicleInsurance(Request $req)
+    {
+        //Validate input
+        //Image Validate with maximun
+        $req->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'tel' => 'required',
+            'sex' => 'required',
+            'dob' => 'required',
+            'identity' => 'required',
+            'province' => 'required',
+            'district' => 'required',
+            'vehicleBrand' => 'required',
+            'registeredProvince' => 'required',
+            'number_plate' => 'required',
+            'color' => 'required',
+            'address' => 'required'
+        ]);
+
+        //Find eqloquent object for perform the update operation
+        $newInput = InsuranceInformation::find($req->input('id'));
+
+        $newInput->firstname = trim($req->input('firstname'));
+        $newInput->lastname = trim($req->input('lastname'));
+        $newInput->sex = $req->input('sex');
+        $newInput->dob = $req->input('dob');
+        $newInput->tel = $req->input('tel');
+        $newInput->identity = trim($req->input('identity'));
+        $newInput->province = $req->input('province');
+        $newInput->district = $req->input('district');
+        $newInput->address = trim($req->input('address'));
+        $newInput->vehicle_brand = $req->input('vehicleBrand');
+        $newInput->number_plate = trim($req->number_plate);
+        $newInput->color = trim($req->input('color'));
+        $newInput->registered_province = $req->input('registeredProvince');
+        $newInput->chassic_number = $req->input('chassic_number');
+        $newInput->engine_number = $req->input('engine_number');
+
+        //Prepare to upload image for 5 items if image not upload mean do nothing
+        $uploadPath = "Insurances/Vehicles";
+
+        if ($req->file('front')) {
+            File::delete($newInput->front_image);
+            $newInput->front_image =  ImageCompress::notCompressImage($req->file('front'), 70, $uploadPath, 800);
+        }
+        if ($req->file('left')) {
+            File::delete($newInput->left_image);
+            $newInput->left_image = ImageCompress::notCompressImage($req->file('left'), 70, $uploadPath, 800);
+        }
+        if ($req->file('right')) {
+            error_log('update here rigth');
+            File::delete($newInput->right_image);
+            $newInput->right_image = ImageCompress::notCompressImage($req->file('right'), 70, $uploadPath, 800);
+        }
+        if ($req->file('rear')) {
+            File::delete($newInput->rear_image);
+            $newInput->rear_image = ImageCompress::notCompressImage($req->file('rear'), 70, $uploadPath, 800);
+        }
+        if ($req->file('yellow_book')) {
+            File::delete($newInput->yellow_book_image);
+            $newInput->yellow_book_image = ImageCompress::notCompressImage($req->file('yellow_book'), 70, $uploadPath, 800);
+        }
+
+        if ($newInput->save()) {
+            return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('success', 'Operation was completed');
+        } else {
+            return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
+        }
+    }
+
+    public function updateVehicleInsuranceContract(Request $req)
+    {
+        //Validate
+        $req->validate([
+            'contract_no' => 'required',
+            'start_date' => 'required',
+            'id' => 'required'
+        ]);
+
+        if(InsuranceInformation::where('contract_no','=',$req->input('contract_no'))->first() ){
+            return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('warning', 'Contract number is already exist')
+            ->withInput();
+        }
+        $insurance = InsuranceInformation::find($req->input('id'));
+
+        $insurance->contract_no = $req->input('contract_no');
+        $insurance->contract_status = "IN-CONTRACT";
+        $insurance->start_date = $req->input('start_date');
+        //Convert Date Time
+        $converted = new DateTime($req->input('start_date'));
+        //Assign end date with + 1 Year
+        $insurance->end_date = $converted->add(new DateInterval("P1Y"));
+        $insurance->approve_by = Auth::user()->id;
+        $insurance->approved_time = now();
+        $insurance->contract_available_time = $req->input('start_date');
+        $insurance->contact_description= $req->input('contract_description');
+        $insurance->payment_confirm = "APPROVED_OK";
+       if($insurance->save()){
+           return redirect()->route('AdminController.showInsuranceList')->with('success','Operation completed');
+       }else{
+            return redirect()->back()->with('error','Operation was not completed, please try again later');
+       }
+        
+
     }
 }

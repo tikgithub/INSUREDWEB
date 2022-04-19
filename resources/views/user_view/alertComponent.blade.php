@@ -12,8 +12,8 @@
 @break
 
 @case('APPROVED_OK')
-    <div class="alert fs-4 fw-bold alert-success me-2" role="alert">
-        <i class="bi bi-check2-circle me-2"></i> ໝົດສັນຍາວັນທີ: 12/03/2023 ເວລາ 11:30
+    <div class="alert fs-5 fw-bold alert-success me-2" role="alert">
+        <i class="bi bi-check2-circle me-2"></i> ໝົດສັນຍາວັນທີ: {{\Carbon\Carbon::parse($item->end_date)->format('d/m/Y | H:m A')}}
     </div>
 @break
 
