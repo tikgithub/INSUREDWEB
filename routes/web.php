@@ -22,6 +22,7 @@ use App\Http\Controllers\HeathCoverItemController;
 use App\Http\Controllers\HeathPlanController;
 use App\Http\Controllers\HeathPlanDetailController;
 use App\Http\Controllers\HeathSaleController;
+use App\Http\Controllers\WebsiteController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Route;
@@ -444,6 +445,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::post('/edit_vehicle_detail',[AdminInsuranceController::class,'updateVehicleInsurance'])->name('AdminInsuranceController.UpdateVehicleInsurance');
     Route::post('/approve_vehicle_detail',[AdminInsuranceController::class,'updateVehicleInsuranceContract'])->name('AdminInsuranceController.UpdateVehicleInsuranceContract');
     /** AdminInsuranceController End */
+
+
+    /** Website Controller */
+    Route::get('/website/',[WebsiteController::class,'index'])->name('WebsiteController.index');
+    Route::get('/website/image_slide',[WebsiteController::class,'imageSlide'])->name('WebsiteController.ImageSlide');
+    Route::post('/website/image_slide/store',[WebsiteController::class,'storeSlideImage'])->name('WebsiteController.StoreSliderImage');
+    Route::post('/website/image_slide/update',[WebsiteController::class,'editSlideImage'])->name('WebsiteController.EditSlideImage');
+    Route::get('/website/image_slide/delete/{id}',[WebsiteController::class,'deleteSlideImage'])->name('WebsiteController.DeleteSlideImage');
+    /** Website Controller End */
 
 
     /************************************************ End Data Manager **************************************/

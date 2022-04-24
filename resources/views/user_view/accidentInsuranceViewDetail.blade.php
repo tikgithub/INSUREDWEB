@@ -31,8 +31,8 @@ use App\Utils\ImageCompress;
 
             </div>
             <div class="text-center">
-                <h5>{{ $accidentInsurance->package_name }} {{$accidentInsurance->plan_name}}
-                     </h5><br>
+                <h5>{{ $accidentInsurance->package_name }} {{ $accidentInsurance->plan_name }}
+                </h5><br>
                 <h6>ຄ່າທຳນຽມ: <u>{{ number_format($insurance->fee_charge, 0) }}</u></h6>
                 <h2>ລວມ: <b class="text-danger">{{ number_format($insurance->total_price, 0) }} ກີບ/ຕໍ່ປີ</b></h2>
             </div>
@@ -116,6 +116,9 @@ use App\Utils\ImageCompress;
         @break
 
         @case('APPROVED_OK')
+            <div class=" fs-4 fw-bold me-2 text-center" role="">
+                <a href="" class="btn btn-success"><i class="bi bi-book me-2"></i> ເບິ່ງສັນຍາ</a>
+            </div>
         @break
     @endswitch
 @endsection

@@ -116,6 +116,9 @@ use App\Utils\ImageCompress;
         @break
 
         @case('APPROVED_OK')
+            <div class=" fs-4 fw-bold me-2 text-center" role="">
+                <a href="" class="btn btn-success"><i class="bi bi-book me-2"></i> ເບິ່ງສັນຍາ</a>
+            </div>
         @break
     @endswitch
 @endsection

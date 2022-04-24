@@ -142,11 +142,14 @@
                 echo "class='text-dark bg-white'";
             }
         @endphp>
-            <i class="bi bi-hdd-fill me-2"></i> ຈັດການຂ້ໍມູນ</a>
+            <i class="bi bi-hdd-fill me-2"></i>
+            ຈັດການຂ້ໍມູນ</a>
         {{-- End Menu Index DataMananger --}}
 
         {{-- Menu Index Of Website Information --}}
-        <a href="#clients"><i class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
+        <a href="{{ route('WebsiteController.index') }}"
+            class="{{ Request::url() == route('WebsiteController.index') ? 'text-dark bg-white' : '' }}"><i
+                class="bi bi-file-break-fill me-2"></i> ຂໍ້ມູນໜ້າເວັບໄຊ</a>
         {{-- End Menu Index Of Website Information --}}
 
         {{-- Padding HR --}}

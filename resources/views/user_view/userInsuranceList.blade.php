@@ -189,9 +189,9 @@
     {{-- Display Insurance Accident Insurance Detail --}}
 @endsection
 
-{{-- @section('footer')
+@section('footer')
     @include('layouts.footer')
-@endsection --}}
+@endsection
 
 @section('scripting')
     <script>

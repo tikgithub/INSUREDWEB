@@ -110,9 +110,50 @@ use App\Utils\ImageCompress;
         @break
 
         @case('WAIT_FOR_APPROVED')
-            <div class="alert fs-4 fw-bold alert-warning me-2" role="alert">
-                <i class="bi bi-clock-history me-2"></i> ກາລຸນາລໍຖ້າລາຍກຳລັງຢູ່ໃນການກວດສອບ
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form action="{{ route('AdminInsuranceController.UpdateVehicleInsuranceContract') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $insurance->id }}">
+                    <div class="mb-3">
+                        <div class="mb-3 row">
+                            <label for="" class="col-form-label col-sm-5 fs-4">ເລກທີ່ສັນຍາ</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="contract_no" id="contract_no" class="form-control form-control-lg"
+                                    required value="{{ old('contract_no') }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="" class="col-form-label col-sm-5 fs-5">ເວລາເລີ່ມສັນຍາ(MM/DD/YYYY)</label>
+                        <div class="col-sm-7">
+                            <input onchange="onAddEndDate()" type="datetime-local" name="start_date" id="start_date"
+                                class="form-control form-control-lg" required value="{{ old('start_date') }}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="" class="fs-5 col-form-label col-sm-5">ເວລາສິ້ນສຸດສັນຍາ(MM/DD/YYYY)</label>
+                        <div class="col-sm-7">
+                            <input type="datetime-local" name="" id="end_date" class="form-control form-control-lg" readonly>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="" class="fs-4 col-form-label col-sm-5">ໝາຍເຫດ</label>
+                        <div class="col-sm-7">
+                            <textarea name="contract_description" id="contract_description" class="form-control form-control-lg"
+                                rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-7 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success btn-lg"><i
+                                    class=" fs-4 bi bi-check-circle me-2"></i>ອານຸມັດລາຍການ</button>
+                        </div>
+                    </div>
+                </form>
             </div>
+        </div>
         @break
 
         @case('APPROVED_OK')
@@ -120,11 +161,34 @@ use App\Utils\ImageCompress;
     @endswitch
 @endsection
 @section('scripting')
+@include('toastrMessage')
     <script>
         function onClickThumnailImage(id) {
             var sourceImage = document.getElementById(id);
             var targetImage = document.getElementById('preview_image');
             targetImage.src = sourceImage.getAttribute('img-data');
+        }
+        function onAddEndDate() {
+            var startDate = (document.getElementById('start_date').value);
+            var parseStatDate = new Date(startDate);
+            var newDate = new Date(parseStatDate);
+
+            newDate.setFullYear(parseStatDate.getFullYear() + 1);
+
+            console.log(newDate);
+
+            var endDate = document.getElementById('end_date');
+            var year = newDate.getFullYear();
+            var month = (parseInt(newDate.getMonth()) + 1) > 10 ? parseInt(newDate.getMonth()) + 1 : '0' + (parseInt(newDate
+                .getMonth()) + 1);
+            var date = newDate.getDate() > 10 ? newDate.getDate() : '0' + newDate.getDate();
+            var hour = parseInt(newDate.getHours()) > 10 ? parseInt(newDate.getHours()) : '0' + (newDate.getHours());
+            var minute = parseInt(newDate.getMinutes()) > 10 ? parseInt(newDate.getMinutes()) : '0' + (newDate
+                .getMinutes());
+
+            strEndDate = year + '-' + month + '-' + date + 'T' + hour + ':' + minute;
+            console.log(strEndDate);
+            endDate.value = strEndDate;
         }
     </script>
 @endsection

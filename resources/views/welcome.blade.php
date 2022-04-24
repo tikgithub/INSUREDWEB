@@ -1,54 +1,37 @@
 @extends('layouts.public_layout')
 @section('nav-content')
-    <div class="pt-4" style="margin-top: 10px;"></div>
+    <div class="pt-4" style="margin-top: 50px;"></div>
     {{-- Carousel Section --}}
-    <div class="">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach ($imageSlides as $item)
+            <div class="carousel-item {{$loop->index==0? 'active':''}}">
+                    <img src="{{asset($item->image_path)}}" class="d-block w-100" alt="...">
             </div>
-            <div class="carousel-inner" style="">
-                <div class="carousel-item active">
-                    <img src="{{ asset('assets/image/carousel1.jpg') }}" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('assets/image/carousel2.jpg') }}" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('assets/image/carousel3.jpg') }}" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            @endforeach
+           
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
     {{-- End Carousel Section --}}
 @endsection
 @section('content')
     {{-- Padding --}}
-    <div class="pt-5"id="category"></div>
     {{-- ******************************  Insurance Type   ******************************** --}}
-    <div class="row" >
+    <div class="row">
         <div class="col-md-12 text-center notosanLao">
-            <h3>ຮູບແບບປະກັນໄພ</h3>
+            <h3 class="fw-bold fs-2">ຮູບແບບປະກັນໄພ</h3>
         </div>
     </div>
-    {{-- padding --}}
-    <div class="pt-4"></div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white shadow rounded" >
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white rounded">
         <div class="col h-100">
             <div class="card">
                 <div class="card-body">
@@ -112,10 +95,10 @@
     <div class="pt-5"></div>
     <div class="row">
         <div class="col-md-12 notosanLao text-center">
-            <h3>ວິທີການຈ່າຍເງິນ</h3>
+            <h3 class="fs-2 fw-bold">ວິທີການຈ່າຍເງິນ</h3>
         </div>
     </div>
-    <div class="row pt-3 bg-white p-3 shadow rounded">
+    <div class="row bg-white p-3 rounded">
         <div class="col-md-12">
 
             <div id="howToPayCarosuel" class="carousel slide" data-bs-ride="carousel">
@@ -155,12 +138,10 @@
     <div class="pt-5" id="partner"></div>
     <div class="row">
         <div class="col-md-12 text-center notosanLao">
-            <h3>ຄູ່ຮ່ວມປະກັນໄພ</h3>
+            <h3 class="fw-bold fs-2">ຄູ່ຮ່ວມປະກັນໄພ</h3>
         </div>
     </div>
-    <div class="pt-4"></div>
-    {{-- padding --}}
-    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white shadow rounded">
+    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white rounded">
         <div class="col h-100">
             <div class="card">
                 <div class="card-body">
@@ -223,12 +204,10 @@
     <div class="pt-5" id="howToBuy"></div>
     <div class="row">
         <div class="col-md-12 text-center notosanLao">
-            <h3>ຄວາມຄິດເຫັນຂອງລູກຄ້າ</h3>
+            <h3 class="fs-2 fw-bold">ຄວາມຄິດເຫັນຂອງລູກຄ້າ</h3>
         </div>
     </div>
-    {{-- Padding --}}
-    <div class="pt-3"></div>
-    <div id="commentSlider" class="carousel slide bg-white p-3 rounded shadow" data-bs-ride="carousel">
+    <div id="commentSlider" class="carousel slide bg-white p-3 rounded" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#commentSlider" data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>
@@ -458,27 +437,23 @@
     </div>
     {{-- ********************************************************************* --}}
 
-    {{-- Comment Submit From Customer --}}
-    <div class="pt-5"></div>
+
     <div class="row">
         <div class="col-md-12 text-center notosanLao">
-            <h3>ໃຫ້ຄຳຕິຊົມ</h3>
+            <h3 class="fw-bold fs-2">ໃຫ້ຄຳຕິຊົມ</h3>
         </div>
     </div>
-    <div class="pt-3"></div>
-    <div class="row bg-white p-3 rounded shadow">
-        <div class="col-md-12 notosanLao">
+    <div class="row bg-white p-3 rounded ">
+        <div class="col-md-12 notosanLao ">
             <form action="">
                 <div class="mb-3 row">
                     <div class="col-md-6 offset-md-3">
-                        <label for="">ຄຳຕິຊົມ</label>
-                        <input type="text" name="comment" id="comment" class="form-control">
+                        <input type="text" name="comment" id="comment" class="form-control form-control-lg">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <div class="col-md-6 offset-md-3 text-center">
-                        <h5>ໃຫ້ຄະແນນ</h5>
                         <div class="rating">
 
                             <label>
@@ -525,18 +500,15 @@
     </div>
     {{-- End Comment Submit From Customer --}}
 
-    {{-- Contact Us --}}
-    <div class="pt-5" id="contact"></div>
     <div class="row">
-        <div class="col-md-12 text-center notosanLao">
-            <h3>ຕິດຕໍ່ພວກເຮົາ</h3>
+        <div class="col-md-12 notosanLao">
+            <h3 class="ms-3 fw-bold fs-2">ຕິດຕໍ່ພວກເຮົາ</h3>
         </div>
     </div>
-    <div class="pt-3"></div>
-    <div class="row pt-5 bg-white p-3 rounded shadow">
+    <div class="row bg-white p-3 rounded">
         {{-- Contact us Form --}}
         <div class="col-md-6">
-            <form id="contactForm" class="notosanLao">
+            <form id="contactForm" class="notosanLao text-center">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -561,8 +533,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <textarea class="form-control notosanLao" id="message" placeholder="ຂໍ້ຄວາມ" rows="7"
-                                data-error="Write your message" required></textarea>
+                            <textarea class="form-control notosanLao" id="message" placeholder="ຂໍ້ຄວາມ" rows="7" data-error="Write your message"
+                                required></textarea>
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="submit-button text-left">
@@ -579,20 +551,20 @@
         <div class="col-md-6">
             <div style="border:0; height: 280px; width: 100%;" class="notosanLao">
                 <p>
-                    <img src="{{ asset('images/footerlogo.png') }}" class=""
+                    <img src="" class=""
                         style="object-fit: cover; width: auto; height: 70px;">
                 </p>
                 <br>
                 <p><b class="fs-3 notosanLao"></b>
                 </p><br>
                 <p class="notosanLao fs-4">
-                    ອີເມວຕິດຕໍ່: 
+                    ອີເມວຕິດຕໍ່:
                 </p>
                 <p class="notosanLao fs-4">
-                    ເບີໂທ: 
+                    ເບີໂທ:
                 </p>
                 <p class="notosanLao fs-4">
-                    ທີ່ຢູ່: 
+                    ທີ່ຢູ່:
                 </p>
             </div>
         </div>
@@ -608,7 +580,7 @@
     @include('layouts.higher_footer')
 @endsection
 
-@section('styles')
+@section('style')
     <style>
         .height-100 {
             height: 100vh

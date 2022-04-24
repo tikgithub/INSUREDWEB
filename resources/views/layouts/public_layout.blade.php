@@ -15,7 +15,7 @@
     {{-- Date Picker Third Party MC Date Picker --}}
     <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
 
-   @yield('style')
+    @yield('style')
 
     <style>
         body {
@@ -55,7 +55,7 @@
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 notosanLao fs-5">
                     <li class="nav-item " id="backButton">
@@ -149,7 +149,7 @@
     </nav>
 
     <div id="loading" class="loader"></div>
-
+    @yield('nav-content')
     <div id="main_content" class="main container" style=" padding-top: 60px;">
         @yield('content')
     </div>
@@ -176,8 +176,8 @@
             }
         };
     </script>
-       <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-       <script src="{{asset('assets/js/toastr.js')}}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="{{ asset('assets/js/toastr.js') }}"></script>
 
     @yield('scripting')
 </body>
