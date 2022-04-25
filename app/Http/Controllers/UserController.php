@@ -208,7 +208,7 @@ class UserController extends Controller
     {
 
         $vehicleSQLQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
-        ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+        ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, (select province_name from provinces where id= ii.registered_province) as registeredProvince,
         ii.color, ii.front_image , so.name as option_name , vp.name as package_name, l.name as level_name,ii.end_date
         from insurance_information ii inner join sale_options so on ii.insurance_type_id = so.id 
         inner join vehicle_packages vp on vp.id = so.vp_id 
@@ -218,7 +218,7 @@ class UserController extends Controller
 
         $thirdPartyQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
         ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, 
-        (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+        (select province_name from provinces where id= ii.registered_province) as registeredProvince,
         ii.color, ii.front_image, tpp.name as package_name , tpo.name as option_name, l.name  as level_name, ii.end_date
         from insurance_information ii inner join third_party_options tpo on ii.insurance_type_id = tpo.id
         inner join  levels l on l.id = tpo.lvl_id 
@@ -267,7 +267,7 @@ class UserController extends Controller
         switch ($insurance->insurance_Type) {
             case "HIGH-VALUEABLE":
                 $vehicleSQLQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
-                ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+                ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, (select province_name from provinces where id= ii.registered_province) as registeredProvince,
                 ii.color, ii.front_image , so.name as option_name , vp.name as package_name, l.name as level_name
                 from insurance_information ii inner join sale_options so on ii.insurance_type_id = so.id 
                 inner join vehicle_packages vp on vp.id = so.vp_id 
@@ -290,7 +290,7 @@ class UserController extends Controller
             case "THIRD-PARTY":
                 $thirdPartyQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
                 ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, 
-                (select province_name from Provinces where id= ii.registered_province) as registeredProvince,
+                (select province_name from provinces where id= ii.registered_province) as registeredProvince,
                 ii.color, ii.front_image, tpp.name as package_name , tpo.name as option_name, l.name  as level_name
                 from insurance_information ii inner join third_party_options tpo on ii.insurance_type_id = tpo.id
                 inner join  levels l on l.id = tpo.lvl_id 
