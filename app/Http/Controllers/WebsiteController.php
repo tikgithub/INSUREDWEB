@@ -84,4 +84,9 @@ class WebsiteController extends Controller
         $delete->delete();
         return redirect()->back()->with('success', 'ດຳເນິນການສຳເລັດ');
     }
+
+    public function showInsuranceTypePage(){
+        
+        return view('admin.website_mainpage.insurance_type');
+    }
 }
