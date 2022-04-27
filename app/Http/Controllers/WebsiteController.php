@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\howtopay;
 use App\Models\imageslide;
 use App\Models\InsuranceTypePage;
+use App\Models\PartnerWebPage;
 use App\Utils\ImageCompress;
 use Exception;
 use Illuminate\Http\Request;
@@ -242,7 +243,48 @@ class WebsiteController extends Controller
         }
     }
 
-    public function showPartnerWebPage(){
-        return view('admin.website_mainpage.partner');
+    public function showPartnerWebPage()
+    {
+        $partners = DB::select('select * from partner_web_pages order by order_to_display asc');
+
+        return view('admin.website_mainpage.partner')->with('partners',$partners);
+    }
+
+    public function storePartnerWebPage(Request $req)
+    {
+        try {
+            $req->validate([
+                'order_to_display' => 'required',
+                'image_path' => 'required'
+            ]);
+
+            //Check exist order
+            $isExistedOrdered = PartnerWebPage::where('order_to_display', '=', $req->input('order_to_display'))->get();
+
+            if (sizeof($isExistedOrdered)>0) {
+
+                return redirect()->back()->with('error', 'ລຳດັບການສະແດງຜົນຊ້ຳກັນກະລຸນາເລືອກໃໝ່');
+            }
+
+            $newItem = new PartnerWebPage();
+
+            $newItem->order_to_display = $req->input('order_to_display');
+
+            $newItem->url = $req->input('url');
+
+            if ($req->file('image_path')) {
+
+                $newItem->image_path = ImageCompress::notCompressImage($req->file('image_path'), 'website');
+            }
+
+            $newItem->save();
+
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+        } catch (\Exception | \Throwable $th) {
+            //throw $th;
+            Log::error('Error from WebsiteController ' . $th);
+
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
+        }
     }
 }

@@ -465,6 +465,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::post('/website/howtopay/update',[WebsiteController::class,'updateHowToPay'])->name('WebsiteController.UpdateHowToPay');
 
     Route::get('/website/partner/',[WebsiteController::class,'showPartnerWebPage'])->name('WebsiteController.ShowPartnerWebPage');
+    Route::post('/website/partner/store',[WebsiteController::class,'storePartnerWebPage'])->name('WebsiteController.StorePartnerWebPage');
     /** Website Controller End */
 
 
