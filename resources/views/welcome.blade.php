@@ -1,3 +1,8 @@
+@php
+
+use App\Utils\ImageCompress;
+
+@endphp
 @extends('layouts.public_layout')
 @section('nav-content')
     <div class="pt-4" style="margin-top: 50px;"></div>
@@ -5,11 +10,11 @@
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             @foreach ($imageSlides as $item)
-            <div class="carousel-item {{$loop->index==0? 'active':''}}">
-                    <img src="{{asset($item->image_path)}}" class="d-block w-100" alt="...">
-            </div>
+                <div class="carousel-item {{ $loop->index == 0 ? 'active' : '' }}">
+                    <img src="{{ asset($item->image_path) }}" class="d-block w-100" alt="...">
+                </div>
             @endforeach
-           
+
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -32,60 +37,17 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white rounded">
-        <div class="col h-100">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
+        @foreach ($insuranceType as $item)
+            <div class="col h-100">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{{$item->url}}">
+                            <img src="{{ ImageCompress::getThumnailImage($item->image_path) }}" class="card-img-top shadow" alt="...">
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
+        @endforeach
 
     </div>
     {{-- ********************************************************************* --}}
@@ -551,8 +513,7 @@
         <div class="col-md-6">
             <div style="border:0; height: 280px; width: 100%;" class="notosanLao">
                 <p>
-                    <img src="" class=""
-                        style="object-fit: cover; width: auto; height: 70px;">
+                    <img src="" class="" style="object-fit: cover; width: auto; height: 70px;">
                 </p>
                 <br>
                 <p><b class="fs-3 notosanLao"></b>

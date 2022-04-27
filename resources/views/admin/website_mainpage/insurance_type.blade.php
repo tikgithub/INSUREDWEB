@@ -3,7 +3,7 @@ use App\Utils\ImageCompress;
 @endphp
 @extends('layouts.admin_layout')
 @section('content')
-    <div class="pt-5"></div>
+    
     <div class="pt-5"></div>
     <div class="row">
         <div class="col-md-12">
@@ -87,7 +87,7 @@ use App\Utils\ImageCompress;
                             <td>
                                 <button onclick="onClickEditModal({{collect($item)}})" data-bs-toggle="modal" data-bs-target="#editModal" type="button"
                                     class="btn btn-warning"><i class="bi bi-pencil"></i></button>
-                                <a onclick="return confirm('Are you sure to delete this item?')" href="http://"
+                                <a href="{{route('WebsiteController.DeleteInsuranceTypePage',['id'=>$item->id])}}" onclick="return confirm('Are you sure to delete this item?')" href="http://"
                                     class="btn btn-danger"><i class="bi bi-trash"></i></a>
                             </td>
                         </tr>
@@ -107,7 +107,7 @@ use App\Utils\ImageCompress;
                     <h5 class="modal-title" id="staticBackdropLabel">ແກ້ໄຂມູນຮູບແບບປະກັນໄພ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('WebsiteController.StoreInsuraceTypePage') }}" method="post"
+                <form action="{{ route('WebsiteController.UpdateInsuranceTypePage') }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="editId" id="editId" >

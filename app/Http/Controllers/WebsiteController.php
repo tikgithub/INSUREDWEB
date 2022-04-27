@@ -28,7 +28,7 @@ class WebsiteController extends Controller
 
     public function storeSlideImage(Request $req)
     {
-    
+
         //Validate
         $req->validate([
             'image' => 'required',
@@ -94,7 +94,7 @@ class WebsiteController extends Controller
 
         $insuraceTypes = InsuranceTypePage::all();
 
-        return view('admin.website_mainpage.insurance_type')->with('insuranceTypes',$insuraceTypes);
+        return view('admin.website_mainpage.insurance_type')->with('insuranceTypes', $insuraceTypes);
     }
 
     public function storeInsuraceTypePage(Request $req)
@@ -108,14 +108,15 @@ class WebsiteController extends Controller
             Log::info($req->all());
 
             //Check existing number
-            $isExistedOrdered = InsuranceTypePage::where('order_to_display','=',$req->input('order_to_display'))->first();
-            if($isExistedOrdered){
-                return redirect()->back()->with('error','ລຳດັບສະແດງຜົນຊ້ຳກັນກະລຸນາກະລຸນາເລືອກໃໝ່');
+            $isExistedOrdered = InsuranceTypePage::where('order_to_display', '=', $req->input('order_to_display'))->first();
+            if ($isExistedOrdered) {
+                return redirect()->back()->with('error', 'ລຳດັບສະແດງຜົນຊ້ຳກັນກະລຸນາກະລຸນາເລືອກໃໝ່');
             }
 
             $new = new InsuranceTypePage();
             $new->order_to_display = $req->input('order_to_display');
             $new->image_path = ImageCompress::notCompressImage($req->file('image_path'), 'websites');
+            $new->url = $req->input('url');
 
             $new->save();
             return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
@@ -123,5 +124,46 @@ class WebsiteController extends Controller
             Log::error('Error from controller: ' . $e);
             return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
         }
+    }
+
+    public function updateInsuranceTypePage(Request $req)
+    {
+        try {
+            $req->validate([
+                'editId' => 'required',
+                'order_to_display' => 'required'
+            ]);
+            $edit = InsuranceTypePage::find($req->input('editId'));
+            $edit->order_to_display = $req->input('order_to_display');
+            $edit->url = $req->input('url');
+            if ($req->file('image_path')) {
+                File::delete($edit->image_path);
+                $edit->image_path = ImageCompress::notCompressImage($req->file('image_path'), 'websites');
+            }
+
+            $edit->save();
+
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+        } catch (\Exception | \Throwable $e) {
+            Log::error('Error from controller: ' . $e);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function deleteInsuranceTypePage($id)
+    {
+        try {
+            $deleteItem = InsuranceTypePage::find($id);
+            $deleteItem->delete();
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        } catch (\Exception | \Throwable $e) {
+            Log::error('Error from controller: ' . $e);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function showHowToPay(){
+        
+        return view('admin.website_mainpage.how_to_pay');
     }
 }

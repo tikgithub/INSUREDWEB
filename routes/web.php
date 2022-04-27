@@ -455,7 +455,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/website/image_slide/delete/{id}',[WebsiteController::class,'deleteSlideImage'])->name('WebsiteController.DeleteSlideImage');
 
     Route::get('/website/insurance_type',[WebsiteController::class,'showInsuranceTypePage'])->name('WebsiteController.ShowInsuranceTypePage');
-    Route::post('/website/insurance_type/store/',[WebsiteController::class,'storeInsuraceTypePage'])->name('WebsiteController.StoreInsuraceTypePage');
+    Route::post('/website/insurance_type_page/store/',[WebsiteController::class,'storeInsuraceTypePage'])->name('WebsiteController.StoreInsuraceTypePage');
+    Route::post('/website/insurance_type_page/update',[WebsiteController::class,'updateInsuranceTypePage'])->name('WebsiteController.UpdateInsuranceTypePage');
+    Route::get('/website/insurance_type_page/delete/{id}',[WebsiteController::class,'deleteInsuranceTypePage'])->name('WebsiteController.DeleteInsuranceTypePage');
+
+    Route::get('/website/howtopay',[WebsiteController::class,'showHowToPay'])->name('WebsiteController.ShowHowToPay');
     /** Website Controller End */
 
 
