@@ -460,6 +460,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/website/insurance_type_page/delete/{id}',[WebsiteController::class,'deleteInsuranceTypePage'])->name('WebsiteController.DeleteInsuranceTypePage');
 
     Route::get('/website/howtopay',[WebsiteController::class,'showHowToPay'])->name('WebsiteController.ShowHowToPay');
+    Route::post('/website/howtopay/store',[WebsiteController::class,'storeHowToPay'])->name('WebsiteController.StoreHowToPay');
     /** Website Controller End */
 
 

@@ -13,10 +13,12 @@ class IndexController extends Controller
     public function index(){
         $imageSlides= DB::select('select * from imageslides order by order_to_display asc');
         $insuranceType = DB::select('select * from insurance_type_pages order by order_to_display asc');
+        $howtopays = DB::select('select * from howtopays order by order_to_display asc');
 
         return view('welcome')
         ->with('imageSlides',$imageSlides)
-        ->with('insuranceType',$insuranceType);
+        ->with('insuranceType',$insuranceType)
+        ->with('howtopays',$howtopays);
     }
 
     public function errorPage(){

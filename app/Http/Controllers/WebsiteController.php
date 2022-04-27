@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\howtopay;
 use App\Models\imageslide;
 use App\Models\InsuranceTypePage;
 use App\Utils\ImageCompress;
@@ -162,8 +163,39 @@ class WebsiteController extends Controller
         }
     }
 
-    public function showHowToPay(){
-        
-        return view('admin.website_mainpage.how_to_pay');
+    public function showHowToPay()
+    {
+        $howtopays = DB::select('select * from howtopays order by order_to_display');
+        return view('admin.website_mainpage.how_to_pay')
+        ->with('howtopays',$howtopays);
+    }
+
+    public function storeHowToPay(Request $req){
+        try {
+            $req->validate([
+                'image_path' => 'required',
+                'order_to_display' => 'required'
+            ]);
+
+            //Check order to display
+            $isExistedOrdered = howtopay::where('order_to_display','=',$req->input('order_to_display'))->first();
+            if($isExistedOrdered){
+
+                return redirect()->back()->with('error','ລຳດັບການສະແດງຜົນຊໍ້າກັນ ກະລຸນາລອງໃໝ່');
+            }
+            $newItem = new howtopay();
+            $newItem->image_path = ImageCompress::notCompressImage($req->file('image_path'),'websites');
+            $newItem->order_to_display = $req->input('order_to_display');
+            $newItem->url = $req->input('url');
+            $newItem->save();
+
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+
+        } catch (\Exception | \Throwable $th) {
+            //throw $th;
+            Log::error('Error from WebsiteController ' . $th);
+
+            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
+        }
     }
 }

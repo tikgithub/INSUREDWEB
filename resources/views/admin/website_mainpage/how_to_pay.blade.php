@@ -30,21 +30,25 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
-                        <form action="" method="post" enctype="multipart/form-data">
+                        <form action="{{route('WebsiteController.StoreHowToPay')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="">ລຳດັບກາສະແດງຜົນ</label>
-                                    <input type="number" name="order_to_display" id="" class="form-control form-control-lg">
+                                    <label for="">ຮູບພາບ</label>
+                                    <input type="file" name="image_path" class="form-control-file form-control-lg" required>
                                 </div>
+
+
                                 <div class="mb-3">
-                                    <label for="">URL</label>
+                                    <label for="">URL(Optional)</label>
                                     <input type="text" name="url" id="" class="form-control form-control-lg">
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="">ຮູບພາບ</label>
-                                    <input type="file" name="image_path" class="form-control-file form-control-lg">
+                                    <label for="">ລຳດັບກາສະແດງຜົນ</label>
+                                    <input type="number" name="order_to_display" id="" class="form-control form-control-lg" required>
                                 </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i
@@ -64,4 +68,5 @@
 @endsection
 
 @section('scripting')
+@include('toastrMessage')
 @endsection

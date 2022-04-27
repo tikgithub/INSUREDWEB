@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('howtopays', function (Blueprint $table) {
             $table->id();
             $table->longText('image_path');
-            $table->longText('url');
+            $table->longText('url')->nullable();
             $table->integer('order_to_display')->nullable();
             $table->timestamps();
         });
