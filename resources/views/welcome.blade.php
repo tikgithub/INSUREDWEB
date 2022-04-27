@@ -30,67 +30,73 @@ use App\Utils\ImageCompress;
 @section('content')
     {{-- Padding --}}
     {{-- ******************************  Insurance Type   ******************************** --}}
-    <div class="row">
-        <div class="col-md-12 text-center notosanLao">
-            <h3 class="fw-bold fs-2">ຮູບແບບປະກັນໄພ</h3>
+    @if (sizeof($insuranceType) > 0)
+        <div class="row">
+            <div class="col-md-12 text-center notosanLao">
+                <h3 class="fw-bold fs-2">ຮູບແບບປະກັນໄພ</h3>
+            </div>
         </div>
-    </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white rounded">
-        @foreach ($insuranceType as $item)
-            <div class="col h-100">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="{{ $item->url }}">
-                            <img src="{{ ImageCompress::getThumnailImage($item->image_path) }}"
-                                class="card-img-top shadow" alt="...">
-                        </a>
+        <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white rounded">
+            @foreach ($insuranceType as $item)
+                <div class="col h-100">
+                    <div class="">
+                        <div class="">
+                            <a href="{{ $item->url }}">
+                                <img src="{{ ImageCompress::getThumnailImage($item->image_path) }}"
+                                    class="card-img-top zoom" alt="...">
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
 
-    </div>
+        </div>
+    @endif
+
     {{-- ********************************************************************* --}}
 
 
     {{-- ****************************** HOW TO PAY *************************** --}}
-    <div class="pt-5"></div>
-    <div class="row">
-        <div class="col-md-12 notosanLao text-center">
-            <h3 class="fs-2 fw-bold">ວິທີການຈ່າຍເງິນ</h3>
-        </div>
-    </div>
-    <div class="row bg-white p-3 rounded">
-        <div class="col-md-12">
-
-            <div id="howToPayCarosuel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    @foreach ($howtopays as $item)
-                        <button type="button" data-bs-target="#howToPayCarosuel" data-bs-slide-to="{{ $loop->index }}"
-                            class="{{ $loop->index == 0 ? 'active' : '' }}" aria-current="true"
-                            aria-label="Slide {{ $loop->index + 1 }}"></button>
-                    @endforeach
-                </div>
-                <div class="carousel-inner">
-                    @foreach ($howtopays as $item)
-                        <div class="carousel-item {{$loop->index == 0 ? 'active':''}}">
-                            <img src="{{ asset($item->image_path) }}" class="d-block w-100" alt="...">
-                        </div>
-                    @endforeach
-
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#howToPayCarosuel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#howToPayCarosuel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+    @if (sizeof($howtopays) > 0)
+        <div class="row">
+            <div class="col-md-12 notosanLao text-center">
+                <h3 class="fs-2 fw-bold">ວິທີການຈ່າຍເງິນ</h3>
             </div>
         </div>
-    </div>
+        <div class="row bg-white p-3 rounded">
+            <div class="col-md-12">
+                <div id="howToPayCarosuel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @foreach ($howtopays as $item)
+                            <button type="button" data-bs-target="#howToPayCarosuel" data-bs-slide-to="{{ $loop->index }}"
+                                class="{{ $loop->index == 0 ? 'active' : '' }}" aria-current="true"
+                                aria-label="Slide {{ $loop->index + 1 }}"></button>
+                        @endforeach
+                    </div>
+                    <div class="carousel-inner">
+                        @foreach ($howtopays as $item)
+                            <div class="carousel-item {{ $loop->index == 0 ? 'active' : '' }}">
+                                <img src="{{ asset($item->image_path) }}" class="d-block w-100" alt="...">
+                            </div>
+                        @endforeach
+
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#howToPayCarosuel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#howToPayCarosuel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     {{-- ********************************************************************* --}}
 
     {{-- ******************************  Insurance Partner   ******************************** --}}

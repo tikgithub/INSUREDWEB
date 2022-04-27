@@ -156,7 +156,7 @@ class WebsiteController extends Controller
         try {
             $deleteItem = InsuranceTypePage::find($id);
             $deleteItem->delete();
-            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
         } catch (\Exception | \Throwable $e) {
             Log::error('Error from controller: ' . $e);
             return redirect()->back()->with('error', $e->getMessage());
@@ -167,10 +167,11 @@ class WebsiteController extends Controller
     {
         $howtopays = DB::select('select * from howtopays order by order_to_display');
         return view('admin.website_mainpage.how_to_pay')
-        ->with('howtopays',$howtopays);
+            ->with('howtopays', $howtopays);
     }
 
-    public function storeHowToPay(Request $req){
+    public function storeHowToPay(Request $req)
+    {
         try {
             $req->validate([
                 'image_path' => 'required',
@@ -178,24 +179,70 @@ class WebsiteController extends Controller
             ]);
 
             //Check order to display
-            $isExistedOrdered = howtopay::where('order_to_display','=',$req->input('order_to_display'))->first();
-            if($isExistedOrdered){
+            $isExistedOrdered = howtopay::where('order_to_display', '=', $req->input('order_to_display'))->first();
+            if ($isExistedOrdered) {
 
-                return redirect()->back()->with('error','ລຳດັບການສະແດງຜົນຊໍ້າກັນ ກະລຸນາລອງໃໝ່');
+                return redirect()->back()->with('error', 'ລຳດັບການສະແດງຜົນຊໍ້າກັນ ກະລຸນາລອງໃໝ່');
             }
             $newItem = new howtopay();
-            $newItem->image_path = ImageCompress::notCompressImage($req->file('image_path'),'websites');
+            $newItem->image_path = ImageCompress::notCompressImage($req->file('image_path'), 'websites');
             $newItem->order_to_display = $req->input('order_to_display');
             $newItem->url = $req->input('url');
             $newItem->save();
 
-            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
-
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
         } catch (\Exception | \Throwable $th) {
             //throw $th;
             Log::error('Error from WebsiteController ' . $th);
 
-            return redirect()->back()->with('error','ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
         }
+    }
+
+    public function deleteHowToPay($id)
+    {
+        try {
+            $deletItem = howtopay::find($id);
+            $deletItem->delete();
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+        } catch (\Exception | \Throwable $th) {
+            //throw $th;
+            Log::error('Error from WebsiteController ' . $th);
+
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
+        }
+    }
+
+    public function updateHowToPay(Request $req)
+    {
+        try {
+            $req->validate([
+                'order_to_display' => 'required'
+            ]);
+
+            $editItem = howtopay::find($req->input('editId'));
+            $editItem->order_to_display = $req->input('order_to_display');
+            $editItem->url = $req->input('url');
+
+            if ($req->file('image_path')) {
+                File::delete($editItem->image_path);
+                $editItem->image_path = ImageCompress::notCompressImage($req->file('image_path'), 'websites');
+            }
+
+            if ($editItem->save()) {
+                return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+            } else {
+                return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ');
+            }
+        } catch (\Exception | \Throwable $th) {
+            //throw $th;
+            Log::error('Error from WebsiteController ' . $th);
+
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
+        }
+    }
+
+    public function showPartnerWebPage(){
+        return view('admin.website_mainpage.partner');
     }
 }

@@ -41,7 +41,7 @@
             </div>
             <div class="col">
                 <div class="col text-center border p-2 rounded shadow">
-                    <a href="#" class="text-decoration-none text-dark">
+                    <a href="{{route('WebsiteController.ShowPartnerWebPage')}}" class="text-decoration-none text-dark">
                         <img src="{{ asset('assets/image/partner.png') }}" class="border icon-menu mb-3">
                         <p class="fw-bold fs-4">ຄູ່ຮ່ວມປະກັັນໄພ</p>
                     </a>
