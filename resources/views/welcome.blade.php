@@ -360,17 +360,50 @@ use App\Models\User;
             <span class="visually-hidden">Next</span>
         </button>
     </div> --}}
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-md-12">
             <div id="rootCommentCarosel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     @foreach ($commentsArrayChunk as $comments)
-                        <div class="carousel-item {{$loop->index == 0? 'active':''}}">
-                            @foreach($comments)
-                                
-                            @endforeach
+                        <div class="carousel-item {{ $loop->index == 0 ? 'active' : '' }}">
+                            <div class="row">
+                                @foreach ($comments as $item)
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                @php
+                                                    $user = User::find($item->user_id);
+                                                @endphp
+                                                <img src="{{ asset($user->profile_photo) }}"
+                                                    style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+
+                                                <p class="fs-4">{{$user->firstname}} {{$user->lastname}}</p>
+                                                <p class="fs-5">{{$item->comment}}</p>
+                                                <div class="ratings">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                       @php
+                                                           if($i <= $item->rates){
+                                                                echo '<i class="bi bi-star-fill rating-color me-2"></i>';
+                                                           }
+                                                           else{
+                                                                echo '<i class="bi bi-star"></i>';
+                                                           }
+                                                       @endphp
+                                                    @endfor
+                                                    {{-- <i class="bi bi-star-fill rating-color me-2"></i>
+                                                    <i class="bi bi-star-fill rating-color me-2"></i>
+                                                    <i class="bi bi-star-fill rating-color me-2"></i>
+                                                    <i class="bi bi-star-fill rating-color me-2"></i>
+                                                    <i class="bi bi-star"></i> --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     @endforeach
+
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#rootCommentCarosel"
                     data-bs-slide="prev">
@@ -641,4 +674,8 @@ use App\Models\User;
         }
 
     </style>
+@endsection
+
+@section('scripting')
+@include('toastrMessage')
 @endsection

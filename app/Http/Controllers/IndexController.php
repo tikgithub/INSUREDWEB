@@ -16,14 +16,14 @@ class IndexController extends Controller
         $howtopays = collect(DB::select('select * from howtopays order by order_to_display asc'));
         $partners = collect(DB::select('select * from partner_web_pages order by order_to_display asc'));
         $comments = (DB::select('select * from user_comments where status = 1'));
-        $commentsArrayChunk = (array_chunk($comments,2));
-
+        $commentsArrayChunk = (array_chunk($comments,3));
+        //dd($commentsArrayChunk);
         return view('welcome')
         ->with('imageSlides',$imageSlides)
         ->with('insuranceType',$insuranceType)
         ->with('howtopays',$howtopays)
         ->with('partners', $partners)
-        ->with('commentsArrayChunk',$comments);
+        ->with('commentsArrayChunk',$commentsArrayChunk);
     }
 
     public function errorPage(){
