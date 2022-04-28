@@ -364,13 +364,11 @@ use App\Models\User;
         <div class="col-md-12">
             <div id="rootCommentCarosel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-
-                    @foreach ($comments as $item)
+                    @foreach ($commentsArrayChunk as $comments)
                         <div class="carousel-item {{$loop->index == 0? 'active':''}}">
-                            @foreach ($comments as $innerItem)
-                                   
+                            @foreach($comments)
+                                
                             @endforeach
-
                         </div>
                     @endforeach
                 </div>
