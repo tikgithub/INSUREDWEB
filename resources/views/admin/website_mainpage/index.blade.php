@@ -51,7 +51,7 @@
         <div class="pt-4"></div>
         <div class="row">
             <div class="col text-center border p-2 rounded shadow">
-                <a href="#" class="text-decoration-none text-dark">
+                <a href="{{route('WebsiteController.ShowCommentWebPage')}}" class="text-decoration-none text-dark">
                     <img src="{{ asset('assets/image/comment.png') }}" class="border icon-menu mb-3">
                     <p class="fw-bold fs-4">ຄຳຄິດເຫັນຂອງລູກຄ້າ</p>
                 </a>

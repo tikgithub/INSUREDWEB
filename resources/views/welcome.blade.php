@@ -100,69 +100,28 @@ use App\Utils\ImageCompress;
     {{-- ********************************************************************* --}}
 
     {{-- ******************************  Insurance Partner   ******************************** --}}
-    <div class="pt-5" id="partner"></div>
-    <div class="row">
-        <div class="col-md-12 text-center notosanLao">
-            <h3 class="fw-bold fs-2">ຄູ່ຮ່ວມປະກັນໄພ</h3>
-        </div>
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white rounded">
-        <div class="col h-100">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
+    @if (sizeof($partners) > 0)
+        <div class="pt-5" id="partner"></div>
+        <div class="row">
+            <div class="col-md-12 text-center notosanLao">
+                <h3 class="fw-bold fs-2">ຄູ່ຮ່ວມປະກັນໄພ</h3>
             </div>
         </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
+        <div class="row row-cols-1 row-cols-md-3 g-4 p-3 bg-white rounded">
+            @foreach ($partners as $item)
+                <div class="col h-100">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="{{ $item->url }}">
+                                <img src="{{ asset($item->image_path) }}" class="card-img-top shadow" alt="...">
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="http://">
-                        <img src="{{ asset('assets/image/example1.jpeg') }}" class="card-img-top shadow" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
+    @endif
 
-    </div>
     {{-- ********************************************************************* --}}
 
     {{-- ******************************  Insurance Partner   ******************************** --}}
@@ -410,7 +369,8 @@ use App\Utils\ImageCompress;
     </div>
     <div class="row bg-white p-3 rounded ">
         <div class="col-md-12 notosanLao ">
-            <form action="">
+            <form action="{{ route('UserCommentController.StoreUserComment') }}" method="POST">
+                @csrf
                 <div class="mb-3 row">
                     <div class="col-md-6 offset-md-3">
                         <input type="text" name="comment" id="comment" class="form-control form-control-lg">
@@ -453,16 +413,24 @@ use App\Utils\ImageCompress;
                             </label>
                         </div>
                     </div>
+
                 </div>
+
+                @if ($errors->has('stars'))
+                    <div class="text-center fs-4 text-danger mb-3">
+                        Please give at leaste 1 star
+                    </div>
+                @endif
 
                 <div class="row mb-3">
                     <div class="col-md-12 text-center notosanLao">
-                        <button type="submit" class="btn bg-blue text-white">ຕົກລົງ</button>
+                        <button type="submit" class="btn btn-lg bg-blue text-white fs-4">ຕົກລົງ</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <hr>
     {{-- End Comment Submit From Customer --}}
 
     <div class="row">

@@ -86,7 +86,7 @@
                                     data-bs-toggle="modal" data-bs-target="#editModal" type="button"
                                     class="btn btn-warning"><i class="bi bi-pencil"></i>
                                 </button>
-                                <a href="http://" class="btn btn-danger"
+                                <a href="{{route('WebsiteController.DeletePartnerWebPage',['id'=>$item->id])}}" class="btn btn-danger"
                                     onclick="return confirm('Are you sure to delete this item?');"><i
                                         class="bi bi-trash"></i></a>
                             </td>
@@ -105,7 +105,7 @@
                     <h5 class="modal-title fs-4" id="staticBackdropLabel">ແກ້ໄຂຂໍ້ມູນຄູ່ຮ່ວມປະກັນໄພ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('WebsiteController.UpdateInsuranceTypePage') }}" method="post"
+                <form action="{{ route('WebsiteController.UpdatePartnerWebPage') }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="editId" id="editId">
@@ -155,7 +155,7 @@
         function onClickEditModal(item,image_path) {
             document.getElementById('editId').value = item.id;
             document.getElementById('editOrder').value = item.order;
-            console.log(baseRoute + item.image_path)
+
             document.getElementById('preview_image').setAttribute('src', image_path);
             document.getElementById('editURL').value = item.url;
             document.getElementById('editOrder').value = item.order_to_display;

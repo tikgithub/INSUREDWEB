@@ -22,6 +22,7 @@ use App\Http\Controllers\HeathCoverItemController;
 use App\Http\Controllers\HeathPlanController;
 use App\Http\Controllers\HeathPlanDetailController;
 use App\Http\Controllers\HeathSaleController;
+use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\WebsiteController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
@@ -220,6 +221,11 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     /** UserController  */
     Route::get('/customer/view_vehicle_insurance_detail/{id}',[UserController::class,'setVehicleInsuranceID'])->name('UserController.SetVehicleInsuranceID');
     /** UserController End */
+
+
+    /** UserCommentController */
+    Route::post('/customer/comment/store',[UserCommentController::class,'storeUserComment'])->name('UserCommentController.StoreUserComment');
+    /** UserCommentController End */
 });
 
 
@@ -466,6 +472,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     Route::get('/website/partner/',[WebsiteController::class,'showPartnerWebPage'])->name('WebsiteController.ShowPartnerWebPage');
     Route::post('/website/partner/store',[WebsiteController::class,'storePartnerWebPage'])->name('WebsiteController.StorePartnerWebPage');
+    Route::post('/website/partner/update',[WebsiteController::class,'updatePartnerWebPage'])->name('WebsiteController.UpdatePartnerWebPage');
+    Route::get('/website/partner/delete/{id}',[WebsiteController::class,'deletePartnerWebPage'])->name('WebsiteController.DeletePartnerWebPage');
+
+    Route::get('/website/comment/',[WebsiteController::class,'showCommentWebPage'])->name('WebsiteController.ShowCommentWebPage');
     /** Website Controller End */
 
 

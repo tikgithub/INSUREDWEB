@@ -14,11 +14,13 @@ class IndexController extends Controller
         $imageSlides= DB::select('select * from imageslides order by order_to_display asc');
         $insuranceType = DB::select('select * from insurance_type_pages order by order_to_display asc');
         $howtopays = collect(DB::select('select * from howtopays order by order_to_display asc'));
+        $partners = collect(DB::select('select * from partner_web_pages order by order_to_display asc'));
 
         return view('welcome')
         ->with('imageSlides',$imageSlides)
         ->with('insuranceType',$insuranceType)
-        ->with('howtopays',$howtopays);
+        ->with('howtopays',$howtopays)
+        ->with('partners', $partners);
     }
 
     public function errorPage(){

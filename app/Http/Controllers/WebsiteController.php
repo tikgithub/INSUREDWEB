@@ -6,6 +6,7 @@ use App\Models\howtopay;
 use App\Models\imageslide;
 use App\Models\InsuranceTypePage;
 use App\Models\PartnerWebPage;
+use App\Models\UserComment;
 use App\Utils\ImageCompress;
 use Exception;
 use Illuminate\Http\Request;
@@ -247,7 +248,7 @@ class WebsiteController extends Controller
     {
         $partners = DB::select('select * from partner_web_pages order by order_to_display asc');
 
-        return view('admin.website_mainpage.partner')->with('partners',$partners);
+        return view('admin.website_mainpage.partner')->with('partners', $partners);
     }
 
     public function storePartnerWebPage(Request $req)
@@ -261,7 +262,7 @@ class WebsiteController extends Controller
             //Check exist order
             $isExistedOrdered = PartnerWebPage::where('order_to_display', '=', $req->input('order_to_display'))->get();
 
-            if (sizeof($isExistedOrdered)>0) {
+            if (sizeof($isExistedOrdered) > 0) {
 
                 return redirect()->back()->with('error', 'ລຳດັບການສະແດງຜົນຊ້ຳກັນກະລຸນາເລືອກໃໝ່');
             }
@@ -288,9 +289,10 @@ class WebsiteController extends Controller
         }
     }
 
-    public function updatePartnerWebPage(Request $req){
+    public function updatePartnerWebPage(Request $req)
+    {
         try {
-            
+
             $req->validate([
                 'order_to_display' => 'required'
             ]);
@@ -301,21 +303,41 @@ class WebsiteController extends Controller
 
             $editItem->url = $req->input('url');
 
-            if($req->file('image_path')){
-                
+            if ($req->file('image_path')) {
+
                 File::delete($editItem->image_path);
 
-                $editItem = ImageCompress::notCompressImage($req->file('image_path'),'websites');
+                $editItem->image_path = ImageCompress::notCompressImage($req->file('image_path'), 'websites');
             }
 
             $editItem->save();
 
-            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
-
-
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
         } catch (\Exception | \Throwable $th) {
             Log::error('Error from WebsiteController ' . $th);
             return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
         }
+    }
+
+    public function deletePartnerWebPage($id)
+    {
+        try {
+            $deleteItem = PartnerWebPage::find($id);
+
+            $deleteItem->delete();
+
+            return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
+
+        } catch (\Throwable $th) {
+            Log::error('Error from WebsiteController ' . $th);
+
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
+        }
+    }
+
+    public function showCommentWebPage(){
+        $comments = UserComment::all();
+        return view('admin.website_mainpage.comment')
+        ->with('comments',$comments);
     }
 }
