@@ -81,8 +81,11 @@
                                 {{ $item->url }}
                             </td>
                             <td>
-                                <button data-bs-toggle="modal" data-bs-target="#editModal" type="button"
-                                    class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                                <button
+                                    onclick="onClickEditModal({{ collect($item) }},'{{ asset($item->image_path) }}')"
+                                    data-bs-toggle="modal" data-bs-target="#editModal" type="button"
+                                    class="btn btn-warning"><i class="bi bi-pencil"></i>
+                                </button>
                                 <a href="http://" class="btn btn-danger"
                                     onclick="return confirm('Are you sure to delete this item?');"><i
                                         class="bi bi-trash"></i></a>
@@ -93,48 +96,47 @@
             </table>
         </div>
     </div>
-{{-- Edit Modal --}}
+    {{-- Edit Modal --}}
     <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content fs-4">
-            <div class="modal-header">
-                <h5 class="modal-title fs-4" id="staticBackdropLabel">ແກ້ໄຂ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content fs-4">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-4" id="staticBackdropLabel">ແກ້ໄຂຂໍ້ມູນຄູ່ຮ່ວມປະກັນໄພ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('WebsiteController.UpdateInsuranceTypePage') }}" method="post"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="editId" id="editId">
+                    <div class="modal-body">
+                        <div class="mb-3 ">
+                            <img src="" class="img-fluid" id="preview_image">
+                        </div>
+                        <div class="mb-3">
+                            <input type="file" name="image_path" id="editImagePath"
+                                class="form-control-file form-control-file-log">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">Link</label>
+                            <input type="text" name="url" id="editURL" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ລຳດັບການສະແດງຜົນ</label>
+                            <input type="number" name="order_to_display" id="editOrder"
+                                class="form-control form-control-lg">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>
+                            ອອກ</button>
+                        <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i>
+                            ຕົກລົງ</button>
+                    </div>
+                </form>
             </div>
-            <form action="{{ route('WebsiteController.UpdateInsuranceTypePage') }}" method="post"
-                enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="editId" id="editId" >
-                <div class="modal-body">
-                    <div class="mb-3 ">
-                        <img src="" class="img-fluid" id="preview_image">
-                    </div>
-                    <div class="mb-3">
-                        <input type="file" name="image_path" id="editImagePath"
-                            class="form-control-file form-control-file-log">
-                    </div>
-                    <div class="mb-3">
-                        <label for="">Link</label>
-                        <input type="text" name="url" id="editURL" class="form-control form-control-lg">
-                    </div>
-                    <div class="mb-3">
-                        <label for="">ລຳດັບການສະແດງຜົນ</label>
-                        <input type="number" name="order_to_display" id="editOrder"
-                            class="form-control form-control-lg">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>
-                        ອອກ</button>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i>
-                        ຕົກລົງ</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
-
 @endsection
 
 @section('styles')
@@ -150,6 +152,13 @@
 @section('scripting')
     @include('toastrMessage')
     <script>
-
+        function onClickEditModal(item,image_path) {
+            document.getElementById('editId').value = item.id;
+            document.getElementById('editOrder').value = item.order;
+            console.log(baseRoute + item.image_path)
+            document.getElementById('preview_image').setAttribute('src', image_path);
+            document.getElementById('editURL').value = item.url;
+            document.getElementById('editOrder').value = item.order_to_display;
+        }
     </script>
 @endsection

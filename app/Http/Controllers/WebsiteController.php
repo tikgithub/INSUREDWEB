@@ -287,4 +287,35 @@ class WebsiteController extends Controller
             return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
         }
     }
+
+    public function updatePartnerWebPage(Request $req){
+        try {
+            
+            $req->validate([
+                'order_to_display' => 'required'
+            ]);
+
+            $editItem = PartnerWebPage::find($req->input('editId'));
+
+            $editItem->order_to_display = $req->input('order_to_display');
+
+            $editItem->url = $req->input('url');
+
+            if($req->file('image_path')){
+                
+                File::delete($editItem->image_path);
+
+                $editItem = ImageCompress::notCompressImage($req->file('image_path'),'websites');
+            }
+
+            $editItem->save();
+
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+
+
+        } catch (\Exception | \Throwable $th) {
+            Log::error('Error from WebsiteController ' . $th);
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດ ' . $th->getMessage());
+        }
+    }
 }
