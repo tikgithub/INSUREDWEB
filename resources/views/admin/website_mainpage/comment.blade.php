@@ -52,9 +52,9 @@ use App\Models\User;
                             </td>
                             <td>
                                 @if ($item->status==0)
-                                    <a href="http://" class="btn btn-success btn-sm"><i class="bi bi-check-circle me-2"></i>ເຜີຍແພ່</a>
+                                    <a href="{{route('WebsiteController.UpdateCommentStatus',['id'=>$item->id])}}" class="btn btn-success btn-sm"><i class="bi bi-check-circle me-2"></i>ເຜີຍແພ່</a>
                                 @else
-                                    <a href="http://" class="btn btn-warning btn-sm"><i class="bi bi-x-cicle me-2"></i>ປິດ</a>
+                                    <a href="{{route('WebsiteController.UpdateCommentStatus',['id'=>$item->id])}}" class="btn btn-warning btn-sm"><i class="bi bi-x-cicle me-2"></i>ປິດ</a>
                                 @endif
 
                                 <a href="http://" class="btn btn-danger btn-sm"><i class="bi bi-trash me-2"></i>ລຶບ</a>

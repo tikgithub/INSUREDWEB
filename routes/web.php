@@ -476,6 +476,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/website/partner/delete/{id}',[WebsiteController::class,'deletePartnerWebPage'])->name('WebsiteController.DeletePartnerWebPage');
 
     Route::get('/website/comment/',[WebsiteController::class,'showCommentWebPage'])->name('WebsiteController.ShowCommentWebPage');
+    Route::get('/website/comment/updatestatus/{id}',[WebsiteController::class,'updateCommentStatus'])->name('WebsiteController.UpdateCommentStatus');
     /** Website Controller End */
 
 

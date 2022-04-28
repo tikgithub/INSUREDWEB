@@ -327,7 +327,6 @@ class WebsiteController extends Controller
             $deleteItem->delete();
 
             return redirect()->back()->with('success', 'ດຳເນີນການສຳເລັດ');
-
         } catch (\Throwable $th) {
             Log::error('Error from WebsiteController ' . $th);
 
@@ -335,9 +334,30 @@ class WebsiteController extends Controller
         }
     }
 
-    public function showCommentWebPage(){
+    public function showCommentWebPage()
+    {
         $comments = UserComment::all();
         return view('admin.website_mainpage.comment')
-        ->with('comments',$comments);
+            ->with('comments', $comments);
+    }
+
+    public function updateCommentStatus($id)
+    {
+        try {
+            $editItem = UserComment::find($id);
+
+            if($editItem->status == 0){
+                $editItem->status = 1;
+            }else{
+                $editItem->status = 0;
+            }
+
+            $editItem->save();
+
+            return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
+        } catch (\Exception | \Throwable $th) {
+            Log::error($th);
+            return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
     }
 }

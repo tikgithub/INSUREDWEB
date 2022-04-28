@@ -1,6 +1,7 @@
 @php
 
 use App\Utils\ImageCompress;
+use App\Models\User;
 
 @endphp
 @extends('layouts.public_layout')
@@ -131,7 +132,7 @@ use App\Utils\ImageCompress;
             <h3 class="fs-2 fw-bold">ຄວາມຄິດເຫັນຂອງລູກຄ້າ</h3>
         </div>
     </div>
-    <div id="commentSlider" class="carousel slide bg-white p-3 rounded" data-bs-ride="carousel">
+    {{-- <div id="commentSlider" class="carousel slide bg-white p-3 rounded" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#commentSlider" data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>
@@ -358,6 +359,33 @@ use App\Utils\ImageCompress;
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
+    </div> --}}
+    <div class="row">
+        <div class="col-md-12">
+            <div id="rootCommentCarosel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+
+                    @foreach ($comments as $item)
+                        <div class="carousel-item {{$loop->index == 0? 'active':''}}">
+                            @foreach ($comments as $innerItem)
+                                   
+                            @endforeach
+
+                        </div>
+                    @endforeach
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#rootCommentCarosel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#rootCommentCarosel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
     </div>
     {{-- ********************************************************************* --}}
 
