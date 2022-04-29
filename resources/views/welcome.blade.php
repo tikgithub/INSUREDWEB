@@ -500,7 +500,8 @@ use App\Models\User;
     <div class="row bg-white p-3 rounded">
         {{-- Contact us Form --}}
         <div class="col-md-6">
-            <form id="contactForm" class="notosanLao text-center">
+            <form id="contactForm" class="notosanLao text-center" action="{{route('MessageToUsController.StoreMessage')}}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -511,21 +512,26 @@ use App\Models\User;
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <input type="text" placeholder="ອີເມວ" id="email" class="form-control" name="email" required
+                            <input type="text" placeholder="ອີເມວ" id="email" name="email" class="form-control" name="email"
                                 data-error="Please enter your email">
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <input type="text" placeholder="ຫົວຂໍ້" id="msg_subject" class="form-control" required
+                            <input type="text" name="tel" id="tel" class="form-control" required placeholder="ເບີໂທ: xx xxx xxx">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <input type="text" placeholder="ຫົວຂໍ້" id="msg_subject" name="title" class="form-control" required
                                 data-error="Please enter your subject">
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <textarea class="form-control notosanLao" id="message" placeholder="ຂໍ້ຄວາມ" rows="7" data-error="Write your message"
+                            <textarea class="form-control notosanLao" id="message" name="message" placeholder="ຂໍ້ຄວາມ" rows="7" data-error="Write your message"
                                 required></textarea>
                             <div class="help-block with-errors"></div>
                         </div>

@@ -22,6 +22,7 @@ use App\Http\Controllers\HeathCoverItemController;
 use App\Http\Controllers\HeathPlanController;
 use App\Http\Controllers\HeathPlanDetailController;
 use App\Http\Controllers\HeathSaleController;
+use App\Http\Controllers\MessageToUsController;
 use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\WebsiteController;
 use App\Models\ThirdPartyCoverItem;
@@ -105,6 +106,10 @@ Route::group(['prefix' => 'insurance'], function () {
      Route::get('/heath/package_select_detail/{plan_id}',[HeathSaleController::class,'showSelectedPackage'])->name('HeathSaleController.ShowSelectPackage');
      Route::get('/heath/customer_input./{plan_id}',[HeathSaleController::class,'showCustomerInput'])->name('HeathSaleController.ShowCustomerInput');
      /** Route ground of heathSaleController End */
+
+      /** Contact Us Controller */
+    Route::post('/customer/contact_us',[MessageToUsController::class,'storeMessage'])->name('MessageToUsController.StoreMessage');
+    /** Contact Us Controller End */
 });
 
 /** JsonResponse Route Group */
@@ -477,7 +482,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     Route::get('/website/comment/',[WebsiteController::class,'showCommentWebPage'])->name('WebsiteController.ShowCommentWebPage');
     Route::get('/website/comment/updatestatus/{id}',[WebsiteController::class,'updateCommentStatus'])->name('WebsiteController.UpdateCommentStatus');
+
     /** Website Controller End */
+
+    /** MessageToUs Controller */
+    Route::get('/messaging',[MessageToUsController::class,'viewMessage'])->name('MessageToUsController.ViewMessage');
+    Route::get('/messaging/{id}',[MessageToUsController::class,'viewMessageDetail'])->name('MessageToUsController.ViewMessageDetail');
+    Route::get('/messaging/delete/{id}',[MessageToUsController::class,'deleteMessage'])->name('MessageToUsController.DeleteMessage');
+    /** MessageToUs Controller */
 
 
     /************************************************ End Data Manager **************************************/

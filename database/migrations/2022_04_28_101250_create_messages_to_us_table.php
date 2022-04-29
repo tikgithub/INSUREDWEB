@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->longText('message');
             $table->string('title');
-            $table->string('status');
-            $table->integer('readby');
+            $table->string('status')->nullable();
+            $table->string('readby')->nullable();
             $table->timestamps();
         });
     }

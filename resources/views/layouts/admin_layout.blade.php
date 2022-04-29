@@ -1,3 +1,8 @@
+@php
+use App\Models\MessageToUs;
+use Illuminate\Support\Facades\DB;
+
+@endphp
 <!doctype html>
 <html lang="en">
 
@@ -92,6 +97,24 @@
                     <li class="nav-item">
                         <a class="nav-link active " aria-current="page" href="{{ route('welcome') }}">ລະບົບບໍລີຫານຈັດ
                             {{ config('app.name') }}</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-light active ms-5 position-relative text-dark" href="{{route('MessageToUsController.ViewMessage')}}">
+                            <i class="bi bi-envelope me-2"></i> ກ່ອງຂໍ້ຄວາມ
+                            @php
+                                $unReadCount = collect(DB::select('select count(id) as counter from messages_to_us where status = 0; '))->first();
+                                
+                            @endphp
+                            @if ($unReadCount->counter > 0)
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{$unReadCount->counter}}
+                                </span>
+                            @endif
+
+
+                        </a>
                     </li>
 
                 </ul>
