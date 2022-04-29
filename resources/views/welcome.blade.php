@@ -32,7 +32,7 @@ use App\Models\User;
     {{-- Padding --}}
     {{-- ******************************  Insurance Type   ******************************** --}}
     @if (sizeof($insuranceType) > 0)
-        <div class="row">
+        <div class="row" id="category">
             <div class="col-md-12 text-center notosanLao">
                 <h3 class="fw-bold fs-2">ຮູບແບບປະກັນໄພ</h3>
             </div>
@@ -51,7 +51,6 @@ use App\Models\User;
                     </div>
                 </div>
             @endforeach
-
         </div>
     @endif
 
@@ -60,7 +59,7 @@ use App\Models\User;
 
     {{-- ****************************** HOW TO PAY *************************** --}}
     @if (sizeof($howtopays) > 0)
-        <div class="row">
+        <div class="row" id="howToBuy">
             <div class="col-md-12 notosanLao text-center">
                 <h3 class="fs-2 fw-bold">ວິທີການຈ່າຍເງິນ</h3>
             </div>
@@ -492,7 +491,7 @@ use App\Models\User;
     <hr>
     {{-- End Comment Submit From Customer --}}
 
-    <div class="row">
+    <div class="row" id="contact">
         <div class="col-md-12 notosanLao">
             <h3 class="ms-3 fw-bold fs-2">ຕິດຕໍ່ພວກເຮົາ</h3>
         </div>

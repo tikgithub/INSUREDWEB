@@ -46,7 +46,8 @@ use App\Utils\ImageCompress;
 
         </div>
         <div class="col-md-6">
-            <img src="{{ asset($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
+           
+            <img src="{{ asset($insurance->front_image) }}" class="img-fluid rounded shadow"
                 id="preview_image">
         </div>
         <div class="col-md-4">

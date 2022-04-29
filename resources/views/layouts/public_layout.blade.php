@@ -101,9 +101,9 @@
                                 <li><a class="dropdown-item"
                                         href="{{ route('UserController.showUserProfilePage') }}"><i
                                             class="bi bi-person-circle"></i> ໂປຣໄຟຣ</a></li>
-                                <li><a class="dropdown-item"
+                                <li><a class="dropdown-item fs-4"
                                         href="{{ route('UserController.showUserInsuranceList') }}"><i
-                                            class="bi bi-list-task"></i> ລາຍການຊື້ປະກັນ</a></li>
+                                            class="bi bi-list-task"></i> ປະກັນໄພຂອງຂ້ອຍ</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
