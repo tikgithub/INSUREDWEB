@@ -744,6 +744,7 @@ class InsuranceFlowController extends Controller
     public function updatePaymentDetailOfThirdParty(Request $req)
     {
         //Validate the image should be upload
+      
         $req->validate([
             'slipUploaded' => 'required'
         ]);
@@ -756,7 +757,7 @@ class InsuranceFlowController extends Controller
         }
 
         $inputData = InsuranceInformation::find(session('third_package_id'));
-
+  
         $extension = $req->file('slipUploaded')->getClientOriginalExtension();
         $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
         $data = file_get_contents($newImageCompress);
@@ -766,7 +767,7 @@ class InsuranceFlowController extends Controller
         $inputData->slipUploaded = $base64SlipImage;
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
-
+       
         $inputData->save();
 
         session(['payment_status' => 'WAIT_FOR_APPROVED']);
