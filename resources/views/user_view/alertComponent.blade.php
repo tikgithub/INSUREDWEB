@@ -1,3 +1,4 @@
+{{$item->payment_confirm}}
 @switch($item->payment_confirm)
 @case('WAIT_FOR_PAYMENT')
     <div class="alert fs-4 fw-bold alert-info me-2" role="alert">

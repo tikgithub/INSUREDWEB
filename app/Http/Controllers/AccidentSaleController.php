@@ -277,6 +277,8 @@ class AccidentSaleController extends Controller
 
             $accidentData->payment_time = now();
 
+            $accidentData->payment_confirm = "WAIT_FOR_APPROVED";
+
             $accidentData->save();
 
             session(['payment_status' => 'WAIT_FOR_APPROVED']);

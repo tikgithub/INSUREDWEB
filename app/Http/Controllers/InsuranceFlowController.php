@@ -411,6 +411,7 @@ class InsuranceFlowController extends Controller
     /** Function to Update the payment */
     public function updatePaymentDetail(Request $req)
     {
+        //dd($req->all());
         //Validate the image should be upload
         $req->validate([
             'slipUploaded' => 'required'

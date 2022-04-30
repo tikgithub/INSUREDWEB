@@ -264,6 +264,8 @@ class HeathSaleController extends Controller
 
             $heathData->payment_time = now();
 
+            $heathData->payment_confirm = "WAIT_FOR_APPROVED";
+
             $heathData->save();
 
             session(['payment_status' => 'WAIT_FOR_APPROVED']);

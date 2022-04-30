@@ -483,6 +483,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/website/comment/',[WebsiteController::class,'showCommentWebPage'])->name('WebsiteController.ShowCommentWebPage');
     Route::get('/website/comment/updatestatus/{id}',[WebsiteController::class,'updateCommentStatus'])->name('WebsiteController.UpdateCommentStatus');
 
+    Route::get('/website/webinfo',[WebsiteController::class,'showWebsiteInfo'])->name('WebsiteController.ShowWebsiteInfo');
+
     /** Website Controller End */
 
     /** MessageToUs Controller */

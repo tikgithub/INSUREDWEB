@@ -7,6 +7,7 @@ use App\Models\imageslide;
 use App\Models\InsuranceTypePage;
 use App\Models\PartnerWebPage;
 use App\Models\UserComment;
+use App\Models\WebsiteInfo;
 use App\Utils\ImageCompress;
 use Exception;
 use Illuminate\Http\Request;
@@ -358,6 +359,23 @@ class WebsiteController extends Controller
         } catch (\Exception | \Throwable $th) {
             Log::error($th);
             return redirect()->back()->with('error', 'ເກີດຂໍ້ຜິດພາດກະລຸນາລອງໃໝ່');
+        }
+    }
+
+    public function showWebsiteInfo(){
+        try {
+        
+            //Get website info as first data
+            $info = WebsiteInfo::first();
+
+            return view('admin.website_mainpage.webinfo')->with('info',$info);
+
+        } catch (\Exception | \Throwable $th) {
+
+           Log::error($th);
+
+           return redirect()->back()->with('error',$th->getMessage());
+
         }
     }
 }
