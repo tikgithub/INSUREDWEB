@@ -39,21 +39,22 @@
         {{-- Form Submit --}}
         <div class="row">
             <div class="col-md-12 text-center">
-                <form action="{{route('InsuranceFlowController.updatePaymentDetailOfThirdParty')}}" enctype="multipart/form-data" method="post" id="submitForm">
+                <form action="{{ route('InsuranceFlowController.updatePaymentDetailOfThirdParty') }}"
+                    enctype="multipart/form-data" method="post" id="submitForm">
                     @csrf
                     <input type="file" name="slipUploaded" id="slipUploaded" hidden onchange="formSubmit()">
-                    <button onclick="onConfirmClick()" type="button" class="btn bg-blue text-white notosanLao btn-lg"><i class="bi bi-check2-circle"></i> ຢຶນຢັນການຈ່າຍເງິນ</button>
+                    <button onclick="onConfirmClick()" type="button" class="btn bg-blue text-white notosanLao btn-lg"><i
+                            class="bi bi-check2-circle"></i> ຢຶນຢັນການຈ່າຍເງິນ</button>
                 </form>
             </div>
         </div>
     </div>
     <div class="pt-3"></div>
-
 @endsection
 @section('footer')
-<div class="">
-    @include('layouts.footer')
-</div>
+    <div class="">
+        @include('layouts.footer')
+    </div>
 @endsection
 
 @section('style')
@@ -71,15 +72,15 @@
 @endsection
 @section('scripting')
     <script>
-        function onConfirmClick(){
+        function onConfirmClick() {
             document.getElementById('slipUploaded').click();
         }
 
         //function to handle the file input
-        function formSubmit(){
-            if(document.getElementById('slipUploaded').files.length == 0){
+        function formSubmit() {
+            if (document.getElementById('slipUploaded').files.length == 0) {
                 console.log('no file selected');
-            }else{
+            } else {
                 console.log('file selected 1');
                 document.getElementById('submitForm').submit();
             }
