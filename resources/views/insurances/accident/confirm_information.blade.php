@@ -1,6 +1,6 @@
 @php
 use App\Utils\ImageCompress;
-use App\utils\ImageServe;
+use App\Utils\ImageServe;
 @endphp
 @extends('layouts.public_layout')
 @section('content')
