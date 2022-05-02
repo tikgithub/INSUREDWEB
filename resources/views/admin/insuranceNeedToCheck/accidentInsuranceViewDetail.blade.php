@@ -1,7 +1,8 @@
 @php
 use App\Utils\ImageCompress;
+use App\Utils\ImageServe;
 @endphp
-@extends('layouts.public_layout')
+@extends('layouts.admin_layout')
 @section('content')
     <div class="pt-5"></div>
     <div class="row">
@@ -15,13 +16,13 @@ use App\Utils\ImageCompress;
     <div class="row">
         <div class="col-md-2 text-center">
             @isset($insurance->front_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->front_image) }}" id="front_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->front_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->front_image) }}" id="front_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->front_image) }}"
                     onclick="onClickThumnailImage('front_image')">
             @endisset
         </div>
         <div class="col-md-6">
-            <img src="{{ asset($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
+            <img src="{{ ImageServe::Base64($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
                 id="preview_image">
         </div>
         <div class="col-md-4">
@@ -160,6 +161,31 @@ use App\Utils\ImageCompress;
         @break
     @endswitch
 @endsection
+@section('styles')
+    <style>
+        .company-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            object-fit: cover;
+        }
+
+        .thumbnail-image {
+            width: auto;
+            height: 80px;
+            object-fit: cover;
+        }
+
+        .thumbnail-image:hover {
+            cursor: pointer;
+            padding: 2px;
+            background-color: grey;
+        }
+
+    </style>
+@endsection
+
+
 @section('scripting')
     @include('toastrMessage')
     <script>
@@ -197,26 +223,3 @@ use App\Utils\ImageCompress;
     @include('layouts.footer')
 @endsection
 
-@section('style')
-    <style>
-        .company-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50px;
-            object-fit: cover;
-        }
-
-        .thumbnail-image {
-            width: auto;
-            height: 80px;
-            object-fit: cover;
-        }
-
-        .thumbnail-image:hover {
-            cursor: pointer;
-            padding: 2px;
-            background-color: grey;
-        }
-
-    </style>
-@endsection

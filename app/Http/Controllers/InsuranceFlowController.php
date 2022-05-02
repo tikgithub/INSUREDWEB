@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class InsuranceFlowController extends Controller
 {
@@ -237,11 +238,12 @@ class InsuranceFlowController extends Controller
 
         //Prepare to upload image for 5 items
         $uploadPath = "Insurances/Vehicles";
-        $newInput->front_image =  ImageCompress::notCompressImage($req->file('front'), $uploadPath);
-        $newInput->left_image = ImageCompress::notCompressImage($req->file('left'), $uploadPath);
-        $newInput->right_image = ImageCompress::notCompressImage($req->file('right'), $uploadPath);
-        $newInput->rear_image = ImageCompress::notCompressImage($req->file('rear'), $uploadPath);
-        $newInput->yellow_book_image = ImageCompress::notCompressImage($req->file('yellow_book'), $uploadPath);
+        
+        $newInput->front_image =  Storage::disk('local')->put('documents',$req->file('front'));
+        $newInput->left_image = Storage::disk('local')->put('documents',$req->file('left'));
+        $newInput->right_image = Storage::disk('local')->put('documents',$req->file('right'));
+        $newInput->rear_image = Storage::disk('local')->put('documents',$req->file('rear'));
+        $newInput->yellow_book_image = Storage::disk('local')->put('documents',$req->file('yellow_book'));
         $newInput->insurance_type_id = $req->input('sale_id');
         $newInput->insurance_type = "HIGH-VALUEABLE";
         $newInput->payment_confirm = "WAIT_FOR_PAYMENT";
@@ -255,8 +257,6 @@ class InsuranceFlowController extends Controller
     /** Show the agreement page after customer input the detail */
     public function showAgreementPage()
     {
-
-
         if (session('input_id')) {
             //Get session id
             $input_id = session('input_id');
@@ -353,25 +353,24 @@ class InsuranceFlowController extends Controller
         $uploadPath = "Insurances/Vehicles";
 
         if ($req->file('front')) {
-            File::delete($newInput->front_image);
-            $newInput->front_image =  ImageCompress::notCompressImage($req->file('front'), 70, $uploadPath, 800);
+            Storage::delete($newInput->front_image);
+            Storage::disk('local')->put('documents/',$req->file('front'));
         }
         if ($req->file('left')) {
-            File::delete($newInput->left_image);
-            $newInput->left_image = ImageCompress::notCompressImage($req->file('left'), 70, $uploadPath, 800);
+            Storage::delete($newInput->left_image);
+            Storage::disk('local')->put('documents/',$req->file('left'));
         }
         if ($req->file('right')) {
-            error_log('update here rigth');
-            File::delete($newInput->right_image);
-            $newInput->right_image = ImageCompress::notCompressImage($req->file('right'), 70, $uploadPath, 800);
+            Storage::delete($newInput->right_image);
+            Storage::disk('local')->put('documents/',$req->file('rigth'));
         }
         if ($req->file('rear')) {
-            File::delete($newInput->rear_image);
-            $newInput->rear_image = ImageCompress::notCompressImage($req->file('rear'), 70, $uploadPath, 800);
+            Storage::delete($newInput->rear_image);
+            Storage::disk('local')->put('documents/',$req->file('rear'));
         }
         if ($req->file('yellow_book')) {
-            File::delete($newInput->yellow_book_image);
-            $newInput->yellow_book_image = ImageCompress::notCompressImage($req->file('yellow_book'), 70, $uploadPath, 800);
+            Storage::delete($newInput->yellow_book_image);
+            Storage::disk('local')->put('documents/',$req->file('yellow_book'));
         }
 
         $newInput->insurance_type_id = $req->input('sale_id');
@@ -423,13 +422,13 @@ class InsuranceFlowController extends Controller
         }
         $inputData = InsuranceInformation::find(session('input_id'));
 
-        $extension = $req->file('slipUploaded')->getClientOriginalExtension();
-        $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
-        $data = file_get_contents($newImageCompress);
-        $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($data);
-        File::delete($newImageCompress);
+        // $extension = $req->file('slipUploaded')->getClientOriginalExtension();
+        // $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
+        // $data = file_get_contents($newImageCompress);
+        // $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($data);
+        // File::delete($newImageCompress);
 
-        $inputData->slipUploaded = $base64SlipImage;
+        $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/',$req->file('slipUploaded'));
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
 
@@ -613,7 +612,7 @@ class InsuranceFlowController extends Controller
         $object->user_id = Auth::user()->id;
 
         $uploadPath = "Insurances/thirdParty";
-        $object->front_image =  ImageCompress::notCompressImage($req->file('reference_photo'), $uploadPath);
+        $object->front_image =  Storage::disk('local')->put('documents/',$req->file('reference_photo'));
 
         if ($object->save()) {
             session(['third_package_id' => $object->id]);
@@ -703,6 +702,11 @@ class InsuranceFlowController extends Controller
         $object->chassic_number = $req->input('chassic_number');
         $object->registered_province = $req->input('registeredProvince');
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
+
+        if($req->file('reference_photo')){
+            Storage::delete($object->front_image);
+            $object->front_image =  Storage::disk('local')->put('documents/',$req->file('reference_photo'));
+        }
         if ($object->save()) {
 
             return redirect()->route('InsuranceFlowController.showPaymentProviderForThirdPartyPackage');
@@ -757,14 +761,7 @@ class InsuranceFlowController extends Controller
         }
 
         $inputData = InsuranceInformation::find(session('third_package_id'));
-  
-        $extension = $req->file('slipUploaded')->getClientOriginalExtension();
-        $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
-        $data = file_get_contents($newImageCompress);
-        $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($data);
-        File::delete($newImageCompress);
-
-        $inputData->slipUploaded = $base64SlipImage;
+        $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/',$req->file('slipUploaded'));
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
        

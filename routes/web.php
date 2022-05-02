@@ -458,6 +458,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::post('/edit_vehicle_detail', [AdminInsuranceController::class, 'updateVehicleInsurance'])->name('AdminInsuranceController.UpdateVehicleInsurance');
     Route::post('/approve_vehicle_detail', [AdminInsuranceController::class, 'updateVehicleInsuranceContract'])->name('AdminInsuranceController.UpdateVehicleInsuranceContract');
     Route::get('/remove_insurance/{id}', [AdminInsuranceController::class, 'removeInsurance'])->name('AdminInsuranceController.RemoveInsurance');
+
+    Route::get('/edit_thirdparty_detail/{id}',[AdminInsuranceController::class,'showEditPageOfThirPartyInsurance'])->name('AdminInsuranceController.ShowEditPageOfThirPartyInsurance');
     /** AdminInsuranceController End */
 
 

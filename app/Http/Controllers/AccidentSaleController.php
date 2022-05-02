@@ -131,7 +131,7 @@ class AccidentSaleController extends Controller
         if ($req->file('reference_photo')) {
            // $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
            
-           $obj->front_image = Storage::disk('local')->put($req->file('reference_photo'),'documents');
+           $obj->front_image = Storage::disk('local')->put('documents',$req->file('reference_photo'));
 
         } else {
             return redirect()->back()->with('error', 'Photo not found');
@@ -224,7 +224,7 @@ class AccidentSaleController extends Controller
 
             //Image upload
             if ($req->file('reference_photo')) {
-                $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+                $obj->front_image = Storage::disk('local')->put('documents',$req->file('reference_photo'));
             }
             if ($obj->save()) {
                 //Set Session
@@ -272,12 +272,12 @@ class AccidentSaleController extends Controller
             $accident_id = Session('accident_id');
 
             $accidentData = InsuranceInformation::find($accident_id);
-            $extension = $req->file('slipUploaded')->getClientOriginalExtension();
-            $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
-            $imageData = file_get_contents($newImageCompress);
-            $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($imageData);
+            // $extension = $req->file('slipUploaded')->getClientOriginalExtension();
+            // $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
+            // $imageData = file_get_contents($newImageCompress);
+            // $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($imageData);
 
-            $accidentData->slipUploaded = $base64SlipImage;
+            $accidentData->slipUploaded = Storage::disk('local')->put('paymentslips/',$req->file('slipUploaded'));
 
             $accidentData->payment_time = now();
 

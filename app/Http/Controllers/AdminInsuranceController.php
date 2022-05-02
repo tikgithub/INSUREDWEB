@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AdminInsuranceController extends Controller
 {
@@ -184,25 +185,24 @@ class AdminInsuranceController extends Controller
         $uploadPath = "Insurances/Vehicles";
 
         if ($req->file('front')) {
-            File::delete($newInput->front_image);
-            $newInput->front_image =  ImageCompress::notCompressImage($req->file('front'), 70, $uploadPath, 800);
+            Storage::delete($newInput->front_image);
+            $newInput->front_image =  Storage::disk('local')->put('documents/', $req->file('front'));
         }
         if ($req->file('left')) {
-            File::delete($newInput->left_image);
-            $newInput->left_image = ImageCompress::notCompressImage($req->file('left'), 70, $uploadPath, 800);
+            Storage::delete($newInput->left_image);
+            $newInput->left_image = Storage::disk('local')->put('documents/', $req->file('left'));
         }
         if ($req->file('right')) {
-            error_log('update here rigth');
-            File::delete($newInput->right_image);
-            $newInput->right_image = ImageCompress::notCompressImage($req->file('right'), 70, $uploadPath, 800);
+            Storage::delete($newInput->right_image);
+            $newInput->right_image = Storage::disk('local')->put('documents/', $req->file('right'));
         }
         if ($req->file('rear')) {
-            File::delete($newInput->rear_image);
-            $newInput->rear_image = ImageCompress::notCompressImage($req->file('rear'), 70, $uploadPath, 800);
+            Storage::delete($newInput->rear_image);
+            $newInput->rear_image = Storage::disk('local')->put('documents/', $req->file('rear'));
         }
         if ($req->file('yellow_book')) {
-            File::delete($newInput->yellow_book_image);
-            $newInput->yellow_book_image = ImageCompress::notCompressImage($req->file('yellow_book'), 70, $uploadPath, 800);
+            Storage::delete($newInput->yellow_book_image);
+            $newInput->yellow_book_image = Storage::disk('local')->put('documents/', $req->file('yellow_book'));
         }
 
         if ($newInput->save()) {
@@ -259,6 +259,83 @@ class AdminInsuranceController extends Controller
             Log::error($th);
 
             return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function showEditPageOfThirPartyInsurance($id)
+    {
+        try {
+            //Get Input Data after submit
+            $inputData = InsuranceInformation::find($id);
+
+            //  dd($inputData);
+            //Province data
+            $provinces = Province::all();
+            //District Data
+            $districts = District::where('province_id', '=', $inputData->province)->get();
+
+            //Car Brand data
+            $carBrands = CarBrand::all();
+
+            return view('admin.insuranceNeedToCheck.editThirdPartyInsurance')
+                ->with('inputData', $inputData)
+                ->with('provinces', $provinces)
+                ->with('carBrands', $carBrands)
+                ->with('districts', $districts);
+        } catch (\Exception | \Throwable $th) {
+            Log::error($th);
+
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function updateThirdPartyInsurance(Request $req)
+    {
+        try {
+            //Validate input
+            //Image Validate with maximun
+            $req->validate([
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'tel' => 'required',
+                'sex' => 'required',
+                'dob' => 'required',
+                'identity' => 'required',
+                'province' => 'required',
+                'district' => 'required',
+                'vehicleBrand' => 'required',
+                'registeredProvince' => 'required',
+                'number_plate' => 'required',
+                'color' => 'required',
+                'address' => 'required'
+            ]);
+
+            //Find eqloquent object for perform the update operation
+            $newInput = InsuranceInformation::find($req->input('id'));
+
+            $newInput->firstname = trim($req->input('firstname'));
+            $newInput->lastname = trim($req->input('lastname'));
+            $newInput->sex = $req->input('sex');
+            $newInput->dob = $req->input('dob');
+            $newInput->tel = $req->input('tel');
+            $newInput->identity = trim($req->input('identity'));
+            $newInput->province = $req->input('province');
+            $newInput->district = $req->input('district');
+            $newInput->address = trim($req->input('address'));
+            $newInput->vehicle_brand = $req->input('vehicleBrand');
+            $newInput->number_plate = trim($req->number_plate);
+            $newInput->color = trim($req->input('color'));
+            $newInput->registered_province = $req->input('registeredProvince');
+            $newInput->chassic_number = $req->input('chassic_number');
+            $newInput->engine_number = $req->input('engine_number');
+
+            if ($req->file('front')) {
+                Storage::delete($newInput->front_image);
+                $newInput->front_image =  Storage::disk('local')->put('documents/', $req->file('front'));
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
         }
     }
 }

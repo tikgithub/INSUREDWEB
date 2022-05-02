@@ -12,6 +12,7 @@ use App\Utils\ImageCompress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class HeathSaleController extends Controller
 {
@@ -118,7 +119,8 @@ class HeathSaleController extends Controller
 
         //Image upload
         if ($req->file('reference_photo')) {
-            $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+           // $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+           $obj->front_image = Storage::disk('local')->put('documents/',$req->file('reference_photo'));
         } else {
             return redirect()->back()->with('error', 'Photo not found');
         }
@@ -254,13 +256,13 @@ class HeathSaleController extends Controller
             ]);
             $health_id = Session('health');
 
-            $heathData = InsuranceInformation::find($health_id);
-            $extension = $req->file('slipUploaded')->getClientOriginalExtension();
-            $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
-            $imageData = file_get_contents($newImageCompress);
-            $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($imageData);
+             $heathData = InsuranceInformation::find($health_id);
+            // $extension = $req->file('slipUploaded')->getClientOriginalExtension();
+            // $newImageCompress = ImageCompress::compressImage($req->file('slipUploaded'), 70, 'tmpfolder', 800);
+            // $imageData = file_get_contents($newImageCompress);
+            // $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($imageData);
 
-            $heathData->slipUploaded = $base64SlipImage;
+            $heathData->slipUploaded = Storage::disk('local')->put('paymentslips/',$req->file('slipUploaded'));
 
             $heathData->payment_time = now();
 

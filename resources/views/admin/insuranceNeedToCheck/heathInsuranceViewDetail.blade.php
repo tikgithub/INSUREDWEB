@@ -1,5 +1,6 @@
 @php
 use App\Utils\ImageCompress;
+use App\Utils\ImageServe;
 @endphp
 @extends('layouts.public_layout')
 @section('content')
@@ -15,13 +16,13 @@ use App\Utils\ImageCompress;
     <div class="row">
         <div class="col-md-2 text-center">
             @isset($insurance->front_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->front_image) }}" id="front_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->front_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->front_image) }}" id="front_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->front_image) }}"
                     onclick="onClickThumnailImage('front_image')">
             @endisset
         </div>
         <div class="col-md-6">
-            <img src="{{ asset($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
+            <img src="{{ ImageServe::Base64($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
                 id="preview_image">
         </div>
         <div class="col-md-4">

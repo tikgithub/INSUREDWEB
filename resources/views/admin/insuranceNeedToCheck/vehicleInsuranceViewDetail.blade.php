@@ -1,5 +1,6 @@
 @php
 use App\Utils\ImageCompress;
+use App\Utils\ImageServe;
 @endphp
 @extends('layouts.admin_layout')
 @section('content')
@@ -15,38 +16,38 @@ use App\Utils\ImageCompress;
     <div class="row">
         <div class="col-md-2 text-center">
             @isset($insurance->front_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->front_image) }}" id="front_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->front_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->front_image) }}" id="front_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->front_image) }}"
                     onclick="onClickThumnailImage('front_image')">
             @endisset
 
             @isset($insurance->left_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->left_image) }}" id="left_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->left_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->left_image) }}" id="left_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->left_image) }}"
                     onclick="onClickThumnailImage('left_image')">
             @endisset
 
             @isset($insurance->right_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->right_image) }}" id="right_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->right_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->right_image) }}" id="right_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->right_image) }}"
                     onclick="onClickThumnailImage('right_image')">
             @endisset
 
             @isset($insurance->rear_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->rear_image) }} " id="rear_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->rear_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->rear_image) }} " id="rear_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->rear_image) }}"
                     onclick="onClickThumnailImage('rear_image')">
             @endisset
 
             @isset($insurance->yellow_book_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->yellow_book_image) }}" id="yellow_book_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->yellow_book_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->yellow_book_image) }}" id="yellow_book_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->yellow_book_image) }}"
                     onclick="onClickThumnailImage('yellow_book_image')">
             @endisset
 
         </div>
         <div class="col-md-6">
-            <img src="{{ asset($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
+            <img src="{{ ImageServe::Base64($insurance->front_image) }}" style="width: 100%; height: auto;" class="shadow"
                 id="preview_image">
         </div>
         <div class="col-md-4">
@@ -115,39 +116,41 @@ use App\Utils\ImageCompress;
     </div>
 
     <hr>
-    <h3 class="fw-bold">ຂໍ້ມູນຜູ້ເອົາປະກັນໄພ</h3>
+    
     <div class="row" style="line-height: 20px;">
-        <div class="col-md-12">
+     
+        <div class="col-md-6">   
+            <h3 class="fw-bold text-center mb-3">ຂໍ້ມູນຜູ້ເອົາປະກັນໄພ</h3>
             <div class="form mt-3 fs-5">
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ຊື່ ແລະ ນາມສະກຸນ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ຊື່ ແລະ ນາມສະກຸນ</label>
+                    <div class="col-sm-8">
                         {{ $insurance->sex == 'M' ? 'ທ' : 'ນ' }}. {{ $insurance->firstname }}
                         {{ $insurance->lastname }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ວັນເດືອນປີເກີດ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ວັນເດືອນປີເກີດ</label>
+                    <div class="col-sm-8">
                         {{ \Carbon\Carbon::parse($insurance->dob)->format('d/m/Y') }}
                         ({{ explode(' ', \Carbon\Carbon::parse($insurance->dob)->diffForHumans(null, true))[0] }} ປີ)
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ເບີໂທຕິດຕໍ່</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ເບີໂທຕິດຕໍ່</label>
+                    <div class="col-sm-8">
                         <u>{{ $insurance->tel }}</u>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ເລກທີ່ບັດປະຊາຊົນ ຫຼື ໜັງສືຜ່ານແດນ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ເລກທີ່ບັດປະຊາຊົນ ຫຼື ໜັງສືຜ່ານແດນ</label>
+                    <div class="col-sm-8">
                         {{ $insurance->identity }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ທີ່ຢູ່</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ທີ່ຢູ່</label>
+                    <div class="col-sm-8">
                         {{ \App\Models\Province::find($insurance->province)->province_name }},
                         {{ \App\Models\District::find($insurance->district)->district_name }},
                         {{ $insurance->address }}
@@ -155,11 +158,15 @@ use App\Utils\ImageCompress;
                 </div>
             </div>
         </div>
+        <div class="col-md-6 text-center">
+            <h3 class="mb-3 fw-bold">ຢັ້ງຢືນການສັ່ງຊື້</h3>
+            <img src="{{ImageServe::Base64($insurance->slipUploaded)}}" class="shadow img-fluid rounded">
+        </div>
     </div>
 
     <div class="row">
         <div class="col-md-12 text-center">
-
+           
             <a href="{{ route('AdminInsuranceController.ShowEditPageOfVehicleInsurance', ['id' => $insurance->id]) }}"
                 class="btn btn-warning btn-lg"><i class="bi bi-pencil fs-4 me-2"></i>ແກ້ໄຂຂໍ້ມູນຜູ້ເອົາປະກັນ</a>
         </div>

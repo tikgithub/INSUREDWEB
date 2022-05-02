@@ -1,3 +1,6 @@
+@php
+    use App\Utils\ImageServe;
+@endphp
 @extends('layouts.public_layout')
 @section('content')
     <div class="pt-5"></div>
@@ -52,7 +55,7 @@
                 @include('flashMessage')
             </div>
             <form autocomplete="off" method="POST"
-                action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}">
+                action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="package_id" value="{{ $package->id }}">
                 <fieldset class="border notosanLao">
@@ -246,7 +249,7 @@
                                 <button type="button" onclick="selectPhotoOnClick()" class="btn btn-warning btn-lg mb-2"><i
                                         class="bi bi-image-alt"></i>
                                     ເລືອກຮູບ</button>
-                                <img id="img_preview" src="{{asset($customerPackage->front_image)}}" alt="" srcset="" class="border rounded img-fluid">
+                                <img id="img_preview" src="{{ImageServe::Base64($customerPackage->front_image)}}" class="border rounded img-fluid">
                             </div>
                         </div>
 

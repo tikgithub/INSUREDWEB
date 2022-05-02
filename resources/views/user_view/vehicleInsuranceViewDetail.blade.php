@@ -1,5 +1,6 @@
 @php
 use App\Utils\ImageCompress;
+use App\Utils\ImageServe;
 @endphp
 @extends('layouts.public_layout')
 @section('content')
@@ -15,39 +16,39 @@ use App\Utils\ImageCompress;
     <div class="row">
         <div class="col-md-2 text-center">
             @isset($insurance->front_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->front_image) }}" id="front_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->front_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->front_image) }}" id="front_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->front_image) }}"
                     onclick="onClickThumnailImage('front_image')">
             @endisset
 
             @isset($insurance->left_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->left_image) }}" id="left_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->left_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->left_image) }}" id="left_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->left_image) }}"
                     onclick="onClickThumnailImage('left_image')">
             @endisset
 
             @isset($insurance->right_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->right_image) }}" id="right_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->right_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->right_image) }}" id="right_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->right_image) }}"
                     onclick="onClickThumnailImage('right_image')">
             @endisset
 
             @isset($insurance->rear_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->rear_image) }} " id="rear_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->rear_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->rear_image) }} " id="rear_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->rear_image) }}"
                     onclick="onClickThumnailImage('rear_image')">
             @endisset
 
             @isset($insurance->yellow_book_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->yellow_book_image) }}" id="yellow_book_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->yellow_book_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->yellow_book_image) }}" id="yellow_book_image"
+                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->yellow_book_image) }}"
                     onclick="onClickThumnailImage('yellow_book_image')">
             @endisset
 
         </div>
         <div class="col-md-6">
            
-            <img src="{{ asset($insurance->front_image) }}" class=" rounded shadow"
+            <img src="{{ ImageServe::Base64($insurance->front_image) }}" class=" rounded shadow"
                 id="preview_image">
         </div>
         <div class="col-md-4">
@@ -176,7 +177,7 @@ use App\Utils\ImageCompress;
             <div class="row">
                 <div class="col-md-12 text-center">
                     <h3><u>ຫຼັກຖານການຈ່າຍເງິນ</u></h3>
-                    <img class="img-fluid" src="{{$insurance->slipUploaded}}" alt="" srcset="">
+                    <img class="img-fluid" src="{{ImageServe::Base64($insurance->slipUploaded)}}" alt="" srcset="">
                 </div>
             </div>
         @break

@@ -1,7 +1,5 @@
 @php
-
-use App\Utils\ImageCompress;
-
+use App\Utils\ImageServe;
 @endphp
 
 @extends('layouts.admin_layout')
@@ -90,7 +88,7 @@ use App\Utils\ImageCompress;
                             <div class="col-sm-8">
                                 <select name="province" id="province" class="form-select form-select-lg {{($errors->has('province')? 'border-danger':'')}}"
                                     onchange="onSelectInsuredProvince()">
-                                    @foreach ($Provinces as $item)
+                                    @foreach ($provinces as $item)
                                         <option value="{{ $item->id }}" {{($inputData->province)==$item->id? 'selected':''}} >{{ $item->province_name }}</option>
                                     @endforeach
                                 </select>
@@ -160,7 +158,7 @@ use App\Utils\ImageCompress;
                             <div class="col-sm-8">
                                 <select name="registeredProvince" id="registeredProvince"
                                     class="form-select form-select-lg {{($errors->has('registeredProvince')? 'border-danger':'')}}">
-                                    @foreach ($Provinces as $item)
+                                    @foreach ($provinces as $item)
                                         <option value="{{ $item->id }}" {{($inputData->registeredProvince == $item->id)? 'selected':''}}>{{ $item->province_name }}</option>
                                     @endforeach
                                 </select>
@@ -194,7 +192,7 @@ use App\Utils\ImageCompress;
                         {{-- Car Side Front Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->front_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageServe::Base64($inputData->front_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="front" id="front" class="form-control-file border {{($errors->has('front')? 'border-danger':'')}}" style="width: 100%">
@@ -204,7 +202,7 @@ use App\Utils\ImageCompress;
                          {{-- Car Side left Image --}}
                          <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->left_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageServe::Base64($inputData->left_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="left" id="left" class="form-control-file border {{($errors->has('left')? 'border-danger':'')}}" style="width: 100%">
@@ -215,7 +213,7 @@ use App\Utils\ImageCompress;
                          {{-- Car Side right Image --}}
                          <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->right_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageServe::Base64($inputData->right_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="right" id="right" class="form-control-file border {{($errors->has('right')? 'border-danger':'')}}" style="width: 100%">
@@ -225,7 +223,7 @@ use App\Utils\ImageCompress;
                          {{-- Car Side rear Image --}}
                          <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ImageCompress::getThumnailImage($inputData->rear_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2" src="{{ImageServe::Base64($inputData->rear_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="rear" id="rear" class="form-control-file border {{($errors->has('rear')? 'border-danger':'')}}" style="width: 100%">
@@ -236,7 +234,7 @@ use App\Utils\ImageCompress;
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
 
-                                <img class="ms-2 rounded" src="{{ImageCompress::getThumnailImage($inputData->yellow_book_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
+                                <img class="ms-2 rounded" src="{{ImageServe::Base64($inputData->yellow_book_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
                                 <input type="file" name="yellow_book" id="yellow_book" class="form-control-file border {{($errors->has('yellow_book')? 'border-danger':'')}}" style="width: 100%">

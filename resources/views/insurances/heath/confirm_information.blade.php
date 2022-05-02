@@ -1,5 +1,6 @@
 @php
-use App\Utils\ImageCompress;
+    use App\Utils\ImageCompress;
+    use App\Utils\ImageServe;
 @endphp
 @extends('layouts.public_layout')
 @section('content')
@@ -17,7 +18,8 @@ use App\Utils\ImageCompress;
     <div class="row">
         <div class="col-md-12 text-center">
             <h3>
-                {{ $headerTitleData->company_name }} {{ $headerTitleData->cover_name }} - <b>{{ $headerTitleData->plan_name }}</b>
+                {{ $headerTitleData->company_name }} {{ $headerTitleData->cover_name }} -
+                <b>{{ $headerTitleData->plan_name }}</b>
             </h3>
 
         </div>
@@ -74,17 +76,17 @@ use App\Utils\ImageCompress;
                         <h5 class="text-white"> - ຢືນຢັນຂໍ້ມູນອີກຄັ້ງ</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('HeathSaleController.UpdateUserConfirmationData') }}" method="POST" id="updateForm"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('HeathSaleController.UpdateUserConfirmationData') }}" method="POST"
+                            id="updateForm" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="plan_id" value="{{$plan->id}}">
-                            <input type="hidden" name="update_id" value="{{$heathData->id}}">
+                            <input type="hidden" name="plan_id" value="{{ $plan->id }}">
+                            <input type="hidden" name="update_id" value="{{ $heathData->id }}">
                             <div class="row mb-3">
                                 <label for="firstname" class="col-sm-3 col-form-label fs-4">ຊື່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="firstname" id="firstname"
-                                        class=" form-control form-control-lg" value="{{$heathData->firstname}}">
+                                    <input type="text" name="firstname" id="firstname" class=" form-control form-control-lg"
+                                        value="{{ $heathData->firstname }}">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -92,7 +94,7 @@ use App\Utils\ImageCompress;
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="text" name="lastname" id="lastname" class=" form-control form-control-lg"
-                                    value="{{$heathData->lastname}}">
+                                        value="{{ $heathData->lastname }}">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -101,8 +103,8 @@ use App\Utils\ImageCompress;
                                 <div class="col-sm-9">
                                     <select name="sex" id="sex" class="form-select form-select-lg">
                                         <option>ເລືອກ</option>
-                                        <option value="M" {{$heathData->sex == "M" ? 'selected':''}}>ຊາຍ</option>ງ
-                                        <option value="F" {{$heathData->sex == "F" ? 'selected':''}}>ຍິງ</option>
+                                        <option value="M" {{ $heathData->sex == 'M' ? 'selected' : '' }}>ຊາຍ</option>ງ
+                                        <option value="F" {{ $heathData->sex == 'F' ? 'selected' : '' }}>ຍິງ</option>
                                     </select>
                                 </div>
                             </div>
@@ -111,7 +113,8 @@ use App\Utils\ImageCompress;
                                 <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg" value="{{$heathData->dob}}">
+                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg"
+                                        value="{{ $heathData->dob }}">
                                 </div>
                             </div>
 
@@ -120,7 +123,7 @@ use App\Utils\ImageCompress;
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="number" name="tel" id="tel" class="form-control form-control-lg"
-                                        placeholder="ex: 55998899" value="{{$heathData->tel}}">
+                                        placeholder="ex: 55998899" value="{{ $heathData->tel }}">
                                 </div>
                             </div>
 
@@ -129,7 +132,7 @@ use App\Utils\ImageCompress;
                                     ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9 align-self-center">
                                     <input type="text" name="identity" id="identity" class="form-control form-control-lg"
-                                    value="{{$heathData->identity}}">
+                                        value="{{ $heathData->identity }}">
                                 </div>
                             </div>
                             <hr>
@@ -141,7 +144,9 @@ use App\Utils\ImageCompress;
                                         onchange="onSelectedProvince()">
                                         <option>ເລືອກ</option>
                                         @foreach ($provinceData as $item)
-                                            <option value="{{ $item->id }}" {{$heathData->province == $item->id ? 'selected':''}}>{{ $item->province_name }}</option>
+                                            <option value="{{ $item->id }}"
+                                                {{ $heathData->province == $item->id ? 'selected' : '' }}>
+                                                {{ $item->province_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -153,7 +158,9 @@ use App\Utils\ImageCompress;
                                     <select name="district" id="district" class="form-select form-select-lg">
                                         <option>ເລືອກ</option>
                                         @foreach ($districtData as $item)
-                                            <option value="{{$item->id}}" {{$item->id == $heathData->district? 'selected':''}}>{{$item->district_name}}</option>
+                                            <option value="{{ $item->id }}"
+                                                {{ $item->id == $heathData->district ? 'selected' : '' }}>
+                                                {{ $item->district_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -163,7 +170,7 @@ use App\Utils\ImageCompress;
                                 <label for="address" class="col-form-label col-sm-3">ບ້ານ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <textarea name="address" id="address" rows="5" class="form-control">{{$heathData->address}}</textarea>
+                                    <textarea name="address" id="address" rows="5" class="form-control">{{ $heathData->address }}</textarea>
                                 </div>
                             </div>
 
@@ -176,13 +183,14 @@ use App\Utils\ImageCompress;
                                     <button type="button" onclick="selectPhotoOnClick()"
                                         class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
                                         ເລືອກຮູບ</button><br>
-                                    <img id="img_preview" src="{{ImageCompress::getThumnailImage($heathData->front_image)}}" alt="" srcset="" class="border rounded img-fluid">
+                                    <img id="img_preview" src="{{ ImageServe::Base64($heathData->front_image) }}" class="border rounded img-fluid">
                                 </div>
                             </div>
 
                             <hr>
                             <div class="mb-3 fs-4 text-center">
-                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-lg bg-blue text-white"><i class="bi bi-cash me-3"></i>ຈ່າຍເງິນ</button>
+                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"
+                                    class="btn btn-lg bg-blue text-white"><i class="bi bi-cash me-3"></i>ຈ່າຍເງິນ</button>
                             </div>
                         </form>
                     </div>
@@ -220,25 +228,26 @@ use App\Utils\ImageCompress;
         </div>
     </div>
 
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="staticBackdropLabel">ເງືອນໄຂຂອງປະກັນໄພ</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <textarea name="" id="" cols="30" rows="10" class="form-control">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">ເງືອນໄຂຂອງປະກັນໄພ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea name="" id="" cols="30" rows="10" class="form-control">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde molestiae labore sapiente quam, iusto voluptas. Dolore ea consequatur sapiente autem culpa, rerum dolor ut voluptas quisquam quibusdam corrupti magnam odit.
                 </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">ອອກ</button>
+                    <button type="submit" form="updateForm" class="btn btn-primary btn-lg">ຕົກລົງ</button>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">ອອກ</button>
-              <button type="submit" form="updateForm" class="btn btn-primary btn-lg">ຕົກລົງ</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
 
 @endsection

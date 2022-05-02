@@ -1,5 +1,6 @@
 @php
 use App\Utils\ImageCompress;
+use App\utils\ImageServe;
 @endphp
 @extends('layouts.public_layout')
 @section('content')
@@ -176,7 +177,7 @@ use App\Utils\ImageCompress;
                                     <button type="button" onclick="selectPhotoOnClick()"
                                         class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
                                         ເລືອກຮູບ</button><br>
-                                    <img id="img_preview" src="{{ImageCompress::getThumnailImage($accidentData->front_image)}}" alt="" srcset="" class="border rounded img-fluid">
+                                    <img id="img_preview" src="{{ImageServe::Base64($accidentData->front_image)}}" alt="" srcset="" class="border rounded img-fluid">
                                 </div>
                             </div>
 

@@ -1,120 +1,24 @@
 @php
-
-use App\Utils\ImageCompress;
 use App\Utils\ImageServe;
 @endphp
 
-@extends('layouts.public_layout')
+@extends('layouts.admin_layout')
 @section('content')
     {{-- Padding --}}
     <div class="pt-5"></div>
     <div class="row">
         <div class="col-md-12">
             <h3 class="notosanLao text-center">
-                ກວດສອບລາຍການກ່ອນຊື້ປະກັນໄພ
+                ແກ້ໄຂຂໍ້ມູນປະກັນໄພ
             </h3>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            {{-- Show Level detail --}}
-            <nav aria-label="breadcrumb" class="pt-5 text-white">
-                <ol class="breadcrumb notosanLao">
-                    <li class="breadcrumb-item"><a href="{{ route('welcome') }}">ໜ້າຫຼັກ</a></li>
-
-                    <li class="breadcrumb-item"><a
-                            href="{{ route('InsuranceFlowController.showInsuranceTypeSelection') }}">ຊື້ປະກັນໄພ</a></li>
-
-                    <li class="breadcrumb-item"><a
-                            href="{{ route('InsuranceFlowController.showCarInsuranceSelectionMenu') }}">ເລືອກຮູບແບບປະກັນໄພ</a>
-                    </li>
-
-                    <li class="breadcrumb-item active" aria-current="page">ກວດສອບຂໍ້ມູນກ່ອນຊື້ປະກັນ</li>
-                </ol>
-            </nav>
-            <hr>
-        </div>
-    </div>
+  
     {{-- Body Data --}}
     <div class="row">
-        <div class="col-md-4">
-            <div class="d-flex justify-content-center pt-2">
-                <div class="card" style="width: 18.5rem;">
-                    @if (!trim($company->logo))
-                        <img src="{{ asset('assets/image/200x120.png') }}" class="rounded img-fluid me-2" alt="200x12"
-                            srcset="" style="width: 300px; height: 200px;">
-                    @else
-                        <img src="{{ asset($company->logo) }}" alt="200x12" srcset="" style="width: 300px; height: 200px;"
-                            class="rounded img-fluid me-2">
-                    @endif
-                    <div class="card-body notosanLao">
-
-                        <h5 class="card-title">{{ $company->name }} {{ $vehiclePackage->name }}
-                            ({{ $saleOption->name }})
-                        </h5>
-                        <p class="card-text text-danger text-center fs-3 fw-bolder">
-                            {{ number_format($saleOption->sale_price, 0) }}</p>
-
-                    </div>
-                </div>
-            </div>
-            {{-- Detail --}}
-            <div class="row pt-3">
-                <div class="col-md-12">
-                    <div class="d-grid gap-1">
-                        <button class="btn btn-block bg-blue text-white notosanLao" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            ລາຍລະອຽດປະກັນໄພ
-                        </button>
-                    </div>
-                    <div class="collapse show" id="collapseExample">
-                        <table class="table table-sm notosanLao table-bordered">
-                            <thead class="fs-5 bg-blue text-white">
-
-                                <td>ລາຍລະອຽດການຄຸ່ມຄອງປະກັນໄພ</td>
-                                <td>ວົງເງິນຄຸ່ມກັນ</td>
-
-                            </thead>
-                            <tbody>
-                                @php
-                                    $group_id = 0;
-
-                                @endphp
-                                @foreach ($saleDetails as $item)
-                                    {{-- start tr --}}
-                                    <tr>
-                                        @if ($group_id != $item->group_id)
-                                            <td colspan="3" class="fs-6 bg-warning fw-bolder">{{ $item->group_name }}
-                                            </td>
-                                    <tr>
-                                        <td>{{ $item->item_name }}</td>
-                                        <td>{{ number_format($item->cover_price, 0) }} ₭</td>
-                                    </tr>
-                                @endif
-
-                                @if ($group_id == $item->group_id)
-                                    <td>{{ $item->item_name }}</td>
-                                    <td>{{ number_format($item->cover_price, 0) }} ₭</td>
-                                @endif
-                                @php
-                                    $group_id = $item->group_id;
-                                @endphp
-                                </tr>
-                                {{-- End tr --}}
-                                @endforeach
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <h3 class="text-center notosanLao">ກວດສອບຂໍ້ມູນປະກັນໄພ</h3>
-            <form autocomplete="off" method="POST" action="{{route('InsuranceFlowController.updateInputData')}}" enctype="multipart/form-data">
+        <div class="col-md-6 offset-md-3">
+            <form autocomplete="off" method="POST" action="{{route('AdminInsuranceController.UpdateVehicleInsurance')}}" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="sale_id" value="{{$saleOption->id}}">
                 <input type="hidden" name="id" value="{{$inputData->id}}">
                 <fieldset class="border notosanLao">
                     <legend class="bg-blue">- ຜູ້ເອົາປະກັນ</legend>
@@ -184,7 +88,7 @@ use App\Utils\ImageServe;
                             <div class="col-sm-8">
                                 <select name="province" id="province" class="form-select form-select-lg {{($errors->has('province')? 'border-danger':'')}}"
                                     onchange="onSelectInsuredProvince()">
-                                    @foreach ($Provinces as $item)
+                                    @foreach ($provinces as $item)
                                         <option value="{{ $item->id }}" {{($inputData->province)==$item->id? 'selected':''}} >{{ $item->province_name }}</option>
                                     @endforeach
                                 </select>
@@ -254,7 +158,7 @@ use App\Utils\ImageServe;
                             <div class="col-sm-8">
                                 <select name="registeredProvince" id="registeredProvince"
                                     class="form-select form-select-lg {{($errors->has('registeredProvince')? 'border-danger':'')}}">
-                                    @foreach ($Provinces as $item)
+                                    @foreach ($provinces as $item)
                                         <option value="{{ $item->id }}" {{($inputData->registeredProvince == $item->id)? 'selected':''}}>{{ $item->province_name }}</option>
                                     @endforeach
                                 </select>
@@ -288,6 +192,7 @@ use App\Utils\ImageServe;
                         {{-- Car Side Front Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
+                               
                                 <img class="ms-2" src="{{ImageServe::Base64($inputData->front_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
@@ -295,63 +200,15 @@ use App\Utils\ImageServe;
                             </div>
                         </div>
 
-                         {{-- Car Side left Image --}}
-                         <div class="mb-3 row">
-                            <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ImageServe::Base64($inputData->left_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-                                <input type="file" name="left" id="left" class="form-control-file border {{($errors->has('left')? 'border-danger':'')}}" style="width: 100%">
-                            </div>
-
-                        </div>
-
-                         {{-- Car Side right Image --}}
-                         <div class="mb-3 row">
-                            <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ImageServe::Base64($inputData->right_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-                                <input type="file" name="right" id="right" class="form-control-file border {{($errors->has('right')? 'border-danger':'')}}" style="width: 100%">
-                            </div>
-                        </div>
-
-                         {{-- Car Side rear Image --}}
-                         <div class="mb-3 row">
-                            <div class="col-sm-6 text-center">
-                                <img class="ms-2" src="{{ImageServe::Base64($inputData->rear_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-                                <input type="file" name="rear" id="rear" class="form-control-file border {{($errors->has('rear')? 'border-danger':'')}}" style="width: 100%">
-                            </div>
-                        </div>
-
-                        {{-- Car Book Image --}}
-                        <div class="mb-3 row">
-                            <div class="col-sm-6 text-center">
-
-                                <img class="ms-2 rounded" src="{{ImageServe::Base64($inputData->yellow_book_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-                                <input type="file" name="yellow_book" id="yellow_book" class="form-control-file border {{($errors->has('yellow_book')? 'border-danger':'')}}" style="width: 100%">
-                            </div>
-                        </div>
                         <hr>
-                        {{-- Term and Condition --}}
-                        <div class="mb-3 row">
-                            <div class="col-md-12">
-                                <p class="notosanLao fs-4">ເງືອນໄຂປະກັນ</p>
-                                <textarea readonly name="" id="" rows="15" class="form-control bg-white">{{$saleOption->terms}}</textarea>
-                            </div>
-                        </div>
-
+                       
                          {{-- Acception Check Box --}}
                          <div class="mb-3 row">
                             <div class="col-md-12">
                                 <div class="form-check notosanLao">
                                     <input class="form-check-input ms-3" type="checkbox" value="" id="acceptCheckbox" onchange="onClickAccepted()">
-                                    <label class="form-check-label ms-2" for="acceptCheckbox">
-                                      ຂ້ອຍເຂົ້າໃຈ ແລະ ຍອມຮັບເງິນໄຂ
+                                    <label class="form-check-label ms-2 fs-5" for="acceptCheckbox">
+                                      ໄດ້ຮັບຄວາມຍິນຍອມຈາກລູກຄ້າແລ້ວ ເພື່ອປ່ຽນແປງຂໍ້ມູນ
                                     </label>
                                   </div>
                             </div>
@@ -379,6 +236,7 @@ use App\Utils\ImageServe;
 </div>
 @endsection
 @section('scripting')
+@include('toastrMessage')
     <script>
         var baseURL = "{{ env('BASE_ROUTE') }}";
         //Function on select the accepts term and condition

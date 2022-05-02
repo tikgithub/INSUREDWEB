@@ -1,7 +1,8 @@
 @php
 use App\Utils\ImageCompress;
+use App\Utils\ImageServe;
 @endphp
-@extends('layouts.public_layout')
+@extends('layouts.admin_layout')
 @section('content')
     <div class="pt-5"></div>
     <div class="row">
@@ -15,13 +16,14 @@ use App\Utils\ImageCompress;
     <div class="row">
         <div class="col-md-2 text-center">
             @isset($insurance->front_image)
-                <img src="{{ ImageCompress::getThumnailImage($insurance->front_image) }}" id="front_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ asset($insurance->front_image) }}"
+                <img src="{{ ImageServe::Base64($insurance->front_image) }}" id="front_image"
+                    class="thumbnail-image mb-3 border border-dark"
+                    img-data="{{ ImageServe::Base64($insurance->front_image) }}"
                     onclick="onClickThumnailImage('front_image')">
             @endisset
         </div>
         <div class="col-md-6">
-            <img src="{{ asset($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
+            <img src="{{ ImageServe::Base64($insurance->front_image) }}" alt="" srcset="" class="img-fluid rounded shadow"
                 id="preview_image">
         </div>
         <div class="col-md-4">
@@ -56,45 +58,58 @@ use App\Utils\ImageCompress;
     </div>
 
     <hr>
-    <h3 class="fw-bold">ຂໍ້ມູນຜູ້ເອົາປະກັນໄພ</h3>
+
     <div class="row" style="line-height: 20px;">
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <h3 class="fw-bold text-center mb-3">ຂໍ້ມູນຜູ້ເອົາປະກັນໄພ</h3>
             <div class="form mt-3 fs-5">
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ຊື່ ແລະ ນາມສະກຸນ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ຊື່ ແລະ ນາມສະກຸນ</label>
+                    <div class="col-sm-8">
                         {{ $insurance->sex == 'M' ? 'ທ' : 'ນ' }}. {{ $insurance->firstname }}
                         {{ $insurance->lastname }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ວັນເດືອນປີເກີດ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ວັນເດືອນປີເກີດ</label>
+                    <div class="col-sm-8">
                         {{ \Carbon\Carbon::parse($insurance->dob)->format('d/m/Y') }}
                         ({{ explode(' ', \Carbon\Carbon::parse($insurance->dob)->diffForHumans(null, true))[0] }} ປີ)
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ເບີໂທຕິດຕໍ່</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ເບີໂທຕິດຕໍ່</label>
+                    <div class="col-sm-8">
                         <u>{{ $insurance->tel }}</u>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ເລກທີ່ບັດປະຊາຊົນ ຫຼື ໜັງສືຜ່ານແດນ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ເລກທີ່ບັດປະຊາຊົນ ຫຼື ໜັງສືຜ່ານແດນ</label>
+                    <div class="col-sm-8">
                         {{ $insurance->identity }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ທີ່ຢູ່</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ທີ່ຢູ່</label>
+                    <div class="col-sm-8">
                         {{ \App\Models\Province::find($insurance->province)->province_name }},
                         {{ \App\Models\District::find($insurance->district)->district_name }},
                         {{ $insurance->address }}
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-6 text-center">
+            <h3 class="mb-3">ຢັງຢືນການຈ່າຍເງິນ</h3>
+            <img src="{{ ImageServe::Base64($insurance->slipUploaded) }}" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+
+            <a href="{{ route('AdminInsuranceController.ShowEditPageOfThirPartyInsurance', ['id' => $insurance->id]) }}"
+                class="btn btn-warning btn-lg"><i class="bi bi-pencil fs-4 me-2"></i>ແກ້ໄຂຂໍ້ມູນຜູ້ເອົາປະກັນ</a>
         </div>
     </div>
 
@@ -160,11 +175,33 @@ use App\Utils\ImageCompress;
         @break
     @endswitch
 @endsection
+@section('styles')
+    <style>
+        .company-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            object-fit: cover;
+        }
+
+        .thumbnail-image {
+            width: auto;
+            height: 80px;
+            object-fit: cover;
+        }
+
+        .thumbnail-image:hover {
+            cursor: pointer;
+            padding: 2px;
+            background-color: grey;
+        }
+
+    </style>
+@endsection
+
 @section('scripting')
-@include('toastrMessage')
+    @include('toastrMessage')
     <script>
-
-
         function onClickThumnailImage(id) {
             var sourceImage = document.getElementById(id);
             var targetImage = document.getElementById('preview_image');
@@ -197,28 +234,4 @@ use App\Utils\ImageCompress;
 @endsection
 @section('footer')
     @include('layouts.footer')
-@endsection
-
-@section('style')
-    <style>
-        .company-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50px;
-            object-fit: cover;
-        }
-
-        .thumbnail-image {
-            width: auto;
-            height: 80px;
-            object-fit: cover;
-        }
-
-        .thumbnail-image:hover {
-            cursor: pointer;
-            padding: 2px;
-            background-color: grey;
-        }
-
-    </style>
 @endsection
