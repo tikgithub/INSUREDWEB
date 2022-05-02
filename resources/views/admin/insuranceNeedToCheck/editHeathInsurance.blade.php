@@ -17,7 +17,7 @@ use App\Utils\ImageServe;
     {{-- Body Data --}}
     <div class="row">
         <div class="col-md-6 offset-md-3">
-            <form autocomplete="off" method="POST" action="{{route('AdminInsuranceController.UpdateThirdPartyInsurance')}}" enctype="multipart/form-data">
+            <form autocomplete="off" method="POST" action="{{route('AdminInsuranceController.UpdateHeathInsurance')}}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" value="{{$inputData->id}}">
                 <fieldset class="border notosanLao">
@@ -119,76 +119,10 @@ use App\Utils\ImageServe;
                 </fieldset>
                 {{-- Fieldset of insured Address --}}
                 <fieldset class="border notosanLao">
-                    <legend class="bg-blue">- ຂໍ້ມູນລົດທີ່ຈະເອົາປະກັນ</legend>
-                    <div class="p-2">
-                        {{-- VehicleBrand --}}
-                        <div class="mb-3 row">
-                            <label for="vehicleBrand" class="col-sm-4 text-center fs-4 col-form-label">ຍີຫໍ້ລົດ</label>
-                            <div class="col-sm-8">
-                                <select name="vehicleBrand" id="vehicleBrand" class="form-select form-select-lg {{($errors->has('vehicleBrand')? 'border-danger':'')}}">
-                                    @foreach ($carBrands as $item)
-                                        <option value="{{$item->id}}" {{($inputData->vehicle_brand == $item->id)? 'selected':''}}>{{$item->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        {{-- Number plate --}}
-                        <div class="mb-3 row">
-                            <label for="number_plate"
-                                class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກທະບຽນ</label>
-                            <div class="col-sm-8 align-self-center">
-                                <input type="text" class="form-control form-control-lg {{($errors->has('number_plate')? 'border-danger':'')}}" id="number_plate"
-                                    name="number_plate" value="{{$inputData->number_plate}}">
-                            </div>
-                        </div>
-                        {{-- Color --}}
-                        <div class="mb-3 row">
-                            <label for="color"
-                                class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
-                            <div class="col-sm-8 align-self-center">
-                                <input type="text" class="form-control form-control-lg {{($errors->has('color')? 'border-danger':'')}}" id="color" name="color"
-                                    value="{{$inputData->color}}">
-                            </div>
-                        </div>
-                        {{-- Province Registered --}}
-                        <div class="mb-3 row">
-                            <label for="registeredProvince"
-                                class="col-sm-4 text-center fs-4 col-form-label">ແຂວງທີ່ຂຶ້ນທະບຽນ</label>
-                            <div class="col-sm-8">
-                                <select name="registeredProvince" id="registeredProvince"
-                                    class="form-select form-select-lg {{($errors->has('registeredProvince')? 'border-danger':'')}}">
-                                    @foreach ($provinces as $item)
-                                        <option value="{{ $item->id }}" {{($inputData->registeredProvince == $item->id)? 'selected':''}}>{{ $item->province_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        {{-- Engine Number --}}
-                        <div class="mb-3 row">
-                            <label for="color"
-                                class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກຈັກ</label>
-                            <div class="col-sm-8 align-self-center">
-                                <input type="text" class="form-control form-control-lg {{($errors->has('engine_number')? 'border-danger':'')}}" id="engine_number" name="engine_number"
-                                    value="{{ $inputData->engine_number}}">
-                            </div>
-                        </div>
-
-                        {{-- Chassic Number --}}
-                        <div class="mb-3 row">
-                            <label for="color"
-                                class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກຖັງ</label>
-                            <div class="col-sm-8 align-self-center">
-                                <input type="text" class="form-control form-control-lg {{($errors->has('chassic_number')? 'border-danger':'')}}" id="chassic_number" name="chassic_number"
-                                    value="{{$inputData->chassic_number}}">
-                            </div>
-                        </div>
-
                         <h4 class="notosanLao text-center">
                             ຮູບພາບ
                         </h4>
-                        <hr>
+              
                         {{-- Car Side Front Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">

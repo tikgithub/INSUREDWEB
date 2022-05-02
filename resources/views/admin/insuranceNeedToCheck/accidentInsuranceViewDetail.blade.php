@@ -57,39 +57,40 @@ use App\Utils\ImageServe;
     </div>
 
     <hr>
-    <h3 class="fw-bold">ຂໍ້ມູນຜູ້ເອົາປະກັນໄພ</h3>
+    
     <div class="row" style="line-height: 20px;">
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <h3 class="fw-bold text-center mb-3">ຂໍ້ມູນຜູ້ເອົາປະກັນໄພ</h3>
             <div class="form mt-3 fs-5">
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ຊື່ ແລະ ນາມສະກຸນ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ຊື່ ແລະ ນາມສະກຸນ</label>
+                    <div class="col-sm-8">
                         {{ $insurance->sex == 'M' ? 'ທ' : 'ນ' }}. {{ $insurance->firstname }}
                         {{ $insurance->lastname }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ວັນເດືອນປີເກີດ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ວັນເດືອນປີເກີດ</label>
+                    <div class="col-sm-8">
                         {{ \Carbon\Carbon::parse($insurance->dob)->format('d/m/Y') }}
                         ({{ explode(' ', \Carbon\Carbon::parse($insurance->dob)->diffForHumans(null, true))[0] }} ປີ)
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ເບີໂທຕິດຕໍ່</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ເບີໂທຕິດຕໍ່</label>
+                    <div class="col-sm-8">
                         <u>{{ $insurance->tel }}</u>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ເລກທີ່ບັດປະຊາຊົນ ຫຼື ໜັງສືຜ່ານແດນ</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ເລກທີ່ບັດປະຊາຊົນ ຫຼື ໜັງສືຜ່ານແດນ</label>
+                    <div class="col-sm-8">
                         {{ $insurance->identity }}
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="" class="col-sm-2 fw-bold">ທີ່ຢູ່</label>
-                    <div class="col-sm-10">
+                    <label for="" class="col-sm-4 fw-bold">ທີ່ຢູ່</label>
+                    <div class="col-sm-8">
                         {{ \App\Models\Province::find($insurance->province)->province_name }},
                         {{ \App\Models\District::find($insurance->district)->district_name }},
                         {{ $insurance->address }}
@@ -97,7 +98,20 @@ use App\Utils\ImageServe;
                 </div>
             </div>
         </div>
+        <div class="col-md-6 text-center">
+            <h3 class="fw-bold mb-3">ຢັງຢືນການຈ່າຍເງິນ</h3>
+            <img src="{{ImageServe::Base64($insurance->slipUploaded)}}" class="img-fluid">
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+
+            <a href="{{ route('AdminInsuranceController.ShowEditPageOfAccidentInsurance', ['id' => $insurance->id]) }}"
+                class="btn btn-warning btn-lg"><i class="bi bi-pencil fs-4 me-2"></i>ແກ້ໄຂຂໍ້ມູນຜູ້ເອົາປະກັນ</a>
+        </div>
+    </div>
+
 
     <hr>
     <h3 class="fw-bold">ສະຖານະຂອງປະກັນ</h3>

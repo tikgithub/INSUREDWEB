@@ -460,6 +460,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/remove_insurance/{id}', [AdminInsuranceController::class, 'removeInsurance'])->name('AdminInsuranceController.RemoveInsurance');
 
     Route::get('/edit_thirdparty_detail/{id}',[AdminInsuranceController::class,'showEditPageOfThirPartyInsurance'])->name('AdminInsuranceController.ShowEditPageOfThirPartyInsurance');
+    Route::post('/edit_thirdparty_delete',[AdminInsuranceController::class,'updateThirdPartyInsurance'])->name('AdminInsuranceController.UpdateThirdPartyInsurance');
+
+    Route::get('/edit_accident_detail/{id}',[AdminInsuranceController::class,'showEditPageOfAccidentInsurance'])->name('AdminInsuranceController.ShowEditPageOfAccidentInsurance');
+    Route::post('/edit_accident_detail',[AdminInsuranceController::class,'updateAccidentInsurance'])->name('AdminInsuranceController.UpdateAccidentInsurance');
+
+    Route::get('/edit_heath_detail/{id}',[AdminInsuranceController::class,'showEditPageOfHeathInsurance'])->name('AdminInsuranceController.ShowEditPageOfHeathInsurance');
+    Route::post('/edit_heath_detail',[AdminInsuranceController::class,'updateHeathInsurance'])->name('AdminInsuranceController.UpdateHeathInsurance');
     /** AdminInsuranceController End */
 
 

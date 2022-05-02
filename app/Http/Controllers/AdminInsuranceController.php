@@ -333,9 +333,160 @@ class AdminInsuranceController extends Controller
                 Storage::delete($newInput->front_image);
                 $newInput->front_image =  Storage::disk('local')->put('documents/', $req->file('front'));
             }
+
+            if ($newInput->save()) {
+                return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('success', 'Operation was completed');
+            } else {
+                return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
+            }
         } catch (\Throwable $th) {
             Log::error($th);
             return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
         }
     }
+
+    public function showEditPageOfAccidentInsurance($id){
+        try {
+             //Get Input Data after submit
+             $inputData = InsuranceInformation::find($id);
+
+             //  dd($inputData);
+             //Province data
+             $provinces = Province::all();
+             //District Data
+             $districts = District::where('province_id', '=', $inputData->province)->get();
+ 
+             //Car Brand data
+             $carBrands = CarBrand::all();
+ 
+             return view('admin.insuranceNeedToCheck.editAccidentInsurance')
+                 ->with('inputData', $inputData)
+                 ->with('provinces', $provinces)
+                 ->with('carBrands', $carBrands)
+                 ->with('districts', $districts);
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function updateAccidentInsurance(Request $req){
+        try {
+            //Validate input
+            //Image Validate with maximun
+            $req->validate([
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'tel' => 'required',
+                'sex' => 'required',
+                'dob' => 'required',
+                'identity' => 'required',
+                'province' => 'required',
+                'district' => 'required',
+                'address' => 'required'
+            ]);
+
+            //Find eqloquent object for perform the update operation
+            $newInput = InsuranceInformation::find($req->input('id'));
+
+            $newInput->firstname = trim($req->input('firstname'));
+            $newInput->lastname = trim($req->input('lastname'));
+            $newInput->sex = $req->input('sex');
+            $newInput->dob = $req->input('dob');
+            $newInput->tel = $req->input('tel');
+            $newInput->identity = trim($req->input('identity'));
+            $newInput->province = $req->input('province');
+            $newInput->district = $req->input('district');
+            $newInput->address = trim($req->input('address'));
+
+            if ($req->file('front')) {
+                Storage::delete($newInput->front_image);
+                $newInput->front_image =  Storage::disk('local')->put('documents/', $req->file('front'));
+            }
+
+            if ($newInput->save()) {
+                return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('success', 'Operation was completed');
+            } else {
+                return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
+        }
+    }
+
+    public function showEditPageOfHeathInsurance($id){
+        try {
+             //Get Input Data after submit
+             $inputData = InsuranceInformation::find($id);
+
+             //  dd($inputData);
+             //Province data
+             $provinces = Province::all();
+             //District Data
+             $districts = District::where('province_id', '=', $inputData->province)->get();
+ 
+             //Car Brand data
+             $carBrands = CarBrand::all();
+ 
+             return view('admin.insuranceNeedToCheck.editAccidentInsurance')
+                 ->with('inputData', $inputData)
+                 ->with('provinces', $provinces)
+                 ->with('carBrands', $carBrands)
+                 ->with('districts', $districts);
+                 
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function updateHeathInsurance(Request $req){
+        try {
+            //Validate input
+            //Image Validate with maximun
+            $req->validate([
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'tel' => 'required',
+                'sex' => 'required',
+                'dob' => 'required',
+                'identity' => 'required',
+                'province' => 'required',
+                'district' => 'required',
+                'address' => 'required'
+            ]);
+
+            //Find eqloquent object for perform the update operation
+            $newInput = InsuranceInformation::find($req->input('id'));
+
+            $newInput->firstname = trim($req->input('firstname'));
+            $newInput->lastname = trim($req->input('lastname'));
+            $newInput->sex = $req->input('sex');
+            $newInput->dob = $req->input('dob');
+            $newInput->tel = $req->input('tel');
+            $newInput->identity = trim($req->input('identity'));
+            $newInput->province = $req->input('province');
+            $newInput->district = $req->input('district');
+            $newInput->address = trim($req->input('address'));
+
+            if ($req->file('front')) {
+                Storage::delete($newInput->front_image);
+                $newInput->front_image =  Storage::disk('local')->put('documents/', $req->file('front'));
+            }
+
+            if ($newInput->save()) {
+                return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('success', 'Operation was completed');
+            } else {
+                return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('error', 'Operation was error, please try again later');
+        }
+    }
+
+
 }
