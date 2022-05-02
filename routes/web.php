@@ -27,6 +27,7 @@ use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\WebsiteController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,7 +43,8 @@ use Illuminate\Support\Facades\Route;
 
 /** Route Call Index Of Web APP */
 Route::get('/', [IndexController::class, 'index'])->name('welcome');
-Route::get('/error',[IndexController::class,'errorPage'])->name('errorPage');
+Route::get('/error', [IndexController::class, 'errorPage'])->name('errorPage');
+
 
 /** Group route for user operation */
 Route::group(['prefix' => 'user'], function () {
@@ -100,15 +102,15 @@ Route::group(['prefix' => 'insurance'], function () {
     Route::get('/accident/show_package_detail/{plan_id}', [AccidentSaleController::class, 'showPlanDetail'])->name('AccidentSaleController.showPlanDetail');
     Route::get('/accident/customer_information_input/{plan_id}', [AccidentSaleController::class, 'showInputInformationPage'])->name('AccidentSaleController.showInputInformationPage');
 
-     /** Route group of HeathSaleController */
-     Route::get('/heath/company_select',[HeathSaleController::class,'selectCompany'])->name('HeathController.SelectCompany');
-     Route::get('/heath/package_select/{company_id}',[HeathSaleController::class,'showPackage'])->name('HeathSaleController.ShowPackage');
-     Route::get('/heath/package_select_detail/{plan_id}',[HeathSaleController::class,'showSelectedPackage'])->name('HeathSaleController.ShowSelectPackage');
-     Route::get('/heath/customer_input./{plan_id}',[HeathSaleController::class,'showCustomerInput'])->name('HeathSaleController.ShowCustomerInput');
-     /** Route ground of heathSaleController End */
+    /** Route group of HeathSaleController */
+    Route::get('/heath/company_select', [HeathSaleController::class, 'selectCompany'])->name('HeathController.SelectCompany');
+    Route::get('/heath/package_select/{company_id}', [HeathSaleController::class, 'showPackage'])->name('HeathSaleController.ShowPackage');
+    Route::get('/heath/package_select_detail/{plan_id}', [HeathSaleController::class, 'showSelectedPackage'])->name('HeathSaleController.ShowSelectPackage');
+    Route::get('/heath/customer_input./{plan_id}', [HeathSaleController::class, 'showCustomerInput'])->name('HeathSaleController.ShowCustomerInput');
+    /** Route ground of heathSaleController End */
 
-      /** Contact Us Controller */
-    Route::post('/customer/contact_us',[MessageToUsController::class,'storeMessage'])->name('MessageToUsController.StoreMessage');
+    /** Contact Us Controller */
+    Route::post('/customer/contact_us', [MessageToUsController::class, 'storeMessage'])->name('MessageToUsController.StoreMessage');
     /** Contact Us Controller End */
 });
 
@@ -212,24 +214,24 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     Route::post('customer/accident/submitPayment', [AccidentSaleController::class, 'submitAccidentPayment'])->name('AccidentSaleController.submitAccidentPayment');
 
     /** Route to show insurance user information detail */
-    Route::get('/user/insurance_view_detail/{id}',[UserController::class,'insuranceViewDetail'])->name('UserController.InsuranceViewDetail');
+    Route::get('/user/insurance_view_detail/{id}', [UserController::class, 'insuranceViewDetail'])->name('UserController.InsuranceViewDetail');
 
     /** HeathSaleController */
-    Route::post('/customer/heath/store',[HeathSaleController::class,'storeUserInformation'])->name('HeathSaleController.StoreUserInformation');
-    Route::get('/customer/heath/confirmation',[HeathSaleController::class,'showUserConfirmationPage'])->name('HeathSaleController.ShowUserConfirmationPage');
-    Route::post('/customer/heath/confirmatio/update',[HeathSaleController::class,'updateUserConfirmationData'])->name('HeathSaleController.UpdateUserConfirmationData');
-    Route::get('/customer/heath/paymentprovider',[HeathSaleController::class,'showPaymentProvider'])->name('HeathSaleController.ShowPaymentProvider');
-    Route::get('/customer/heath/payment_submit/{id}',[HeathSaleController::class,'showPaymentSubmitPage'])->name('HeathSaleController.ShowPaymentSubmitPage');
-    Route::post('/customer/heath/payment_submit',[HeathSaleController::class,'submitHeathPayment'])->name('HeathSaleController.SubmitHeathPayment');
+    Route::post('/customer/heath/store', [HeathSaleController::class, 'storeUserInformation'])->name('HeathSaleController.StoreUserInformation');
+    Route::get('/customer/heath/confirmation', [HeathSaleController::class, 'showUserConfirmationPage'])->name('HeathSaleController.ShowUserConfirmationPage');
+    Route::post('/customer/heath/confirmatio/update', [HeathSaleController::class, 'updateUserConfirmationData'])->name('HeathSaleController.UpdateUserConfirmationData');
+    Route::get('/customer/heath/paymentprovider', [HeathSaleController::class, 'showPaymentProvider'])->name('HeathSaleController.ShowPaymentProvider');
+    Route::get('/customer/heath/payment_submit/{id}', [HeathSaleController::class, 'showPaymentSubmitPage'])->name('HeathSaleController.ShowPaymentSubmitPage');
+    Route::post('/customer/heath/payment_submit', [HeathSaleController::class, 'submitHeathPayment'])->name('HeathSaleController.SubmitHeathPayment');
     /** HeathSaleController End */
 
     /** UserController  */
-    Route::get('/customer/view_vehicle_insurance_detail/{id}',[UserController::class,'setVehicleInsuranceID'])->name('UserController.SetVehicleInsuranceID');
+    Route::get('/customer/view_vehicle_insurance_detail/{id}', [UserController::class, 'setVehicleInsuranceID'])->name('UserController.SetVehicleInsuranceID');
     /** UserController End */
 
 
     /** UserCommentController */
-    Route::post('/customer/comment/store',[UserCommentController::class,'storeUserComment'])->name('UserCommentController.StoreUserComment');
+    Route::post('/customer/comment/store', [UserCommentController::class, 'storeUserComment'])->name('UserCommentController.StoreUserComment');
     /** UserCommentController End */
 });
 
@@ -424,73 +426,74 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/insuranceList', [AdminController::class, 'showInsuranceList'])->name('AdminController.showInsuranceList');
 
     /** HeathCoverType Controller */
-    Route::get('/datamanager/heath_cover/index',[HeathCoverController::class,'index'])->name('HeathCoverController.Index');
-    Route::post('/datamanager/heath_cover/store',[HeathCoverController::class,'store'])->name('HeathCoverController.Store');
-    Route::get('/datamanager/heath_cover/update/{id}/{status}',[HeathCoverController::class,'changeStatus'])->name('HeathCoverController.ChangeStatus');
-    Route::post('/datamanager/heath_cover/update',[HeathCoverController::class,'update'])->name('HeathCoverController.Update');
+    Route::get('/datamanager/heath_cover/index', [HeathCoverController::class, 'index'])->name('HeathCoverController.Index');
+    Route::post('/datamanager/heath_cover/store', [HeathCoverController::class, 'store'])->name('HeathCoverController.Store');
+    Route::get('/datamanager/heath_cover/update/{id}/{status}', [HeathCoverController::class, 'changeStatus'])->name('HeathCoverController.ChangeStatus');
+    Route::post('/datamanager/heath_cover/update', [HeathCoverController::class, 'update'])->name('HeathCoverController.Update');
     /** HeathCoverType Controller End */
 
     /** HeathCoverItem Controller */
-    Route::get('/datamanager/heath_cover_item/index',[HeathCoverItemController::class,'index'])->name('HeathCoverItemController.Index');
-    Route::get('/datamanager/heath_cover_item/search/{company_id}',[HeathCoverItemController::class,'getCoverTypeByCompany'])->name('HeathCoverItemController.getCoverTypeByCompany');
-    Route::get('/datamanager/heath_cover_item/create/{cover_type_id}',[HeathCoverItemController::class,'create'])->name('HeathCoverItemController.Create');
-    Route::post('/datamanager/heath_cover_item/store/',[HeathCoverItemController::class,'store'])->name('HeathCoverItemController.Store');
-    Route::post('/datamanger/heath_cover_item/update',[HeathCoverItemController::class,'update'])->name('HeathCoverItemController.Update');
-    Route::get('/datamanager/heath_cover_item/delete/{id}',[HeathCoverItemController::class,'delete'])->name('HeathCoverItemController.Delete');
+    Route::get('/datamanager/heath_cover_item/index', [HeathCoverItemController::class, 'index'])->name('HeathCoverItemController.Index');
+    Route::get('/datamanager/heath_cover_item/search/{company_id}', [HeathCoverItemController::class, 'getCoverTypeByCompany'])->name('HeathCoverItemController.getCoverTypeByCompany');
+    Route::get('/datamanager/heath_cover_item/create/{cover_type_id}', [HeathCoverItemController::class, 'create'])->name('HeathCoverItemController.Create');
+    Route::post('/datamanager/heath_cover_item/store/', [HeathCoverItemController::class, 'store'])->name('HeathCoverItemController.Store');
+    Route::post('/datamanger/heath_cover_item/update', [HeathCoverItemController::class, 'update'])->name('HeathCoverItemController.Update');
+    Route::get('/datamanager/heath_cover_item/delete/{id}', [HeathCoverItemController::class, 'delete'])->name('HeathCoverItemController.Delete');
     /** HeathCoverItem Controller End */
 
     /** HeathPlan Controller */
-    Route::get('/datamanager/heath_plan/create/{cover_type_id}',[HeathPlanController::class,'create'])->name('HeathPlanController.Create');
-    Route::post('/datamanager/heath_plan/store',[HeathPlanController::class,'store'])->name('HeathPlanController.Store');
-    Route::post('/datamanager/heath_plan/update',[HeathPlanController::class,'update'])->name('HeathPlanController.Update');
+    Route::get('/datamanager/heath_plan/create/{cover_type_id}', [HeathPlanController::class, 'create'])->name('HeathPlanController.Create');
+    Route::post('/datamanager/heath_plan/store', [HeathPlanController::class, 'store'])->name('HeathPlanController.Store');
+    Route::post('/datamanager/heath_plan/update', [HeathPlanController::class, 'update'])->name('HeathPlanController.Update');
     /** HeathPlan Controller End */
 
     /** HeathPlanDetail Controller */
-    Route::get('/datamanager/heath_plan_detail/{plan_id}',[HeathPlanDetailController::class,'index'])->name('HeathPlanDetailController.Index');
-    Route::get('/datamanager/heath_plan_detail/update/{plan_detail_id}',[HeathPlanDetailController::class,'update'])->name('HeathPlanDetailController.Update');
+    Route::get('/datamanager/heath_plan_detail/{plan_id}', [HeathPlanDetailController::class, 'index'])->name('HeathPlanDetailController.Index');
+    Route::get('/datamanager/heath_plan_detail/update/{plan_detail_id}', [HeathPlanDetailController::class, 'update'])->name('HeathPlanDetailController.Update');
     /** HeathPlanDetail Controller End */
 
     /** AdminInsuranceController */
-    Route::get('/check_for_approve/{id}',[AdminInsuranceController::class,'showPageDetailForApprove'])->name('AdminInsuranceController.ShowPageDetailForApprove');
-    Route::get('/edit_vehicle_detail/{id}',[AdminInsuranceController::class,'showEditPageOfVehicleInsurance'])->name('AdminInsuranceController.ShowEditPageOfVehicleInsurance');
-    Route::post('/edit_vehicle_detail',[AdminInsuranceController::class,'updateVehicleInsurance'])->name('AdminInsuranceController.UpdateVehicleInsurance');
-    Route::post('/approve_vehicle_detail',[AdminInsuranceController::class,'updateVehicleInsuranceContract'])->name('AdminInsuranceController.UpdateVehicleInsuranceContract');
+    Route::get('/check_for_approve/{id}', [AdminInsuranceController::class, 'showPageDetailForApprove'])->name('AdminInsuranceController.ShowPageDetailForApprove');
+    Route::get('/edit_vehicle_detail/{id}', [AdminInsuranceController::class, 'showEditPageOfVehicleInsurance'])->name('AdminInsuranceController.ShowEditPageOfVehicleInsurance');
+    Route::post('/edit_vehicle_detail', [AdminInsuranceController::class, 'updateVehicleInsurance'])->name('AdminInsuranceController.UpdateVehicleInsurance');
+    Route::post('/approve_vehicle_detail', [AdminInsuranceController::class, 'updateVehicleInsuranceContract'])->name('AdminInsuranceController.UpdateVehicleInsuranceContract');
+    Route::get('/remove_insurance/{id}', [AdminInsuranceController::class, 'removeInsurance'])->name('AdminInsuranceController.RemoveInsurance');
     /** AdminInsuranceController End */
 
 
     /** Website Controller */
-    Route::get('/website/',[WebsiteController::class,'index'])->name('WebsiteController.index');
-    Route::get('/website/image_slide',[WebsiteController::class,'imageSlide'])->name('WebsiteController.ImageSlide');
-    Route::post('/website/image_slide/store',[WebsiteController::class,'storeSlideImage'])->name('WebsiteController.StoreSliderImage');
-    Route::post('/website/image_slide/update',[WebsiteController::class,'editSlideImage'])->name('WebsiteController.EditSlideImage');
-    Route::get('/website/image_slide/delete/{id}',[WebsiteController::class,'deleteSlideImage'])->name('WebsiteController.DeleteSlideImage');
+    Route::get('/website/', [WebsiteController::class, 'index'])->name('WebsiteController.index');
+    Route::get('/website/image_slide', [WebsiteController::class, 'imageSlide'])->name('WebsiteController.ImageSlide');
+    Route::post('/website/image_slide/store', [WebsiteController::class, 'storeSlideImage'])->name('WebsiteController.StoreSliderImage');
+    Route::post('/website/image_slide/update', [WebsiteController::class, 'editSlideImage'])->name('WebsiteController.EditSlideImage');
+    Route::get('/website/image_slide/delete/{id}', [WebsiteController::class, 'deleteSlideImage'])->name('WebsiteController.DeleteSlideImage');
 
-    Route::get('/website/insurance_type',[WebsiteController::class,'showInsuranceTypePage'])->name('WebsiteController.ShowInsuranceTypePage');
-    Route::post('/website/insurance_type_page/store/',[WebsiteController::class,'storeInsuraceTypePage'])->name('WebsiteController.StoreInsuraceTypePage');
-    Route::post('/website/insurance_type_page/update',[WebsiteController::class,'updateInsuranceTypePage'])->name('WebsiteController.UpdateInsuranceTypePage');
-    Route::get('/website/insurance_type_page/delete/{id}',[WebsiteController::class,'deleteInsuranceTypePage'])->name('WebsiteController.DeleteInsuranceTypePage');
+    Route::get('/website/insurance_type', [WebsiteController::class, 'showInsuranceTypePage'])->name('WebsiteController.ShowInsuranceTypePage');
+    Route::post('/website/insurance_type_page/store/', [WebsiteController::class, 'storeInsuraceTypePage'])->name('WebsiteController.StoreInsuraceTypePage');
+    Route::post('/website/insurance_type_page/update', [WebsiteController::class, 'updateInsuranceTypePage'])->name('WebsiteController.UpdateInsuranceTypePage');
+    Route::get('/website/insurance_type_page/delete/{id}', [WebsiteController::class, 'deleteInsuranceTypePage'])->name('WebsiteController.DeleteInsuranceTypePage');
 
-    Route::get('/website/howtopay',[WebsiteController::class,'showHowToPay'])->name('WebsiteController.ShowHowToPay');
-    Route::post('/website/howtopay/store',[WebsiteController::class,'storeHowToPay'])->name('WebsiteController.StoreHowToPay');
-    Route::get('/website/howtopay/delete/{id}',[WebsiteController::class,'deleteHowToPay'])->name('WebsiteController.DeleteHowToPay');
-    Route::post('/website/howtopay/update',[WebsiteController::class,'updateHowToPay'])->name('WebsiteController.UpdateHowToPay');
+    Route::get('/website/howtopay', [WebsiteController::class, 'showHowToPay'])->name('WebsiteController.ShowHowToPay');
+    Route::post('/website/howtopay/store', [WebsiteController::class, 'storeHowToPay'])->name('WebsiteController.StoreHowToPay');
+    Route::get('/website/howtopay/delete/{id}', [WebsiteController::class, 'deleteHowToPay'])->name('WebsiteController.DeleteHowToPay');
+    Route::post('/website/howtopay/update', [WebsiteController::class, 'updateHowToPay'])->name('WebsiteController.UpdateHowToPay');
 
-    Route::get('/website/partner/',[WebsiteController::class,'showPartnerWebPage'])->name('WebsiteController.ShowPartnerWebPage');
-    Route::post('/website/partner/store',[WebsiteController::class,'storePartnerWebPage'])->name('WebsiteController.StorePartnerWebPage');
-    Route::post('/website/partner/update',[WebsiteController::class,'updatePartnerWebPage'])->name('WebsiteController.UpdatePartnerWebPage');
-    Route::get('/website/partner/delete/{id}',[WebsiteController::class,'deletePartnerWebPage'])->name('WebsiteController.DeletePartnerWebPage');
+    Route::get('/website/partner/', [WebsiteController::class, 'showPartnerWebPage'])->name('WebsiteController.ShowPartnerWebPage');
+    Route::post('/website/partner/store', [WebsiteController::class, 'storePartnerWebPage'])->name('WebsiteController.StorePartnerWebPage');
+    Route::post('/website/partner/update', [WebsiteController::class, 'updatePartnerWebPage'])->name('WebsiteController.UpdatePartnerWebPage');
+    Route::get('/website/partner/delete/{id}', [WebsiteController::class, 'deletePartnerWebPage'])->name('WebsiteController.DeletePartnerWebPage');
 
-    Route::get('/website/comment/',[WebsiteController::class,'showCommentWebPage'])->name('WebsiteController.ShowCommentWebPage');
-    Route::get('/website/comment/updatestatus/{id}',[WebsiteController::class,'updateCommentStatus'])->name('WebsiteController.UpdateCommentStatus');
+    Route::get('/website/comment/', [WebsiteController::class, 'showCommentWebPage'])->name('WebsiteController.ShowCommentWebPage');
+    Route::get('/website/comment/updatestatus/{id}', [WebsiteController::class, 'updateCommentStatus'])->name('WebsiteController.UpdateCommentStatus');
 
-    Route::get('/website/webinfo',[WebsiteController::class,'showWebsiteInfo'])->name('WebsiteController.ShowWebsiteInfo');
+    Route::get('/website/webinfo', [WebsiteController::class, 'showWebsiteInfo'])->name('WebsiteController.ShowWebsiteInfo');
 
     /** Website Controller End */
 
     /** MessageToUs Controller */
-    Route::get('/messaging',[MessageToUsController::class,'viewMessage'])->name('MessageToUsController.ViewMessage');
-    Route::get('/messaging/{id}',[MessageToUsController::class,'viewMessageDetail'])->name('MessageToUsController.ViewMessageDetail');
-    Route::get('/messaging/delete/{id}',[MessageToUsController::class,'deleteMessage'])->name('MessageToUsController.DeleteMessage');
+    Route::get('/messaging', [MessageToUsController::class, 'viewMessage'])->name('MessageToUsController.ViewMessage');
+    Route::get('/messaging/{id}', [MessageToUsController::class, 'viewMessageDetail'])->name('MessageToUsController.ViewMessageDetail');
+    Route::get('/messaging/delete/{id}', [MessageToUsController::class, 'deleteMessage'])->name('MessageToUsController.DeleteMessage');
     /** MessageToUs Controller */
 
 

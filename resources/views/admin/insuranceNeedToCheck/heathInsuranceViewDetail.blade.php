@@ -104,8 +104,8 @@ use App\Utils\ImageCompress;
         @case('WAIT_FOR_PAYMENT')
             <div class="alert text-center fs-4 fw-bold alert-info me-2" role="alert">
                 <i class="bi bi-cash-stack me-2"></i> ກາລຸນາຢືນຢັນການສັ່ງຊື້
-                <a href="{{ route('UserController.SetVehicleInsuranceID', ['id' => $insurance->id]) }}"
-                    class="btn btn-success ms-2 btn-lg"><i class="bi bi-cash me-2"></i>ຈ່າຍເງິນ</a>
+                <a href="{{ route('AdminInsuranceController.RemoveInsurance', ['id' => $insurance->id]) }}"
+                    class="ms-2 btn btn-danger"><i class="bi bi-trash me-2"></i>ຍົກເລີກ</a>
             </div>
         @break
 

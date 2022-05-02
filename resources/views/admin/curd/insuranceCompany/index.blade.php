@@ -1,3 +1,8 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+    use App\Utils\ImageServe;
+@endphp
+
 @extends('layouts.admin_layout')
 @section('content')
     {{-- Padding --}}
@@ -59,6 +64,8 @@
             {{-- End Form --}}
         </div>
     </div>
+
+   <img id='testid' src="{{ImageServe::Base64("documents\S2SzccZFYAI2A4A2p47yYc0rD5bWqMOcu9UD5sQA.jpg")}}" style="width: 30px;height: 30px;">
     {{-- Table  display information --}}
     <div class="row mb-3 notosanLao">
         <div class="col-md-6 offset-md-3">
@@ -82,6 +89,7 @@
                             <td>{{ $item->address }}</td>
                             <td>{{ $item->contact }}</td>
                             <td>
+                       
                                 <img src="{{ asset($item->logo) }}" style="width: auto;height: 50px;">
                             </td>
                             <td>

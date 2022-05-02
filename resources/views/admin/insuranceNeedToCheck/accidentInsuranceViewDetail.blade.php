@@ -31,8 +31,8 @@ use App\Utils\ImageCompress;
 
             </div>
             <div class="text-center">
-                <h5>{{ $accidentInsurance->package_name }} {{$accidentInsurance->plan_name}}
-                     </h5><br>
+                <h5>{{ $accidentInsurance->package_name }} {{ $accidentInsurance->plan_name }}
+                </h5><br>
                 <h6>ຄ່າທຳນຽມ: <u>{{ number_format($insurance->fee_charge, 0) }}</u></h6>
                 <h2>ລວມ: <b class="text-danger">{{ number_format($insurance->total_price, 0) }} ກີບ/ຕໍ່ປີ</b></h2>
             </div>
@@ -103,57 +103,57 @@ use App\Utils\ImageCompress;
     @switch($insurance->payment_confirm)
         @case('WAIT_FOR_PAYMENT')
             <div class="alert text-center fs-4 fw-bold alert-info me-2" role="alert">
-                <i class="bi bi-cash-stack me-2"></i> ກາລຸນາຢືນຢັນການສັ່ງຊື້
-                <a href="{{ route('UserController.SetVehicleInsuranceID', ['id' => $insurance->id]) }}"
-                    class="btn btn-success ms-2 btn-lg"><i class="bi bi-cash me-2"></i>ຈ່າຍເງິນ</a>
+                <i class="bi bi-cash-stack me-2"></i> ຢືນຢັນການສັ່ງຊື້
+                <a href="{{ route('AdminInsuranceController.RemoveInsurance', ['id' => $insurance->id]) }}"
+                    class="ms-2 btn btn-danger"><i class="bi bi-trash me-2"></i>ຍົກເລີກ</a>
             </div>
         @break
 
         @case('WAIT_FOR_APPROVED')
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <form action="{{ route('AdminInsuranceController.UpdateVehicleInsuranceContract') }}" method="post">
-                    @csrf
-                    <input type="hidden" name="id" value="{{ $insurance->id }}">
-                    <div class="mb-3">
-                        <div class="mb-3 row">
-                            <label for="" class="col-form-label col-sm-5 fs-4">ເລກທີ່ສັນຍາ</label>
-                            <div class="col-sm-7">
-                                <input type="text" name="contract_no" id="contract_no" class="form-control form-control-lg"
-                                    required value="{{ old('contract_no') }}">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <form action="{{ route('AdminInsuranceController.UpdateVehicleInsuranceContract') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $insurance->id }}">
+                        <div class="mb-3">
+                            <div class="mb-3 row">
+                                <label for="" class="col-form-label col-sm-5 fs-4">ເລກທີ່ສັນຍາ</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="contract_no" id="contract_no" class="form-control form-control-lg"
+                                        required value="{{ old('contract_no') }}">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="" class="col-form-label col-sm-5 fs-5">ເວລາເລີ່ມສັນຍາ(MM/DD/YYYY)</label>
-                        <div class="col-sm-7">
-                            <input onchange="onAddEndDate()" type="datetime-local" name="start_date" id="start_date"
-                                class="form-control form-control-lg" required value="{{ old('start_date') }}">
+                        <div class="mb-3 row">
+                            <label for="" class="col-form-label col-sm-5 fs-5">ເວລາເລີ່ມສັນຍາ(MM/DD/YYYY)</label>
+                            <div class="col-sm-7">
+                                <input onchange="onAddEndDate()" type="datetime-local" name="start_date" id="start_date"
+                                    class="form-control form-control-lg" required value="{{ old('start_date') }}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="" class="fs-5 col-form-label col-sm-5">ເວລາສິ້ນສຸດສັນຍາ(MM/DD/YYYY)</label>
-                        <div class="col-sm-7">
-                            <input type="datetime-local" name="" id="end_date" class="form-control form-control-lg" readonly>
+                        <div class="mb-3 row">
+                            <label for="" class="fs-5 col-form-label col-sm-5">ເວລາສິ້ນສຸດສັນຍາ(MM/DD/YYYY)</label>
+                            <div class="col-sm-7">
+                                <input type="datetime-local" name="" id="end_date" class="form-control form-control-lg" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="" class="fs-4 col-form-label col-sm-5">ໝາຍເຫດ</label>
-                        <div class="col-sm-7">
-                            <textarea name="contract_description" id="contract_description" class="form-control form-control-lg"
-                                rows="10"></textarea>
+                        <div class="mb-3 row">
+                            <label for="" class="fs-4 col-form-label col-sm-5">ໝາຍເຫດ</label>
+                            <div class="col-sm-7">
+                                <textarea name="contract_description" id="contract_description" class="form-control form-control-lg"
+                                    rows="10"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-5"></div>
-                        <div class="col-sm-7 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success btn-lg"><i
-                                    class=" fs-4 bi bi-check-circle me-2"></i>ອານຸມັດລາຍການ</button>
+                        <div class="row">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-7 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success btn-lg"><i
+                                        class=" fs-4 bi bi-check-circle me-2"></i>ອານຸມັດລາຍການ</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
         @break
 
         @case('APPROVED_OK')
@@ -161,13 +161,14 @@ use App\Utils\ImageCompress;
     @endswitch
 @endsection
 @section('scripting')
-@include('toastrMessage')
+    @include('toastrMessage')
     <script>
         function onClickThumnailImage(id) {
             var sourceImage = document.getElementById(id);
             var targetImage = document.getElementById('preview_image');
             targetImage.src = sourceImage.getAttribute('img-data');
         }
+
         function onAddEndDate() {
             var startDate = (document.getElementById('start_date').value);
             var parseStatDate = new Date(startDate);

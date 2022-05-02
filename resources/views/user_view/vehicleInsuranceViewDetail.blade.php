@@ -47,7 +47,7 @@ use App\Utils\ImageCompress;
         </div>
         <div class="col-md-6">
            
-            <img src="{{ asset($insurance->front_image) }}" class="img-fluid rounded shadow"
+            <img src="{{ asset($insurance->front_image) }}" class=" rounded shadow"
                 id="preview_image">
         </div>
         <div class="col-md-4">
@@ -173,6 +173,12 @@ use App\Utils\ImageCompress;
             <div class="alert fs-4 fw-bold alert-warning me-2" role="alert">
                 <i class="bi bi-clock-history me-2"></i> ກາລຸນາລໍຖ້າລາຍກຳລັງຢູ່ໃນການກວດສອບ
             </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h3><u>ຫຼັກຖານການຈ່າຍເງິນ</u></h3>
+                    <img class="img-fluid" src="{{$insurance->slipUploaded}}" alt="" srcset="">
+                </div>
+            </div>
         @break
 
         @case('APPROVED_OK')
@@ -214,6 +220,10 @@ use App\Utils\ImageCompress;
             cursor: pointer;
             padding: 2px;
             background-color: grey;
+        }
+        #preview_image{
+            width: 100%;
+            height: auto;
         }
 
     </style>

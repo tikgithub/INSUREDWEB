@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Utils\ImageCompress;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AccidentSaleController extends Controller
 {
@@ -128,7 +129,10 @@ class AccidentSaleController extends Controller
 
         //Image upload
         if ($req->file('reference_photo')) {
-            $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+           // $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
+           
+           $obj->front_image = Storage::disk('local')->put($req->file('reference_photo'),'documents');
+
         } else {
             return redirect()->back()->with('error', 'Photo not found');
         }

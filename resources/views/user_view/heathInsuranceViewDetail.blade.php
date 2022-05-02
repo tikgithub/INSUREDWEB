@@ -113,6 +113,12 @@ use App\Utils\ImageCompress;
             <div class="alert fs-4 fw-bold alert-warning me-2" role="alert">
                 <i class="bi bi-clock-history me-2"></i> ກາລຸນາລໍຖ້າລາຍກຳລັງຢູ່ໃນການກວດສອບ
             </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h3><u>ຫຼັກຖານການຈ່າຍເງິນ</u></h3>
+                    <img class="img-fluid" src="{{$insurance->slipUploaded}}" alt="" srcset="">
+                </div>
+            </div>
         @break
 
         @case('APPROVED_OK')

@@ -1,4 +1,4 @@
-{{$item->payment_confirm}}
+
 @switch($item->payment_confirm)
 @case('WAIT_FOR_PAYMENT')
     <div class="alert fs-4 fw-bold alert-info me-2" role="alert">
@@ -10,6 +10,7 @@
     <div class="alert fs-4 fw-bold alert-warning me-2" role="alert">
         <i class="bi bi-clock-history me-2"></i> ກາລຸນາລໍຖ້າລາຍກຳລັງຢູ່ໃນການກວດສອບ
     </div>
+   
 @break
 
 @case('APPROVED_OK')

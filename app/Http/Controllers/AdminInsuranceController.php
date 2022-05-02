@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class AdminInsuranceController extends Controller
 {
@@ -220,9 +221,9 @@ class AdminInsuranceController extends Controller
             'id' => 'required'
         ]);
 
-        if(InsuranceInformation::where('contract_no','=',$req->input('contract_no'))->first() ){
+        if (InsuranceInformation::where('contract_no', '=', $req->input('contract_no'))->first()) {
             return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove', ['id' => $req->input('id')])->with('warning', 'Contract number is already exist')
-            ->withInput();
+                ->withInput();
         }
         $insurance = InsuranceInformation::find($req->input('id'));
 
@@ -236,14 +237,28 @@ class AdminInsuranceController extends Controller
         $insurance->approve_by = Auth::user()->id;
         $insurance->approved_time = now();
         $insurance->contract_available_time = $req->input('start_date');
-        $insurance->contact_description= $req->input('contract_description');
+        $insurance->contact_description = $req->input('contract_description');
         $insurance->payment_confirm = "APPROVED_OK";
-       if($insurance->save()){
-           return redirect()->route('AdminController.showInsuranceList')->with('success','Operation completed');
-       }else{
-            return redirect()->back()->with('error','Operation was not completed, please try again later');
-       }
-        
+        if ($insurance->save()) {
+            return redirect()->route('AdminController.showInsuranceList')->with('success', 'Operation completed');
+        } else {
+            return redirect()->back()->with('error', 'Operation was not completed, please try again later');
+        }
+    }
 
+    public function removeInsurance($id)
+    {
+        try {
+            $removeItem = InsuranceInformation::find($id);
+
+            $removeItem->delete();
+
+            return redirect()->route('AdminInsuranceController.ShowPageDetailForApprove')->with('success', 'ດຳເນີນການສຳເລັດ');
+        } catch (\Throwable $th) {
+
+            Log::error($th);
+
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }

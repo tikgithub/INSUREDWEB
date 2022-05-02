@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Response;
 
 class AdminController extends Controller
 {
@@ -417,8 +417,10 @@ class AdminController extends Controller
 
     /** Show Insurance Company index page */
     public function indexInsuranceCompany()
-    {
+    {  // dd(asset('storage\Images\car_brand\MYwuRkoqYTRQifc8NPn42hb07rJ4AZPSq9BTRxLs.jpg'));
         $companies = InsuranceCompany::paginate(10);
+        
+
         return view('admin.curd.insuranceCompany.index')
             ->with('companies', $companies);
     }

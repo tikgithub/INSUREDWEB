@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\InsuranceCompany;
 use App\Utils\ImageCompress;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Utils\ImageServe;
 
 class InsuranceCompanyController extends Controller
 {
     /** Store insurance company */
     public function store(Request $req){
+     
         $req->validate([
             'name'=>'required|unique:insurance_companies,name',
             'info'=>'required',
@@ -23,7 +26,11 @@ class InsuranceCompanyController extends Controller
         $newCompany->info = $req->input('info');
         $newCompany->address = $req->input('address');
         $newCompany->contact = $req->input('contact');
+        //$filename  = Storage::disk('local')->put('public/Images/car_brand/',$req->file('logo'));
+       // dd($filename);
         $newCompany->logo = ImageCompress::notCompressImage($req->file('logo'),'Companies');
+       // $newCompany->logo = "testimage.jpg";
+
         if($newCompany->save()){
             return redirect()->back()->with('success','ດຳເນີນການສຳເລັດ');
         }else{
