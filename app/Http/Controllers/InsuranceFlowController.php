@@ -56,8 +56,8 @@ class InsuranceFlowController extends Controller
                 /** Query the package which relate to Third party only */
                 $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
                 tpp.fee, tpp.final_price, ic.logo
-                FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
-                INNER JOIN vehicle__types vt on vt.id = vd.v_id
+                FROM third_party_packages tpp inner join vehicle_details vd on tpp.vehicle_detail  = vd.id
+                INNER JOIN vehicle_types vt on vt.id = vd.v_id
                 INNER JOIN insurance_companies ic on ic.id = tpp.company_id
                 INNER JOIN levels l on l.id = tpp.`level`
                 AND vt.id = ? AND  tpp.status = 1 AND l.id = ?";
@@ -485,8 +485,8 @@ class InsuranceFlowController extends Controller
     {
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id
+        FROM third_party_packages tpp inner join vehicle_details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle_types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
         INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
@@ -506,8 +506,8 @@ class InsuranceFlowController extends Controller
 
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id
+        FROM third_party_packages tpp inner join vehicle_details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle_types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
         INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
@@ -535,8 +535,8 @@ class InsuranceFlowController extends Controller
         //session(['third_id'=>$id]);
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id
+        FROM third_party_packages tpp inner join vehicle_details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle_types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
         INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
@@ -632,8 +632,8 @@ class InsuranceFlowController extends Controller
 
         $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
         tpp.fee, tpp.final_price, ic.logo, tpp.term
-        FROM third_party_packages tpp inner join vehicle__details vd on tpp.vehicle_detail  = vd.id
-        INNER JOIN vehicle__types vt on vt.id = vd.v_id
+        FROM third_party_packages tpp inner join vehicle_details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle_types vt on vt.id = vd.v_id
         INNER JOIN insurance_companies ic on ic.id = tpp.company_id
         INNER JOIN levels l on l.id = tpp.`level`
         AND tpp.id =?";
