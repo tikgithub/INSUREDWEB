@@ -233,6 +233,11 @@ Route::group(['prefix' => 'insurance', 'middleware' => 'customerAuthentication']
     /** UserCommentController */
     Route::post('/customer/comment/store', [UserCommentController::class, 'storeUserComment'])->name('UserCommentController.StoreUserComment');
     /** UserCommentController End */
+
+    //Overide Controller for admin, but use as User service
+    /** AdminInsuranceController */
+    Route::get('/customer/remove/{id}',[AdminInsuranceController::class,'removeInsurance'])->name('AdminInsuranceController.RemoveInsurance');
+    /** AdminInsurnaceController End  */
 });
 
 

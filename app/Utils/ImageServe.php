@@ -14,6 +14,7 @@ class ImageServe
             if (Auth::check()) {
                 $data = (Storage::disk('local')->get($path));
                 return "data:image/png;base64," . base64_encode($data);
+              // error_log(ImageCompress::getThumnailImage(storage_path($path)));
             } else {
                 return asset('storage\Images\403.png');
             }

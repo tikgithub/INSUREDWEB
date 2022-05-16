@@ -17,7 +17,8 @@ use App\Utils\ImageServe;
         <div class="col-md-2 text-center">
             @isset($insurance->front_image)
                 <img src="{{ ImageServe::Base64($insurance->front_image) }}" id="front_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->front_image) }}"
+                    class="thumbnail-image mb-3 border border-dark"
+                    img-data="{{ ImageServe::Base64($insurance->front_image) }}"
                     onclick="onClickThumnailImage('front_image')">
             @endisset
         </div>
@@ -107,6 +108,26 @@ use App\Utils\ImageServe;
                 <i class="bi bi-cash-stack me-2"></i> ກາລຸນາຢືນຢັນການສັ່ງຊື້
                 <a href="{{ route('UserController.SetVehicleInsuranceID', ['id' => $insurance->id]) }}"
                     class="btn btn-success ms-2 btn-lg"><i class="bi bi-cash me-2"></i>ຈ່າຍເງິນ</a>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#removeModal" class="btn btn-danger ms-2 btn-lg"><i
+                        class="bi bi-trash"></i>ຍົກເລີກ</button>
+                <div class="modal fade" id="removeModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard='false' aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">ລຶບຂໍ້ມູນ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h3>ທ່ານຕ້ອງການຍົກເລີກລາຍການປະກັນໄພນີ້ແມ່ນບໍ່ ?</h3>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal"><i
+                                        class="bi bi-x-circle me-2"></i>ອອກ</button>
+                                <a href="{{route('AdminInsuranceController.RemoveInsurance',['id'=>$insurance->id])}}" class="btn btn-danger me-2 btn-lg"><i class="bi bi-trash"></i>ຕົກລົງ ຍົກເລີກ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         @break
 
@@ -117,7 +138,7 @@ use App\Utils\ImageServe;
             <div class="row">
                 <div class="col-md-12 text-center">
                     <h3><u>ຫຼັກຖານການຈ່າຍເງິນ</u></h3>
-                    <img class="img-fluid" src="{{ImageServe::Base64($insurance->slipUploaded)}}" alt="" srcset="">
+                    <img class="img-fluid" src="{{ ImageServe::Base64($insurance->slipUploaded) }}" alt="" srcset="">
                 </div>
             </div>
         @break
