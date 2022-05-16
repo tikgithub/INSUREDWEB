@@ -13,13 +13,15 @@ class VehicleDetailController extends Controller
         //Validate
         $req->validate([
             'v_id'=>'required',
-            'name'=>'required|unique:vehicle__details,name'
+            'name'=>'required|unique:vehicle_details,name'
         ]);
-
         //create new Object
         $newVehicleDetail = new Vehicle_Detail();
+
         $newVehicleDetail->v_id = $req->input('v_id');
         $newVehicleDetail->name = $req->input('name');
+
+     
 
         if($newVehicleDetail->save()){
 
