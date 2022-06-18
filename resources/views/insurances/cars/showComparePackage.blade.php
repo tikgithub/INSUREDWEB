@@ -42,7 +42,7 @@
                   <p class="card-text text-danger text-center fs-3 fw-bolder">{{number_format($saleOptionFirst->sale_price,0)}}</p>
                   {{-- Buy botton --}}
             <div class="d-flex justify-content-center">
-                <a href="" class="notosanLao btn-danger btn btn-lg border m-1"><i class="bi bi-bag-check"></i> ຊື້ເລີຍ</a>
+                <a href="{{route('InsuranceFlowController.showBuyNowPage',['sale_id'=>$saleOptionFirst->id])}}" class="notosanLao btn-danger btn btn-lg border m-1"><i class="bi bi-bag-check"></i> ຊື້ເລີຍ</a>
             </div>
                 </div>
               </div>
@@ -69,7 +69,7 @@
                     <p class="card-text text-danger text-center fs-3 fw-bolder">{{number_format($saleOptionSecond->sale_price,0)}}</p>
                      {{-- Buy botton --}}
             <div class="d-flex justify-content-center">
-                <a href="" class="notosanLao btn-danger btn btn-lg border m-1"><i class="bi bi-bag-check"></i> ຊື້ເລີຍ</a>
+                <a href="{{route('InsuranceFlowController.showBuyNowPage',['sale_id'=>$saleOptionSecond->id])}}" class="notosanLao btn-danger btn btn-lg border m-1"><i class="bi bi-bag-check"></i> ຊື້ເລີຍ</a>
             </div>
                 </div>
               </div>

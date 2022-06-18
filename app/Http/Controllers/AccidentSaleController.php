@@ -114,7 +114,7 @@ class AccidentSaleController extends Controller
         $obj->sex = $req->input('sex');
         $obj->tel = $req->input('tel');
         $obj->identity = $req->input('identity');
-        $obj->dob = $req->input('dob');
+        $obj->dob = date('Y-m-d', strtotime($req->input('dob')));
         $obj->province = $req->input('province');
         $obj->district = $req->input('district');
         $obj->address = $req->input('address');

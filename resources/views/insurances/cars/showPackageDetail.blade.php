@@ -91,7 +91,7 @@
 
             {{-- Buy botton --}}
             <div class="d-flex justify-content-center">
-                <a href="" class="notosanLao btn-danger btn btn-lg border m-1"><i class="bi bi-bag-check"></i> ຊື້ເລີຍ</a>
+                <a href="{{route('InsuranceFlowController.showBuyNowPage',['sale_id'=>$saleOption->id])}}" class="notosanLao btn-danger btn btn-lg border m-1"><i class="bi bi-bag-check"></i> ຊື້ເລີຍ</a>
             </div>
 
         </div>

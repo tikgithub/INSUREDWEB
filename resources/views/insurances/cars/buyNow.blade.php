@@ -40,8 +40,8 @@
                         <img src="{{ asset('assets/image/200x120.png') }}" class="rounded img-fluid me-2" alt="200x12"
                             srcset="" style="width: 300px; height: 200px;">
                     @else
-                        <img src="{{ asset($company->logo) }}" alt="200x12" srcset="" style="width: 300px; height: 200px;"
-                            class="rounded img-fluid me-2">
+                        <img src="{{ asset($company->logo) }}" alt="200x12" srcset=""
+                            style="width: 300px; height: 200px;" class="rounded img-fluid me-2">
                     @endif
                     <div class="card-body notosanLao">
 
@@ -74,7 +74,7 @@
                             <tbody>
                                 @php
                                     $group_id = 0;
-
+                                    
                                 @endphp
                                 @foreach ($saleDetails as $item)
                                     {{-- start tr --}}
@@ -152,9 +152,10 @@
                 <h2 class="notosanLao text-center">ປ້ອນຂໍ້ມູນ</h2>
                 {{-- FlashMessage --}}
                 @include('flashMessage')
-                <form autocomplete="off" method="POST" action="{{route('InsuranceFlowController.storeInputFromCustomer')}}" enctype="multipart/form-data">
+                <form autocomplete="off" method="POST"
+                    action="{{ route('InsuranceFlowController.storeInputFromCustomer') }}" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="sale_id" value="{{$saleOption->id}}">
+                    <input type="hidden" name="sale_id" value="{{ $saleOption->id }}">
                     <fieldset class="border notosanLao">
                         <legend class="bg-blue">- ຜູ້ເອົາປະກັນ</legend>
                         {{-- Padding Legend --}}
@@ -163,16 +164,18 @@
                             <div class="mb-3 row">
                                 <label for="firstname" class="col-sm-4 fs-4 text-center col-form-label">ຊື່</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('firstname')? 'border-danger':'')}}" id="firstname" name="firstname"
-                                        value="{{ old('firstname') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('firstname') ? 'border-danger' : '' }}"
+                                        id="firstname" name="firstname" value="{{ old('firstname') }}">
                                 </div>
                             </div>
                             {{-- Lastname --}}
                             <div class="mb-3 row">
                                 <label for="lastname" class="col-sm-4 fs-4 text-center col-form-label">ນາມສະກຸນ</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('lastname')? 'border-danger':'')}}" id="lastname" name="lastname"
-                                        value="{{ old('lastname') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('lastname') ? 'border-danger' : '' }}"
+                                        id="lastname" name="lastname" value="{{ old('lastname') }}">
                                 </div>
                             </div>
 
@@ -180,7 +183,8 @@
                             <div class="mb-3 row">
                                 <label for="sex" class="col-sm-4  fs-4 text-center col-form-label">ເພດ</label>
                                 <div class="col-sm-8">
-                                    <select name="sex" id="sex" class="form-select form-select-lg {{($errors->has('sex')? 'border-danger':'')}}">
+                                    <select name="sex" id="sex"
+                                        class="form-select form-select-lg {{ $errors->has('sex') ? 'border-danger' : '' }}">
                                         <option value="">ເລືອກ</option>
                                         <option value="M">ຊາຍ</option>
                                         <option value="F">ຍິງ</option>
@@ -192,8 +196,9 @@
                             <div class="mb-3 row">
                                 <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control form-control-lg {{($errors->has('dob')? 'border-danger':'')}}" id="dob" name="dob"
-                                        value="{{ old('dob') }}">
+                                    <input type="date"
+                                        class="form-control form-control-lg datepicker {{ $errors->has('dob') ? 'border-danger' : '' }}"
+                                        id="dob" name="dob" value="{{ old('dob') }}">
                                 </div>
                             </div>
 
@@ -201,19 +206,22 @@
                             <div class="mb-3 row">
                                 <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('tel')? 'border-danger':'')}}" id="tel" name="tel"
-                                        value="{{ old('tel') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
+                                        id="tel" name="tel" value="{{ old('tel') }}">
                                 </div>
                             </div>
 
                             {{-- Password Or Identity ID --}}
                             <div class="mb-3 row">
                                 <label for="identity"
-                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກທີ່ບັດປະຊາຊົນ ຫຼື້
+                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກທີ່ບັດປະຊາຊົນ
+                                    ຫຼື້
                                     ເລກທີ Passport</label>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('identity')? 'border-danger':'')}}" id="identity" name="identity"
-                                        value="{{ old('identity') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('identity') ? 'border-danger' : '' }}"
+                                        id="identity" name="identity" value="{{ old('identity') }}">
                                 </div>
                             </div>
                             <hr>
@@ -222,7 +230,8 @@
                             <div class="mb-3 row">
                                 <label for="province" class="col-sm-4 text-center fs-4 col-form-label">ແຂວງ</label>
                                 <div class="col-sm-8">
-                                    <select name="province" id="province" class="form-select form-select-lg {{($errors->has('province')? 'border-danger':'')}}"
+                                    <select name="province" id="province"
+                                        class="form-select form-select-lg {{ $errors->has('province') ? 'border-danger' : '' }}"
                                         onchange="onSelectInsuredProvince()" onfocus="this.selectedIndex = -1">
                                         @foreach ($Provinces as $item)
                                             <option value="{{ $item->id }}">{{ $item->province_name }}</option>
@@ -232,9 +241,10 @@
                             </div>
                             {{-- District --}}
                             <div class="mb-3 row">
-                                <label for="district" class="col-sm-4 text-center fs-4 col-form-label " >ເມືອງ</label>
+                                <label for="district" class="col-sm-4 text-center fs-4 col-form-label ">ເມືອງ</label>
                                 <div class="col-sm-8">
-                                    <select name="district" id="district" class="form-select form-select-lg {{($errors->has('district')? 'border-danger':'')}}"
+                                    <select name="district" id="district"
+                                        class="form-select form-select-lg {{ $errors->has('district') ? 'border-danger' : '' }}"
                                         disabled></select>
                                 </div>
                             </div>
@@ -244,8 +254,9 @@
                                     class="col-sm-4 text-center align-self-center fs-4 col-form-label ">ບ້ານ ແລະ
                                     ທີ່ຢູ</label>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('address')? 'border-danger':'')}}" id="address" name="address"
-                                        value="{{ old('address') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('address') ? 'border-danger' : '' }}"
+                                        id="address" name="address" value="{{ old('address') }}">
                                 </div>
                             </div>
                         </div>
@@ -256,11 +267,13 @@
                         <div class="p-2">
                             {{-- VehicleBrand --}}
                             <div class="mb-3 row">
-                                <label for="vehicleBrand" class="col-sm-4 text-center fs-4 col-form-label">ຍີຫໍ້ລົດ</label>
+                                <label for="vehicleBrand"
+                                    class="col-sm-4 text-center fs-4 col-form-label">ຍີຫໍ້ລົດ</label>
                                 <div class="col-sm-8">
-                                    <select name="vehicleBrand" id="vehicleBrand" class="form-select form-select-lg {{($errors->has('vehicleBrand')? 'border-danger':'')}}">
+                                    <select name="vehicleBrand" id="vehicleBrand"
+                                        class="form-select form-select-lg {{ $errors->has('vehicleBrand') ? 'border-danger' : '' }}">
                                         @foreach ($carBrands as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -271,8 +284,9 @@
                                 <label for="number_plate"
                                     class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກທະບຽນ</label>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('number_plate')? 'border-danger':'')}}" id="number_plate"
-                                        name="number_plate" value="{{ old('number_plate') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('number_plate') ? 'border-danger' : '' }}"
+                                        id="number_plate" name="number_plate" value="{{ old('number_plate') }}">
                                 </div>
                             </div>
                             {{-- Color --}}
@@ -280,8 +294,9 @@
                                 <label for="color"
                                     class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('color')? 'border-danger':'')}}" id="color" name="color"
-                                        value="{{ old('color') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('color') ? 'border-danger' : '' }}"
+                                        id="color" name="color" value="{{ old('color') }}">
                                 </div>
                             </div>
                             {{-- Engine Number --}}
@@ -289,8 +304,9 @@
                                 <label for="color"
                                     class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກຈັກ</label>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('engine_number')? 'border-danger':'')}}" id="engine_number" name="engine_number"
-                                        value="{{ old('engine_number') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('engine_number') ? 'border-danger' : '' }}"
+                                        id="engine_number" name="engine_number" value="{{ old('engine_number') }}">
                                 </div>
                             </div>
 
@@ -299,8 +315,9 @@
                                 <label for="color"
                                     class="col-sm-4 text-center align-self-center fs-4 col-form-label">ເລກຖັງ</label>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="text" class="form-control form-control-lg {{($errors->has('chassic_number')? 'border-danger':'')}}" id="chassic_number" name="chassic_number"
-                                        value="{{ old('chassic_number') }}">
+                                    <input type="text"
+                                        class="form-control form-control-lg {{ $errors->has('chassic_number') ? 'border-danger' : '' }}"
+                                        id="chassic_number" name="chassic_number" value="{{ old('chassic_number') }}">
                                 </div>
                             </div>
 
@@ -310,7 +327,7 @@
                                     class="col-sm-4 text-center fs-4 col-form-label">ແຂວງທີ່ຂຶ້ນທະບຽນ</label>
                                 <div class="col-sm-8">
                                     <select name="registeredProvince" id="registeredProvince"
-                                        class="form-select form-select-lg {{($errors->has('registeredProvince')? 'border-danger':'')}}">
+                                        class="form-select form-select-lg {{ $errors->has('registeredProvince') ? 'border-danger' : '' }}">
                                         @foreach ($Provinces as $item)
                                             <option value="{{ $item->id }}">{{ $item->province_name }}</option>
                                         @endforeach
@@ -326,44 +343,56 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-4 text-center">
                                     ຮູບລົດດ້ານໜ້າ
-                                    <img class="ms-2" src="{{asset('assets\image\car_front.png')}}" style="width: 50px; height: 50px;" alt="" srcset="">
+                                    <img class="ms-2" src="{{ asset('assets\image\car_front.png') }}"
+                                        style="width: 50px; height: 50px;" alt="" srcset="">
                                 </div>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="file" name="front" id="front" class="form-control-file border {{($errors->has('front')? 'border-danger':'')}}" style="width: 100%">
+                                    <input type="file" name="front" id="front"
+                                        class="form-control-file border {{ $errors->has('front') ? 'border-danger' : '' }}"
+                                        style="width: 100%">
                                 </div>
                             </div>
 
-                             {{-- Car Side left Image --}}
-                             <div class="mb-3 row">
+                            {{-- Car Side left Image --}}
+                            <div class="mb-3 row">
                                 <div class="col-sm-4 text-center">
                                     ຮູບລົດດ້ານຂ້າງຊ້າຍ
-                                    <img class="ms-2" src="{{asset('assets\image\car_left.png')}}" style="width: 50px; height: 50px;" alt="" srcset="">
+                                    <img class="ms-2" src="{{ asset('assets\image\car_left.png') }}"
+                                        style="width: 50px; height: 50px;" alt="" srcset="">
                                 </div>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="file" name="left" id="left" class="form-control-file border {{($errors->has('left')? 'border-danger':'')}}" style="width: 100%">
+                                    <input type="file" name="left" id="left"
+                                        class="form-control-file border {{ $errors->has('left') ? 'border-danger' : '' }}"
+                                        style="width: 100%">
                                 </div>
 
                             </div>
 
-                             {{-- Car Side right Image --}}
-                             <div class="mb-3 row">
+                            {{-- Car Side right Image --}}
+                            <div class="mb-3 row">
                                 <div class="col-sm-4 text-center">
                                     ຮູບລົດດ້ານຂ້າງຂວາ
-                                    <img class="ms-2" src="{{asset('assets\image\car_right.png')}}" style="width: 50px; height: 50px;" alt="" srcset="">
+                                    <img class="ms-2" src="{{ asset('assets\image\car_right.png') }}"
+                                        style="width: 50px; height: 50px;" alt="" srcset="">
                                 </div>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="file" name="right" id="right" class="form-control-file border {{($errors->has('right')? 'border-danger':'')}}" style="width: 100%">
+                                    <input type="file" name="right" id="right"
+                                        class="form-control-file border {{ $errors->has('right') ? 'border-danger' : '' }}"
+                                        style="width: 100%">
                                 </div>
                             </div>
 
-                             {{-- Car Side rear Image --}}
-                             <div class="mb-3 row">
+                            {{-- Car Side rear Image --}}
+                            <div class="mb-3 row">
                                 <div class="col-sm-4 text-center">
                                     ຮູບລົດດ້ານຫຼັງ
-                                    <img class="ms-2" src="{{asset('assets\image\car_rear.png')}}" style="width: 50px; height: 50px;" alt="" srcset="">
+                                    <img class="ms-2" src="{{ asset('assets\image\car_rear.png') }}"
+                                        style="width: 50px; height: 50px;" alt="" srcset="">
                                 </div>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="file" name="rear" id="rear" class="form-control-file border {{($errors->has('rear')? 'border-danger':'')}}" style="width: 100%">
+                                    <input type="file" name="rear" id="rear"
+                                        class="form-control-file border {{ $errors->has('rear') ? 'border-danger' : '' }}"
+                                        style="width: 100%">
                                 </div>
                             </div>
 
@@ -371,17 +400,21 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-4 text-center">
                                     ຮູບປື້ມເຫຼືອງ
-                                    <img class="ms-2 rounded" src="{{asset('assets\image\yellow_book.png')}}" style="width: auto; height: 50px;" alt="" srcset="">
+                                    <img class="ms-2 rounded" src="{{ asset('assets\image\yellow_book.png') }}"
+                                        style="width: auto; height: 50px;" alt="" srcset="">
                                 </div>
                                 <div class="col-sm-8 align-self-center">
-                                    <input type="file" name="yellow_book" id="yellow_book" class="form-control-file border {{($errors->has('yellow_book')? 'border-danger':'')}}" style="width: 100%">
+                                    <input type="file" name="yellow_book" id="yellow_book"
+                                        class="form-control-file border {{ $errors->has('yellow_book') ? 'border-danger' : '' }}"
+                                        style="width: 100%">
                                 </div>
                             </div>
 
                             {{-- Submit Botton --}}
                             <div class="mb-3 row">
                                 <div class="col-md-12 d-flex justify-content-center">
-                                    <button type="submit" class="btn bg-blue btn-lg text-white"><i class="bi bi-download"></i> ຕົກລົງ</button>
+                                    <button type="submit" class="btn bg-blue btn-lg text-white"><i
+                                            class="bi bi-download"></i> ຕົກລົງ</button>
                                 </div>
                             </div>
                         </div>
@@ -395,12 +428,16 @@
 
 @endsection
 @section('footer')
-<div class="">
-    @include('layouts.footer')
-</div>
+    <div class="">
+        @include('layouts.footer')
+    </div>
 @endsection
 @section('scripting')
     <script>
+        $('.datepicker').pickadate({
+            format: 'dd/mm/yyyy',
+            hiddenName: true
+        })
         var baseURL = "{{ env('BASE_ROUTE') }}";
 
         //When Selected the Province of Insured
@@ -417,7 +454,7 @@
                 .then(data => {
                     if (data.length > 0) {
                         districtInsuredSelect.disabled = false;
-                        for(let i = 0; i < data.length; i++){
+                        for (let i = 0; i < data.length; i++) {
                             var option = document.createElement('option');
                             option.text = data[i].district_name;
                             option.value = data[i].id;

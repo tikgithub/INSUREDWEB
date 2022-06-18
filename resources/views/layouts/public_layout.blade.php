@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    {{-- Date Picker Third Party MC Date Picker --}}
-    <link href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{asset('assets/date_pick/themes/default.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/date_pick/themes/classic.date.css')}}">
 
     @yield('style')
 
@@ -166,6 +166,11 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ asset('assets/js/toastr.js') }}"></script>
 
+    <script src="{{asset('assets/date_pick/picker.js')}}"></script>
+    <script src="{{asset('assets/date_pick/picker.date.js')}}"></script>
+    <script src="{{asset('assets/date_pick/legacy.js')}}"></script>
+    <script src="{{asset('assets/date_pick/picker.time.js')}}"></script>
+   
     @yield('scripting')
 </body>
 

@@ -107,7 +107,7 @@
                                 <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg" value="{{old('dob')}}">
+                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg datepicker" value="{{old('dob')}}">
                                 </div>
                             </div>
 
@@ -221,6 +221,11 @@
 @section('scripting')
     @include('toastrMessage')
     <script>
+        $('.datepicker').pickadate({
+            format: 'dd/mm/yyyy',
+            hiddenName: true
+        })
+
         function selectPhotoOnClick() {
             document.getElementById('reference_photo').click();
         }

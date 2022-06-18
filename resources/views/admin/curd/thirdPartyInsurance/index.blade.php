@@ -65,6 +65,7 @@ use App\Models\Vehicle_Detail;
                     @endforeach
                 </tbody>
             </table>
+            {{$packages->links('pagination::bootstrap-5')}}
         </div>
     </div>
 

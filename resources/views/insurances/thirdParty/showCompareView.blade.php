@@ -31,7 +31,7 @@
                     <p class="card-text">{{$packageDetail1->vehicle_types}} {{$packageDetail1->vehicle_details}}</p>
                     <p class="card-text text-danger fw-bold fs-4">₭ {{number_format($packageDetail1->final_price,0)}}</p>
                     <p class="card-text text-center">
-                        <a href="http://" class="btn btn-danger text-white"><i class="bi bi-cart me-2"></i> ຊື້ເລີຍ</a>
+                        <a href="{{route('InsuranceFlowController.showInputPageThirdPartyInsurance',['id'=>$packageDetail1->id])}}" class="btn btn-danger text-white"><i class="bi bi-cart me-2"></i> ຊື້ເລີຍ</a>
                     </p>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     <p class="card-text">{{$packageDetail2->vehicle_types}} {{$packageDetail2->vehicle_details}}</p>
                     <p class="card-text text-danger fw-bold fs-4">₭ {{number_format($packageDetail2->final_price,0)}}</p>
                     <p class="card-text text-center">
-                        <a href="http://" class="btn btn-danger text-white"><i class="bi bi-cart me-2"></i> ຊື້ເລີຍ</a>
+                        <a href="{{route('InsuranceFlowController.showInputPageThirdPartyInsurance',['id'=>$packageDetail2->id])}}" class="btn btn-danger text-white"><i class="bi bi-cart me-2"></i> ຊື້ເລີຍ</a>
                     </p>
                 </div>
             </div>

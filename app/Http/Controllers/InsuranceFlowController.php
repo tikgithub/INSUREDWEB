@@ -220,7 +220,7 @@ class InsuranceFlowController extends Controller
         $newInput->firstname = trim($req->input('firstname'));
         $newInput->lastname = trim($req->input('lastname'));
         $newInput->sex = $req->input('sex');
-        $newInput->dob = $req->input('dob');
+        $newInput->dob = date('Y-m-d',strtotime($req->input('dob')));
         $newInput->tel = $req->input('tel');
         $newInput->identity = trim($req->input('identity'));
         $newInput->province = $req->input('province');
@@ -589,7 +589,7 @@ class InsuranceFlowController extends Controller
         $object->firstname = $req->input('firstname');
         $object->lastname = $req->input('lastname');
         $object->sex = $req->input('sex');
-        $object->dob = $req->input('dob');
+        $object->dob = date('Y-m-d',strtotime($req->input('dob')));
         $object->tel = $req->input('tel');
         $object->identity = $req->input('identity');
         $object->province = $req->input('province');
