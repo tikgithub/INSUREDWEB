@@ -74,7 +74,7 @@
                             <tbody>
                                 @php
                                     $group_id = 0;
-                                    
+
                                 @endphp
                                 @foreach ($saleDetails as $item)
                                     {{-- start tr --}}
@@ -277,6 +277,16 @@
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                            {{-- Select Plate type --}}
+                            <div class="mb-3 row">
+                                <label for="plate" class="col-sm-4 text-center align-self-center fs-4 col-form-label">ປະເພດປ້າຍ</label>
+                                <div class="col-sm-8 align-self-center">
+                                    <select type="text"
+                                    class="form-control form-control-lg {{ $errors->has('plate') ? 'border-danger' : '' }}"
+                                    id="plate" name="plate" value="{{ old('plate') }}"></select>
+                                </div>
+
                             </div>
 
                             {{-- Number plate --}}
