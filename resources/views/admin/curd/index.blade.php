@@ -110,34 +110,34 @@
     {{-- Package and Insurance Categories --}}
 
     {{-- Package Insurace for Vehicle --}}
-    {{-- <div class="row p-3">
+    <div class="row p-3">
         <div class="col-md-12 ">
             <div class="card notosanLao shadow">
                 <div class="card-header bg-white">
-                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i>ປະກັນໄພຍາພາຫະນະ</h5>
+                    <h5 class="card-title text-dark"><i class="bi bi-dash"></i>ປະກັນໄພຍາພາຫະນະ ຊັ້ນ 1 -> 2</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
-               
+
                         <div class="col-md-3 mb-5 text-center">
                             <a href="{{ route('AdminController.createVehiclePackage') }}"
                                 class="text-decoration-none text-dark"><img src="{{ asset('assets/image/new.png') }}"
                                     class="menu_image">
                                 <br>ສ້າງຮູບແບບປະກັນໄພຍານພາຫະນະອັນໃໝ່</a>
                         </div>
-                   
+
                         <div class="col-md-3 mb-5 text-center">
                             <a href="{{ route('AdminController.createVehiclePackage') }}"
                                 class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/insurance_info.png') }}" class="menu_image">
                                 <br>ຮູບແບບປະກັນໄພ</a>
                         </div>
-                   
+
                     </div>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     {{-- End Package Insurance for Vehicle --}}
 
     {{-- Package and Insurance for Accident --}}
@@ -163,7 +163,7 @@
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
                                 ກຳນົດລາຍການທີ່ຄຸ້ມຄອງ</a>
                         </div>
-{{-- 
+{{--
                         <div class="col-md-3 mb-5 text-center">
                             <a href="{{route('AccidentPlanController.index')}}"
                                 class="text-decoration-none text-dark">

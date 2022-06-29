@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="{{asset('assets/date_pick/themes/default.css')}}">
     <link rel="stylesheet" href="{{asset('assets/date_pick/themes/classic.date.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/jqueryui/jquery-ui.min.css')}}">
 
     @yield('style')
 
@@ -170,7 +171,8 @@
     <script src="{{asset('assets/date_pick/picker.date.js')}}"></script>
     <script src="{{asset('assets/date_pick/legacy.js')}}"></script>
     <script src="{{asset('assets/date_pick/picker.time.js')}}"></script>
-   
+    <script src="{{asset('assets/jqueryui/jquery-ui.min.js')}}"></script>
+
     @yield('scripting')
 </body>
 

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use App\Models\licenseplate;
 
 class InsuranceFlowController extends Controller
 {
@@ -163,6 +164,7 @@ class InsuranceFlowController extends Controller
         $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
         $level = Level::find($vehiclePackage->lvl_id);
         $company = InsuranceCompany::find($vehiclePackage->c_id);
+        $plateTypes = licenseplate::all();
 
         //Province data
         $provinces = Province::all();
@@ -181,7 +183,8 @@ class InsuranceFlowController extends Controller
             ->with('company', $company)
             ->with('saleDetails', $saleOptionDetail)
             ->with('Provinces', $provinces)
-            ->with('carBrands', $carBrands);
+            ->with('carBrands', $carBrands)
+            ->with('plateTypes',$plateTypes);
     }
 
     /** Store Insurance Information When Click Submit */
@@ -208,7 +211,8 @@ class InsuranceFlowController extends Controller
             'number_plate' => 'required',
             'color' => 'required',
             'address' => 'required',
-            'sale_id' => 'required'
+            'sale_id' => 'required',
+            'plateType'=>'required'
         ]);
 
         //Find Sale ID
@@ -235,10 +239,11 @@ class InsuranceFlowController extends Controller
         $newInput->user_id = Auth::user()->id;
         $newInput->chassic_number = $req->input('chassic_number');
         $newInput->engine_number = $req->input('engine_number');
+        $newInput->plate_type = $req->input('plateType');
 
         //Prepare to upload image for 5 items
         $uploadPath = "Insurances/Vehicles";
-        
+
         $newInput->front_image =  Storage::disk('local')->put('documents',$req->file('front'));
         $newInput->left_image = Storage::disk('local')->put('documents',$req->file('left'));
         $newInput->right_image = Storage::disk('local')->put('documents',$req->file('right'));
@@ -583,7 +588,7 @@ class InsuranceFlowController extends Controller
         //More validate from here ///////
 
         /////////////////////////////////
-        
+
         //Create new object
         $object = new InsuranceInformation();
         $object->firstname = $req->input('firstname');
@@ -748,7 +753,7 @@ class InsuranceFlowController extends Controller
     public function updatePaymentDetailOfThirdParty(Request $req)
     {
         //Validate the image should be upload
-      
+
         $req->validate([
             'slipUploaded' => 'required'
         ]);
@@ -764,7 +769,7 @@ class InsuranceFlowController extends Controller
         $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/',$req->file('slipUploaded'));
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
-       
+
         $inputData->save();
 
         session(['payment_status' => 'WAIT_FOR_APPROVED']);
