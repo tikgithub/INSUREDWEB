@@ -25,6 +25,7 @@ use App\Http\Controllers\HeathSaleController;
 use App\Http\Controllers\MessageToUsController;
 use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\WebsiteController;
+use App\Http\Controller\PaymentProviderController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Response;
@@ -473,6 +474,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
     Route::get('/edit_heath_detail/{id}',[AdminInsuranceController::class,'showEditPageOfHeathInsurance'])->name('AdminInsuranceController.ShowEditPageOfHeathInsurance');
     Route::post('/edit_heath_detail',[AdminInsuranceController::class,'updateHeathInsurance'])->name('AdminInsuranceController.UpdateHeathInsurance');
     /** AdminInsuranceController End */
+
+    /** Payment Provider Controller */
+
+    Route::get('/datamanger/paymentprovider/',[PaymentProviderController::class,'index'])->name("PaymentProviderController.Index");
+    /** Payment Provider Controller End */
 
 
     /** Website Controller */

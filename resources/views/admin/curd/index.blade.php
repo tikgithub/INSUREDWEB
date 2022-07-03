@@ -31,7 +31,7 @@
                         {{-- End Car Brand Link --}}
 
                         {{-- Insurance Company Link --}}
-                        <div class="col-md-3 text-center">
+                        <div class="col-md-3">
                             <a href="{{ route('AdminController.indexInsuranceCompany') }}"
                                 class="text-decoration-none text-dark"><img src="{{ asset('assets/image/company.png') }}"
                                     class="menu_image">
@@ -40,7 +40,7 @@
                         {{-- End Insurance Company Link --}}
 
                         {{-- Insurance Level Link --}}
-                        <div class="col-md-3 text-center">
+                        <div class="col-md-3">
                             <a href="{{ route('AdminController.indexInsuranceLevel') }}"
                                 class="text-decoration-none text-dark"><img src="{{ asset('assets/image/level.png') }}"
                                     class="menu_image">
@@ -49,7 +49,7 @@
                         {{-- End Insurance Level Link --}}
 
                         {{-- Vehicle Link --}}
-                        <div class="col-md-3 text-center">
+                        <div class="col-md-3">
                             <a href="{{ route('AdminController.indexVehicleType') }}"
                                 class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/vehicle_type.png') }}" class="menu_image">
@@ -64,6 +64,12 @@
                                 class="text-decoration-none text-dark"><img src="{{ asset('assets/image/car_body.png') }}"
                                     class="menu_image">
                                 ຕົວເລືອກປະເພດລົດ</a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('PaymentProviderController.Index') }}"
+                                class="text-decoration-none text-dark"><img src="{{ asset('assets/image/bank.png') }}"
+                                    class="menu_image">
+                                ຊ່ອງທາງຈ່າຍເງິນ</a>
                         </div>
                     </div>
                 </div>
@@ -85,7 +91,7 @@
                     <div class="row">
 
                         {{-- Create New Third Party Insurance Info Link --}}
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{ route('ThirdPartyInsuranceController.create') }}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/third_party.png') }}" class="menu_image"><br>
@@ -94,7 +100,7 @@
                         {{-- End Create New Third Party Insurance Info Link --}}
 
                         {{-- Adjust Third Party Insurance Link --}}
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{ route('ThirdPartyInsuranceController.index') }}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
@@ -119,14 +125,14 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{ route('AdminController.createVehiclePackage') }}"
                                 class="text-decoration-none text-dark"><img src="{{ asset('assets/image/new.png') }}"
                                     class="menu_image">
                                 <br>ສ້າງຮູບແບບປະກັນໄພຍານພາຫະນະອັນໃໝ່</a>
                         </div>
 
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{ route('AdminController.createVehiclePackage') }}"
                                 class="text-decoration-none text-dark"><img
                                     src="{{ asset('assets/image/insurance_info.png') }}" class="menu_image">
@@ -150,14 +156,14 @@
                 <div class="card-body">
                     <div class="row">
                         {{-- Create New Heath Cover Type --}}
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{ route('AdminController.heathCoverType') }}"
                                 class="text-decoration-none text-dark"><img src="{{ asset('assets/image/new.png') }}"
                                     class="menu_image">
                                 <br>ສ້າງປະເພດການຄຸ້ມຄອງ</a>
                         </div>
 
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{route('AccidentItemController@index')}}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
@@ -189,14 +195,14 @@
                 <div class="card-body">
                     <div class="row">
                         {{-- Create New Heath Cover Type --}}
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{ route('HeathCoverController.Index') }}"
                                 class="text-decoration-none text-dark"><img src="{{ asset('assets/image/new.png') }}"
                                     class="menu_image">
                                 <br>ສ້າງປະເພດການຄຸ້ມຄອງ</a>
                         </div>
 
-                        <div class="col-md-3 mb-5 text-center">
+                        <div class="col-md-3 mb-5">
                             <a href="{{route('HeathCoverItemController.Index')}}"
                                 class="text-decoration-none text-dark">
                                 <img src="{{ asset('assets/image/adjust.png') }}" class="menu_image"><br>
@@ -222,7 +228,7 @@
     <style>
         .menu_image {
             width: auto;
-            height: 70px;
+            height: 40px;
         }
 
     </style>

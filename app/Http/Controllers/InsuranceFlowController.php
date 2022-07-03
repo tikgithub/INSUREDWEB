@@ -280,6 +280,7 @@ class InsuranceFlowController extends Controller
             WHERE so.id  = ?";
             $saleOptionDetail = DB::select($query, [$inputData->insurance_type_id]);
 
+            $plateTypes = licenseplate::all();
             //Province data
             $provinces = Province::all();
             //District Data
@@ -297,7 +298,8 @@ class InsuranceFlowController extends Controller
                 ->with('saleDetails', $saleOptionDetail)
                 ->with('Provinces', $provinces)
                 ->with('carBrands', $carBrands)
-                ->with('districts', $districts);
+                ->with('districts', $districts)
+                ->with('plateTypes',$plateTypes);
         }
     }
 
