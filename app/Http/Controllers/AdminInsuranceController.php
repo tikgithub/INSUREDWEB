@@ -7,6 +7,7 @@ use App\Models\District;
 use App\Models\InsuranceCompany;
 use App\Models\InsuranceInformation;
 use App\Models\Level;
+use App\Models\licenseplate;
 use App\Models\Province;
 use App\Models\SaleOption;
 use App\Models\ThirdPartyCoverItem;
@@ -32,10 +33,10 @@ class AdminInsuranceController extends Controller
                 $vehicleSQLQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
                 ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, (select province_name from provinces where id= ii.registered_province) as registeredProvince,
                 ii.color, ii.front_image , so.name as option_name , vp.name as package_name, l.name as level_name
-                from insurance_information ii inner join sale_options so on ii.insurance_type_id = so.id 
-                inner join vehicle_packages vp on vp.id = so.vp_id 
+                from insurance_information ii inner join sale_options so on ii.insurance_type_id = so.id
+                inner join vehicle_packages vp on vp.id = so.vp_id
                 inner join insurance_companies ic on ic.id = vp.c_id
-                inner join levels l on l.id = vp.lvl_id 
+                inner join levels l on l.id = vp.lvl_id
                 where ii.insurance_Type  = 'HIGH-VALUEABLE' and ii.id = ?";
                 $vehicleInsurance = collect(DB::select($vehicleSQLQuery, [$id]))->first();
 
@@ -52,13 +53,13 @@ class AdminInsuranceController extends Controller
 
             case "THIRD-PARTY":
                 $thirdPartyQuery = "select  ii.id as insurance_id, concat(case when ii.sex = 'M' then 'ທ' when ii.sex = 'F' then 'ນາງ' End,'. ' ,ii.firstname, ' ', ii.lastname) as insuredName, ii.payment_confirm,
-                ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate, 
+                ic.name as company_name, ic.logo as company_logo, ii.contract_no , ii.contract_status, ii.insurance_type_id as sale_option_id, ii.number_plate,
                 (select province_name from provinces where id= ii.registered_province) as registeredProvince,
                 ii.color, ii.front_image, tpp.name as package_name , tpo.name as option_name, l.name  as level_name
                 from insurance_information ii inner join third_party_options tpo on ii.insurance_type_id = tpo.id
-                inner join  levels l on l.id = tpo.lvl_id 
-                inner join  third_party_packages tpp on tpp.id = ii.insurance_type_id 
-                inner join insurance_companies ic on ic.id = tpp.company_id 
+                inner join  levels l on l.id = tpo.lvl_id
+                inner join  third_party_packages tpp on tpp.id = ii.insurance_type_id
+                inner join insurance_companies ic on ic.id = tpp.company_id
                 where ii.insurance_Type  = 'THIRD-PARTY' and ii.id =? ";
                 $thirdPartInsurance = collect(DB::select($thirdPartyQuery, [$id]))->first();
 
@@ -76,7 +77,7 @@ class AdminInsuranceController extends Controller
                 $accidentInsuranceQuery = "SELECT ii.id as insurance_id, ic.name  as company_name, ap.name as plan_name, hct.name as package_name, concat(case ii.sex when('M') then 'ທ້າວ. ' when('F') then 'ນາງ. ' End ,' ',ii.firstname,' ', ii.lastname) as insuredName,
                 ic.logo  as company_logo, ii.payment_confirm, (select province_name from provinces where id = ii.province) as province
                 FROM insurance_information ii
-                inner join accident_plans ap on ap.id = ii.insurance_type_id 
+                inner join accident_plans ap on ap.id = ii.insurance_type_id
                 inner JOIN  heath_cover_types hct  on hct.id = ap.cover_type_id
                 INNER JOIN  insurance_companies ic  on ic.id  = hct.company_id
                 Where ii.insurance_Type ='ACCIDENT' and ii.id = ?";
@@ -100,15 +101,15 @@ class AdminInsuranceController extends Controller
                 $heathInsuranceQuery = "SELECT ii.id as insurance_id, ic.name  as company_name, hp.name as plan_name, hc.name as package_name, concat(case ii.sex when('M') then 'ທ້າວ. ' when('F') then 'ນາງ. ' End ,' ',ii.firstname,' ', ii.lastname) as insuredName,
                 ic.logo  as company_logo, ii.payment_confirm, (select province_name from provinces where id = ii.province) as province
                 FROM insurance_information ii
-                inner join heath_plans hp on hp.id = ii.insurance_type_id 
+                inner join heath_plans hp on hp.id = ii.insurance_type_id
                 inner JOIN  heath_covers hc on hc.id = hp.cover_type_id
                 INNER JOIN  insurance_companies ic  on ic.id  = hc.company_id
                 Where ii.insurance_Type ='HEATH' and ii.id = ?";
 
                 $heathInsurance = collect(DB::select($heathInsuranceQuery, [$id]))->first();
 
-                $coverDataQuery = "select hpd.id, hci.name, hpd.cover_price  from heath_plan_details hpd 
-                inner join heath_cover_items hci on hci.id  = hpd.item_id 
+                $coverDataQuery = "select hpd.id, hci.name, hpd.cover_price  from heath_plan_details hpd
+                inner join heath_cover_items hci on hci.id  = hpd.item_id
                 where hpd.plan_id  = ?";
                 $coverData = collect(DB::select($coverDataQuery, [$insurance->insurance_type_id]));
 
@@ -132,6 +133,9 @@ class AdminInsuranceController extends Controller
         //District Data
         $districts = District::where('province_id', '=', $inputData->province)->get();
 
+        //Get License plate
+        $licenses = licenseplate::all();
+
         //Car Brand data
         $carBrands = CarBrand::all();
 
@@ -139,7 +143,8 @@ class AdminInsuranceController extends Controller
             ->with('inputData', $inputData)
             ->with('provinces', $provinces)
             ->with('carBrands', $carBrands)
-            ->with('districts', $districts);
+            ->with('districts', $districts)
+            ->with('licenses',$licenses);
     }
 
     public function updateVehicleInsurance(Request $req)
@@ -159,7 +164,8 @@ class AdminInsuranceController extends Controller
             'registeredProvince' => 'required',
             'number_plate' => 'required',
             'color' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'plateType' => 'required'
         ]);
 
         //Find eqloquent object for perform the update operation
@@ -180,6 +186,7 @@ class AdminInsuranceController extends Controller
         $newInput->registered_province = $req->input('registeredProvince');
         $newInput->chassic_number = $req->input('chassic_number');
         $newInput->engine_number = $req->input('engine_number');
+        $newInput->plate_type = $req->input('plateType');
 
         //Prepare to upload image for 5 items if image not upload mean do nothing
         $uploadPath = "Insurances/Vehicles";
@@ -355,10 +362,10 @@ class AdminInsuranceController extends Controller
              $provinces = Province::all();
              //District Data
              $districts = District::where('province_id', '=', $inputData->province)->get();
- 
+
              //Car Brand data
              $carBrands = CarBrand::all();
- 
+
              return view('admin.insuranceNeedToCheck.editAccidentInsurance')
                  ->with('inputData', $inputData)
                  ->with('provinces', $provinces)
@@ -426,16 +433,16 @@ class AdminInsuranceController extends Controller
              $provinces = Province::all();
              //District Data
              $districts = District::where('province_id', '=', $inputData->province)->get();
- 
+
              //Car Brand data
              $carBrands = CarBrand::all();
- 
+
              return view('admin.insuranceNeedToCheck.editAccidentInsurance')
                  ->with('inputData', $inputData)
                  ->with('provinces', $provinces)
                  ->with('carBrands', $carBrands)
                  ->with('districts', $districts);
-                 
+
         } catch (\Throwable $th) {
             Log::error($th);
 

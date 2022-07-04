@@ -25,7 +25,7 @@ use App\Http\Controllers\HeathSaleController;
 use App\Http\Controllers\MessageToUsController;
 use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\WebsiteController;
-use App\Http\Controller\PaymentProviderController;
+use App\Http\Controllers\PaymentProviderController;
 use App\Models\ThirdPartyCoverItem;
 use App\Models\Vehicle_Type;
 use Illuminate\Support\Facades\Response;
@@ -477,7 +477,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['adminAuthentication']], fun
 
     /** Payment Provider Controller */
 
-    Route::get('/datamanger/paymentprovider/',[PaymentProviderController::class,'index'])->name("PaymentProviderController.Index");
+    Route::get('/datamanager/paymentprovider/',[PaymentProviderController::class,'index'])->name("PaymentProviderController.Index");
+    Route::post('/datamanager/paymentprovider',[PaymentProviderController::class,'store'])->name("PaymentProviderController.Store");
     /** Payment Provider Controller End */
 
 

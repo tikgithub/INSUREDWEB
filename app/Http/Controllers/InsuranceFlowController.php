@@ -184,7 +184,7 @@ class InsuranceFlowController extends Controller
             ->with('saleDetails', $saleOptionDetail)
             ->with('Provinces', $provinces)
             ->with('carBrands', $carBrands)
-            ->with('plateTypes',$plateTypes);
+            ->with('plateTypes', $plateTypes);
     }
 
     /** Store Insurance Information When Click Submit */
@@ -212,7 +212,7 @@ class InsuranceFlowController extends Controller
             'color' => 'required',
             'address' => 'required',
             'sale_id' => 'required',
-            'plateType'=>'required'
+            'plateType' => 'required'
         ]);
 
         //Find Sale ID
@@ -224,7 +224,7 @@ class InsuranceFlowController extends Controller
         $newInput->firstname = trim($req->input('firstname'));
         $newInput->lastname = trim($req->input('lastname'));
         $newInput->sex = $req->input('sex');
-        $newInput->dob = date('Y-m-d',strtotime($req->input('dob')));
+        $newInput->dob = date('Y-m-d', strtotime($req->input('dob')));
         $newInput->tel = $req->input('tel');
         $newInput->identity = trim($req->input('identity'));
         $newInput->province = $req->input('province');
@@ -244,11 +244,11 @@ class InsuranceFlowController extends Controller
         //Prepare to upload image for 5 items
         $uploadPath = "Insurances/Vehicles";
 
-        $newInput->front_image =  Storage::disk('local')->put('documents',$req->file('front'));
-        $newInput->left_image = Storage::disk('local')->put('documents',$req->file('left'));
-        $newInput->right_image = Storage::disk('local')->put('documents',$req->file('right'));
-        $newInput->rear_image = Storage::disk('local')->put('documents',$req->file('rear'));
-        $newInput->yellow_book_image = Storage::disk('local')->put('documents',$req->file('yellow_book'));
+        $newInput->front_image =  Storage::disk('local')->put('documents', $req->file('front'));
+        $newInput->left_image = Storage::disk('local')->put('documents', $req->file('left'));
+        $newInput->right_image = Storage::disk('local')->put('documents', $req->file('right'));
+        $newInput->rear_image = Storage::disk('local')->put('documents', $req->file('rear'));
+        $newInput->yellow_book_image = Storage::disk('local')->put('documents', $req->file('yellow_book'));
         $newInput->insurance_type_id = $req->input('sale_id');
         $newInput->insurance_type = "HIGH-VALUEABLE";
         $newInput->payment_confirm = "WAIT_FOR_PAYMENT";
@@ -299,7 +299,7 @@ class InsuranceFlowController extends Controller
                 ->with('Provinces', $provinces)
                 ->with('carBrands', $carBrands)
                 ->with('districts', $districts)
-                ->with('plateTypes',$plateTypes);
+                ->with('plateTypes', $plateTypes);
         }
     }
 
@@ -361,23 +361,23 @@ class InsuranceFlowController extends Controller
 
         if ($req->file('front')) {
             Storage::delete($newInput->front_image);
-            Storage::disk('local')->put('documents/',$req->file('front'));
+            Storage::disk('local')->put('documents/', $req->file('front'));
         }
         if ($req->file('left')) {
             Storage::delete($newInput->left_image);
-            Storage::disk('local')->put('documents/',$req->file('left'));
+            Storage::disk('local')->put('documents/', $req->file('left'));
         }
         if ($req->file('right')) {
             Storage::delete($newInput->right_image);
-            Storage::disk('local')->put('documents/',$req->file('rigth'));
+            Storage::disk('local')->put('documents/', $req->file('rigth'));
         }
         if ($req->file('rear')) {
             Storage::delete($newInput->rear_image);
-            Storage::disk('local')->put('documents/',$req->file('rear'));
+            Storage::disk('local')->put('documents/', $req->file('rear'));
         }
         if ($req->file('yellow_book')) {
             Storage::delete($newInput->yellow_book_image);
-            Storage::disk('local')->put('documents/',$req->file('yellow_book'));
+            Storage::disk('local')->put('documents/', $req->file('yellow_book'));
         }
 
         $newInput->insurance_type_id = $req->input('sale_id');
@@ -409,9 +409,32 @@ class InsuranceFlowController extends Controller
         if (!session('input_id')) {
             return redirect()->route('welcome');
         }
+        $input_id = session('input_id');
+        //Get Input Data after submit
+        $inputData = InsuranceInformation::find($input_id);
+
+        //Get Sale option data
+        $saleOption = SaleOption::find($inputData->insurance_type_id);
+        $vehiclePackage = VehiclePackage::find($saleOption->vp_id);
+        $level = Level::find($vehiclePackage->lvl_id);
+        $company = InsuranceCompany::find($vehiclePackage->c_id);
+
+        //Get the package data
+        $query = "SELECT ci.id, cg.id as group_id ,cg.name as group_name, ci.name as item_name, sod.price as cover_price FROM cover_groups cg Inner join cover_items ci on cg.id  = ci.cg_id INNER join sale_option_details sod on
+            sod.ci_id = ci.id INNER JOIN sale_options so on so.id = sod.sale_id
+            WHERE so.id  = ?";
+        $saleOptionDetail = DB::select($query, [$inputData->insurance_type_id]);
+
         $provider = PaymentProvider::find($provider_id);
 
-        return view('insurances.cars.submitPayment')->with('provider', $provider);
+        return view('insurances.cars.submitPayment')
+            ->with('provider', $provider)
+            ->with('inputData', $inputData)
+            ->with('level', $level)
+            ->with('saleOption', $saleOption)
+            ->with('vehiclePackage', $vehiclePackage)
+            ->with('company', $company)
+            ->with('saleDetails', $saleOptionDetail);
     }
 
     /** Function to Update the payment */
@@ -420,7 +443,10 @@ class InsuranceFlowController extends Controller
         //dd($req->all());
         //Validate the image should be upload
         $req->validate([
-            'slipUploaded' => 'required'
+            'slipUploaded' => 'required',
+            'transfer_time' => 'required',
+            'refer_no' => 'required',
+            'transfer_amount' => 'required'
         ]);
 
         //When session not set then send back to welcome page
@@ -435,9 +461,12 @@ class InsuranceFlowController extends Controller
         // $base64SlipImage = 'data:image/' . $extension . ';base64,' . base64_encode($data);
         // File::delete($newImageCompress);
 
-        $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/',$req->file('slipUploaded'));
+        $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/', $req->file('slipUploaded'));
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
+        $inputData->cus_pay_time = $req->input('transfer_time');
+        $inputData->refer_no = $req->input('refer_no');
+        $inputData->cus_amount = $req->input('transfer_amount');
 
         $inputData->save();
 
@@ -596,7 +625,7 @@ class InsuranceFlowController extends Controller
         $object->firstname = $req->input('firstname');
         $object->lastname = $req->input('lastname');
         $object->sex = $req->input('sex');
-        $object->dob = date('Y-m-d',strtotime($req->input('dob')));
+        $object->dob = date('Y-m-d', strtotime($req->input('dob')));
         $object->tel = $req->input('tel');
         $object->identity = $req->input('identity');
         $object->province = $req->input('province');
@@ -619,7 +648,7 @@ class InsuranceFlowController extends Controller
         $object->user_id = Auth::user()->id;
 
         $uploadPath = "Insurances/thirdParty";
-        $object->front_image =  Storage::disk('local')->put('documents/',$req->file('reference_photo'));
+        $object->front_image =  Storage::disk('local')->put('documents/', $req->file('reference_photo'));
 
         if ($object->save()) {
             session(['third_package_id' => $object->id]);
@@ -710,9 +739,9 @@ class InsuranceFlowController extends Controller
         $object->registered_province = $req->input('registeredProvince');
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
 
-        if($req->file('reference_photo')){
+        if ($req->file('reference_photo')) {
             Storage::delete($object->front_image);
-            $object->front_image =  Storage::disk('local')->put('documents/',$req->file('reference_photo'));
+            $object->front_image =  Storage::disk('local')->put('documents/', $req->file('reference_photo'));
         }
         if ($object->save()) {
 
@@ -746,9 +775,36 @@ class InsuranceFlowController extends Controller
 
             return redirect()->route('welcome');
         }
+
+        $query = "SELECT tpp.id, tpp.name as package_name,  l.name as level_name, vt.name as vehicle_types  ,vd.name as vehicle_details,
+        tpp.fee, tpp.final_price, ic.logo, tpp.term
+        FROM third_party_packages tpp inner join vehicle_details vd on tpp.vehicle_detail  = vd.id
+        INNER JOIN vehicle_types vt on vt.id = vd.v_id
+        INNER JOIN insurance_companies ic on ic.id = tpp.company_id
+        INNER JOIN levels l on l.id = tpp.`level`
+        AND tpp.id =?";
+
+        $customerPackage = InsuranceInformation::find(session('third_package_id'));
+
+        $thirdPartyPackage = collect(DB::select($query, [$customerPackage->insurance_type_id]))->first();
+
+        //Get cover item detail
+        $coverDetail = ThirdPartyCoverItem::where('third_package_id', '=', $customerPackage->third_package_id)->get();
+
+        //Province information
+        $provinces = Province::all();
+        //Vehicle Brand
+        $vehicleBrand = CarBrand::all();
+
+
         $provider = PaymentProvider::find($provider_id);
 
-        return view('insurances.thirdParty.showPaymentSubmit')->with('provider', $provider);
+        return view('insurances.thirdParty.showPaymentSubmit')->with('provider', $provider)
+        ->with('package', $thirdPartyPackage)
+        ->with('coverDetail', $coverDetail)
+        ->with('provinces', $provinces)
+        ->with('vehicleBrand', $vehicleBrand)
+        ->with('customerPackage', $customerPackage);
     }
 
     /** Function update payment detail of third party package */
@@ -768,7 +824,7 @@ class InsuranceFlowController extends Controller
         }
 
         $inputData = InsuranceInformation::find(session('third_package_id'));
-        $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/',$req->file('slipUploaded'));
+        $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/', $req->file('slipUploaded'));
         $inputData->payment_time = now();
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
 

@@ -17,7 +17,8 @@ use App\Utils\ImageServe;
         <div class="col-md-2 text-center">
             @isset($insurance->front_image)
                 <img src="{{ ImageServe::Base64($insurance->front_image) }}" id="front_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->front_image) }}"
+                    class="thumbnail-image mb-3 border border-dark"
+                    img-data="{{ ImageServe::Base64($insurance->front_image) }}"
                     onclick="onClickThumnailImage('front_image')">
             @endisset
 
@@ -29,7 +30,8 @@ use App\Utils\ImageServe;
 
             @isset($insurance->right_image)
                 <img src="{{ ImageServe::Base64($insurance->right_image) }}" id="right_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->right_image) }}"
+                    class="thumbnail-image mb-3 border border-dark"
+                    img-data="{{ ImageServe::Base64($insurance->right_image) }}"
                     onclick="onClickThumnailImage('right_image')">
             @endisset
 
@@ -41,14 +43,15 @@ use App\Utils\ImageServe;
 
             @isset($insurance->yellow_book_image)
                 <img src="{{ ImageServe::Base64($insurance->yellow_book_image) }}" id="yellow_book_image"
-                    class="thumbnail-image mb-3 border border-dark" img-data="{{ ImageServe::Base64($insurance->yellow_book_image) }}"
+                    class="thumbnail-image mb-3 border border-dark"
+                    img-data="{{ ImageServe::Base64($insurance->yellow_book_image) }}"
                     onclick="onClickThumnailImage('yellow_book_image')">
             @endisset
 
         </div>
         <div class="col-md-6">
-            <img src="{{ ImageServe::Base64($insurance->front_image) }}" style="width: 100%; height: auto;" class="shadow"
-                id="preview_image">
+            <img src="{{ ImageServe::Base64($insurance->front_image) }}" style="width: 100%; height: auto;"
+                class="shadow" id="preview_image">
         </div>
         <div class="col-md-4">
             <div class="text-center">
@@ -81,7 +84,7 @@ use App\Utils\ImageServe;
                             <tbody>
                                 @php
                                     $group_id = 0;
-                                    
+
                                 @endphp
                                 @foreach ($saleDetails as $item)
                                     {{-- start tr --}}
@@ -116,10 +119,10 @@ use App\Utils\ImageServe;
     </div>
 
     <hr>
-    
+
     <div class="row" style="line-height: 20px;">
-     
-        <div class="col-md-6">   
+
+        <div class="col-md-6">
             <h3 class="fw-bold text-center mb-3">ຂໍ້ມູນຜູ້ເອົາປະກັນໄພ</h3>
             <div class="form mt-3 fs-5">
                 <div class="row mb-3">
@@ -156,17 +159,39 @@ use App\Utils\ImageServe;
                         {{ $insurance->address }}
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label for="" class="col-sm-4 fw-bold">ຂໍ້ມູນລົດ</label>
+                    <div class="col-sm-8">
+                        {{ $insurance->number_plate }},
+                        {{ \App\Models\Province::find($insurance->registered_province)->province_name }},
+                        /{{ \App\Models\licenseplate::find($insurance->plate_type)->name }}
+                        <div class="row pt-2">
+                            <div class="col-md-12">
+                                <img src="{{ asset('assets/' . \App\Models\licenseplate::find($insurance->plate_type)->image) }}"
+                                    style="width: auto; height: 30px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="mb-3 row">
+                    <label for="" class="col-sm-4 fw-bold">ຂໍ້ມູນການໂອນເງິນ</label>
+                    <div class="col-sm-8">
+                       ໂອນວັນທີ: {{\Carbon\Carbon::parse($insurance->cus_pay_time)->format('d/m/Y ເວລາ H:m')}} <br><br>
+                       ເລກອ້າງອິງ: {{$insurance->refer_no}} <br><br>
+                       ຈຳນວນໂອນເງິນ: {{number_format($insurance->cus_amount,0)}}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-6 text-center">
             <h3 class="mb-3 fw-bold">ຢັ້ງຢືນການສັ່ງຊື້</h3>
-            <img src="{{ImageServe::Base64($insurance->slipUploaded)}}" class="shadow img-fluid rounded">
+            <img src="{{ ImageServe::Base64($insurance->slipUploaded) }}" class="shadow img-fluid rounded">
         </div>
     </div>
 
-    <div class="row">
+    <div class="row pt-3">
         <div class="col-md-12 text-center">
-           
             <a href="{{ route('AdminInsuranceController.ShowEditPageOfVehicleInsurance', ['id' => $insurance->id]) }}"
                 class="btn btn-warning btn-lg"><i class="bi bi-pencil fs-4 me-2"></i>ແກ້ໄຂຂໍ້ມູນຜູ້ເອົາປະກັນ</a>
         </div>
@@ -243,7 +268,6 @@ use App\Utils\ImageServe;
             padding: 2px;
             background-color: grey;
         }
-
     </style>
 @endsection
 
@@ -270,10 +294,11 @@ use App\Utils\ImageServe;
             var month = (parseInt(newDate.getMonth()) + 1) > 10 ? parseInt(newDate.getMonth()) + 1 : '0' + (parseInt(newDate
                 .getMonth()) + 1);
             var date = newDate.getDate() > 10 ? newDate.getDate() : '0' + newDate.getDate();
-            var hour = parseInt(newDate.getHours())>10? parseInt(newDate.getHours()): '0' + (newDate.getHours());
-            var minute = parseInt(newDate.getMinutes())>10? parseInt(newDate.getMinutes()) : '0' + (newDate.getMinutes());
-    
-            strEndDate = year + '-' + month + '-' + date + 'T'+ hour + ':' + minute;
+            var hour = parseInt(newDate.getHours()) > 10 ? parseInt(newDate.getHours()) : '0' + (newDate.getHours());
+            var minute = parseInt(newDate.getMinutes()) > 10 ? parseInt(newDate.getMinutes()) : '0' + (newDate
+        .getMinutes());
+
+            strEndDate = year + '-' + month + '-' + date + 'T' + hour + ':' + minute;
             console.log(strEndDate);
             endDate.value = strEndDate;
         }

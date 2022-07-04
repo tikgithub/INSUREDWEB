@@ -94,7 +94,7 @@
                                 <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                                 <div class="col-sm-8">
                                     <input type="date" required
-                                        class="form-control form-control-lg {{ $errors->has('dob') ? 'border-danger' : '' }}"
+                                        class="form-control form-control-lg datepicker {{ $errors->has('dob') ? 'border-danger' : '' }}"
                                         id="dob" name="dob" value="{{ old('dob') }}">
                                 </div>
                             </div>
@@ -294,7 +294,15 @@
 @section('footer')
     @include('layouts.footer')
 @endsection
-
+@section('styles')
+<style>
+    #feedback { font-size: 1.4em; }
+    #selectable .ui-selecting { background: #FECA40; }
+    #selectable .ui-selected { background: #F39814; color: white; }
+    #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+    #selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+    </style>
+@endsection
 
 @section('scripting')
     <script>

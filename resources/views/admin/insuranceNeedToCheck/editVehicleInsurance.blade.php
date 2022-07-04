@@ -13,7 +13,7 @@ use App\Utils\ImageServe;
             </h3>
         </div>
     </div>
-  
+
     {{-- Body Data --}}
     <div class="row">
         <div class="col-md-6 offset-md-3">
@@ -133,6 +133,20 @@ use App\Utils\ImageServe;
                             </div>
                         </div>
 
+                        {{-- Select Plate type --}}
+                        <div class="mb-3 row">
+                            <label for="plate"
+                                class="col-sm-4 text-center align-self-center fs-4 col-form-label">ປະເພດປ້າຍ</label>
+                            <div class="col-sm-8 align-self-center">
+                               <select name="plateType" id="plateType" class="form-select form-select-lg {{ $errors->has('plateType') ? 'border-danger' : '' }}">
+                                    @foreach ($licenses as $item)
+                                        <option value="{{$item->id}}" {{($inputData->plate_type == $item->id? 'selected':'')}}>{{$item->name}}</option>
+                                    @endforeach
+                               </select>
+                            </div>
+
+                        </div>
+
                         {{-- Number plate --}}
                         <div class="mb-3 row">
                             <label for="number_plate"
@@ -241,7 +255,7 @@ use App\Utils\ImageServe;
                             </div>
                         </div>
                         <hr>
-                       
+
                          {{-- Acception Check Box --}}
                          <div class="mb-3 row">
                             <div class="col-md-12">
@@ -257,7 +271,7 @@ use App\Utils\ImageServe;
                         {{-- Submit Botton --}}
                         <div class="mb-3 row">
                             <div class="col-md-12 d-flex justify-content-center">
-                                <button id="btnSubmit" type="submit" class=" btn-lg btn bg-blue text-white" disabled><i class="bi bi-cash-stack"></i> ຊຳລະເງິນ</button>
+                                <button id="btnSubmit" type="submit" class=" btn-lg btn bg-blue text-white" disabled>ແກ້ໄຂ</button>
                             </div>
                         </div>
                     </div>

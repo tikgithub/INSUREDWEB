@@ -17,82 +17,101 @@
     {{-- Body --}}
     <div class="row">
         <div class="col-md-4 offset-md-4 notosanLao">
-            @include('flashMessage')
-            <form action="{{ route('LevelController.store') }}" method="post" autocomplete="off">
-                @csrf
-                <div class="mb-3">
-                    <input type="text" name="name" id="name"
-                        class="form-control {{ $errors->has('name') ? 'border-danger' : '' }}" placeholder="ຊັ້ນປະກັນໄພ">
-                </div>
-                <div class="mb-1">
-                    <select name="menu_type" id="menu_type"
-                        class="form-select {{ $errors->has('menu_type') ? 'border-danger' : '' }}">
-                        <option value="NORMAL">ປະກັນໄພລົດທົ່ວໄປ</option>
-                        <option value="THIRD_PARTY">ປະກັນໄພລົດຕໍ່ບຸກຄົນທີ 3</option>
-                    </select>
-                </div>
-                <div class="mb-1 text-center">
-                    <button type="submit" class="btn btn-success"><i class="bi bi-plus-circle"></i> ເພີ່ມ</button>
-                </div>
-            </form>
+
         </div>
     </div>
-    {{-- Table data --}}
     <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <hr>
-            <table class="table table-sm table-hover notosanLao">
-                <thead>
-                    <th>#</th>
-                    <th>ລາຍການ</th>
-                    <th>Menu Type</th>
-                    <th><i class="bi bi-gear"></i></th>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-           
+        <div class="col-md-12">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal"><i
+                    class="bi bi-plus-circle me-1"></i> ເພີ່ມ</button>
         </div>
     </div>
-    {{-- End Body --}}
-
-    {{-- Modal Edit --}}
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog notosanLao">
+    {{-- Modal --}}
+    <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">ແກ້ໄຂຂໍ້ມູນ</h5>
+                    <h5 class="modal-title" id="addModalLabel">ເພີ່ມຂໍ້ມູນ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{route('LevelController.update')}}" method="post">
+                <form action="{{route('PaymentProviderController.Store')}}" method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
-                        <input type="hidden" id="editId" name="editId">
                         <div class="mb-3">
-                            <input type="text" name="editName" id="editName" class="form-control"
-                                placeholder="ຊັ້ນປະກັນໄພ">
-
+                            <input type="text" name="name" id="name" class="form-control" placeholder="ຊື່ທະນາຄານ">
                         </div>
-                        <div class="mb-1">
-                            <select name="editMenuType" id="editMenuType" class="form-select ">
-                                <option value="NORMAL">ປະກັນໄພລົດທົ່ວໄປ</option>
-                                <option value="THIRD_PARTY">ປະກັນໄພລົດຕໍ່ບຸກຄົນທີ 3</option>
-                            </select>
+                        <div class="mb-3">
+                            <input type="text" name="account" id="account" class="form-control" placeholder="ເລກບັນຊີ">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ຮູບ Logo</label>
+                            <input type="file" name="logo" accept="image/x-png,image/gif,image/jpeg"  id="logo" class="form-control-file">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">QRScan</label>
+                            <input type="file" name="qrscan" accept="image/x-png,image/gif,image/jpeg"  id="qrscan" class="form-control-file">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">ວິທີຈ່າຍເງິນ</label>
+                            <input type="file" name="howto" accept="image/x-png,image/gif,image/jpeg"  id="howto" class="form-control-file">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ອອກ</button>
-                        <button type="submit" class="btn btn-warning"><i class="bi bi-pencil"></i> ແກ້ໄຂ</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> ອອກ</button>
+                        <button type="submit" class="btn btn-success"><i class="bi bi-plus-circle"></i> ຕົກລົງ</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    {{-- End Modal Edit --}}
+
+    {{-- Table data --}}
+    <div class="row">
+        <div class="col-md-12">
+            <hr>
+            <table class="table table-sm table-hover notosanLao">
+                <thead>
+                    <th>#</th>
+                    <th>ຊື່ທະນາຄານ</th>
+                    <th>Logo</th>
+                    <th>ເລກບັນຊີ</th>
+                    <th>QRCode</th>
+                    <th>ວິທີການຈ່າຍເງິນ</th>
+                    <th>Status</th>
+                    <th><i class="bi bi-gear"></i></th>
+                </thead>
+                <tbody>
+                    @foreach ($payments as $item)
+                        <tr class="align-middle">
+                            <td>{{$item->index + 1}}</td>
+                            <td>{{$item->name}}</td>
+                            <td><img src="{{asset($item->logo)}}" class="logo-image" ></td>
+                            <td>{{$item->account}}</td>
+                            <td>
+                                <img src="{{asset($item->qrscan)}}" class="qr-scan-image">
+                            </td>
+                            <td>
+                                <img src="{{asset($item->howto)}}"  class="how-to-pay">
+                            </td>
+                            <td>
+                                {{($item->status)=='1'? 'Opened':'Closed'}}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    {{-- End Body --}}
+
 @endsection
 
+
+
 @section('scripting')
+@include('toastrMessage')
     <script>
         function callEditModal(id, name, menu_type) {
             document.getElementById('editName').value = name;
@@ -100,12 +119,29 @@
 
             var menu_typeSelect = document.getElementById('editMenuType');
             var options = menu_typeSelect.options;
-            for(let i = 0; i<options.length;i++){
+            for (let i = 0; i < options.length; i++) {
 
-                if(options[i].value == menu_type){
+                if (options[i].value == menu_type) {
                     options[i].selected = true;
                 }
             }
         }
     </script>
+@endsection
+
+@section('styles')
+<style>
+    .logo-image{
+        width: auto;
+        height: 50px;
+    }
+    .qr-scan-image{
+        width: auto;
+        height: 100px;
+    }
+    .how-to-pay{
+        width: auto;
+        height: 100px;
+    }
+</style>
 @endsection

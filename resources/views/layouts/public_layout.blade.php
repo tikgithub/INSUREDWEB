@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <link rel="stylesheet" href="{{asset('assets/date_pick/themes/default.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/date_pick/themes/classic.date.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/jqueryui/jquery-ui.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/date_pick/themes/default.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/date_pick/themes/classic.date.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/jqueryui/jquery-ui.min.css') }}">
 
     @yield('style')
 
@@ -34,7 +34,6 @@
         footer {
             background-color: red;
         }
-
     </style>
 
     <title>{{ config('app.name') }}</title>
@@ -94,7 +93,7 @@
                         <div class="btn-group ">
                             <button type="button" class="text-white btn btn-lg bg-blue dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ Auth::user()->profile_photo != null? asset(Auth::user()->profile_photo): asset('assets/image/user_thumnail.png') }}"
+                                <img src="{{ Auth::user()->profile_photo != null ? asset(Auth::user()->profile_photo) : asset('assets/image/user_thumnail.png') }}"
                                     class="rounded-circle border" style="width: 40px;height: 40px; object-fit: cover">
                                 {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
                             </button>
@@ -167,13 +166,20 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ asset('assets/js/toastr.js') }}"></script>
 
-    <script src="{{asset('assets/date_pick/picker.js')}}"></script>
-    <script src="{{asset('assets/date_pick/picker.date.js')}}"></script>
-    <script src="{{asset('assets/date_pick/legacy.js')}}"></script>
-    <script src="{{asset('assets/date_pick/picker.time.js')}}"></script>
-    <script src="{{asset('assets/jqueryui/jquery-ui.min.js')}}"></script>
+    <script src="{{ asset('assets/date_pick/picker.js') }}"></script>
+    <script src="{{ asset('assets/date_pick/picker.date.js') }}"></script>
+    <script src="{{ asset('assets/date_pick/legacy.js') }}"></script>
+    <script src="{{ asset('assets/date_pick/picker.time.js') }}"></script>
+    <script src="{{ asset('assets/jqueryui/jquery-ui.min.js') }}"></script>
 
     @yield('scripting')
+
+    <script>
+        $('.datepicker').pickadate({
+            format: 'dd/mm/yyyy',
+            hiddenName: true
+        })
+    </script>
 </body>
 
 </html>

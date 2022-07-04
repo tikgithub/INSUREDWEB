@@ -47,7 +47,7 @@ use App\Utils\ImageServe;
 
         </div>
         <div class="col-md-6">
-           
+
             <img src="{{ ImageServe::Base64($insurance->front_image) }}" class=" rounded shadow"
                 id="preview_image">
         </div>
@@ -82,7 +82,7 @@ use App\Utils\ImageServe;
                             <tbody>
                                 @php
                                     $group_id = 0;
-                                    
+
                                 @endphp
                                 @foreach ($saleDetails as $item)
                                     {{-- start tr --}}
@@ -153,6 +153,20 @@ use App\Utils\ImageServe;
                         {{ \App\Models\Province::find($insurance->province)->province_name }},
                         {{ \App\Models\District::find($insurance->district)->district_name }},
                         {{ $insurance->address }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="" class="col-sm-2 fw-bold">ຂໍ້ມູນລົດ</label>
+                    <div class="col-sm-10">
+                        {{ $insurance->number_plate }},
+                        {{ \App\Models\Province::find($insurance->registered_province)->province_name }},
+                        /{{ \App\Models\licenseplate::find($insurance->plate_type)->name }}
+                        <div class="row pt-2">
+                            <div class="col-md-12">
+                                <img src="{{ asset('assets/' . \App\Models\licenseplate::find($insurance->plate_type)->image) }}"
+                                    style="width: auto; height: 30px;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
