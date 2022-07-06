@@ -1,5 +1,5 @@
 @php
-    use App\Utils\ImageServe;
+use App\Utils\ImageServe;
 @endphp
 @extends('layouts.public_layout')
 @section('content')
@@ -54,8 +54,8 @@
             <div style="width: 500px; margin:auto" class="">
                 @include('flashMessage')
             </div>
-            <form autocomplete="off" method="POST"
-                action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}" enctype="multipart/form-data">
+            <form autocomplete="off" method="POST" action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}"
+                enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="package_id" value="{{ $package->id }}">
                 <fieldset class="border notosanLao">
@@ -134,7 +134,8 @@
                                     class="form-select form-select-lg {{ $errors->has('province') ? 'border-danger' : '' }}"
                                     onchange="onSelectInsuredProvince()" onfocus="this.selectedIndex = -1">
                                     @foreach ($provinces as $item)
-                                        <option value="{{ $item->id }}" {{ $customerPackage->province == $item->id }}>
+                                        <option value="{{ $item->id }}"
+                                            {{ $customerPackage->province == $item->id }}>
                                             {{ $item->province_name }}</option>
                                     @endforeach
                                 </select>
@@ -180,7 +181,20 @@
                                 </select>
                             </div>
                         </div>
+                        {{-- Select Plate type --}}
+                        <div class="mb-3 row">
+                            <label for="plate"
+                                class="col-sm-4 text-center align-self-center fs-4 col-form-label">ປະເພດປ້າຍ</label>
+                            <div class="col-sm-8 align-self-center">
+                                <select name="plateType" id="plateType"
+                                    class="form-select form-select-lg {{ $errors->has('plateType') ? 'border-danger' : '' }}">
+                                    @foreach ($plateTypes as $item)
+                                        <option value="{{ $item->id }}" {{($customerPackage->plate_type == $item->id? 'selected':'')}}>{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
+                        </div>
                         {{-- Number plate --}}
                         <div class="mb-3 row">
                             <label for="number_plate"
@@ -249,7 +263,8 @@
                                 <button type="button" onclick="selectPhotoOnClick()" class="btn btn-warning btn-lg mb-2"><i
                                         class="bi bi-image-alt"></i>
                                     ເລືອກຮູບ</button>
-                                <img id="img_preview" src="{{ImageServe::Base64($customerPackage->front_image)}}" class="border rounded img-fluid">
+                                <img id="img_preview" src="{{ ImageServe::Base64($customerPackage->front_image) }}"
+                                    class="border rounded img-fluid">
                             </div>
                         </div>
 

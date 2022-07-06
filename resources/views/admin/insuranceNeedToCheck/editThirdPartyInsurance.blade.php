@@ -13,7 +13,7 @@ use App\Utils\ImageServe;
             </h3>
         </div>
     </div>
-  
+
     {{-- Body Data --}}
     <div class="row">
         <div class="col-md-6 offset-md-3">
@@ -133,6 +133,20 @@ use App\Utils\ImageServe;
                             </div>
                         </div>
 
+       {{-- Select Plate type --}}
+       <div class="mb-3 row">
+        <label for="plate"
+            class="col-sm-4 text-center align-self-center fs-4 col-form-label">ປະເພດປ້າຍ</label>
+        <div class="col-sm-8 align-self-center">
+            <select name="plateType" id="plateType"
+                class="form-select form-select-lg {{ $errors->has('plateType') ? 'border-danger' : '' }}">
+                @foreach ($plateTypes as $item)
+                    <option value="{{ $item->id }}" {{($inputData->plate_type == $item->id? 'selected':'')}}>{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+    </div>
                         {{-- Number plate --}}
                         <div class="mb-3 row">
                             <label for="number_plate"
@@ -192,7 +206,7 @@ use App\Utils\ImageServe;
                         {{-- Car Side Front Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                               
+
                                 <img class="ms-2" src="{{ImageServe::Base64($inputData->front_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
@@ -201,7 +215,7 @@ use App\Utils\ImageServe;
                         </div>
 
                         <hr>
-                       
+
                          {{-- Acception Check Box --}}
                          <div class="mb-3 row">
                             <div class="col-md-12">

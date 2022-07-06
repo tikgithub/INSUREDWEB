@@ -587,12 +587,15 @@ class InsuranceFlowController extends Controller
         //Vehicle Brand
         $vehicleBrand = CarBrand::all();
 
+        $plateTypes = licenseplate::all();
+
 
         return view('insurances.thirdParty.showInputView')
             ->with('package', $thirdPartyPackage)
             ->with('coverDetail', $coverDetail)
             ->with('provinces', $provinces)
-            ->with('vehicleBrand', $vehicleBrand);
+            ->with('vehicleBrand', $vehicleBrand)
+            ->with('plateTypes',$plateTypes);
     }
 
     /** Function to store the input date of the ThirdPartyInsurane */
@@ -645,6 +648,7 @@ class InsuranceFlowController extends Controller
         $object->insurance_type_id = $req->input('package_id');
         $object->insurance_type = "THIRD-PARTY";
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
+        $object->plate_type = $req->input('plateType');
         $object->user_id = Auth::user()->id;
 
         $uploadPath = "Insurances/thirdParty";
@@ -686,12 +690,15 @@ class InsuranceFlowController extends Controller
         //Vehicle Brand
         $vehicleBrand = CarBrand::all();
 
+        $plateTypes = licenseplate::all();
+
         return view('insurances.thirdParty.showAgreement')
             ->with('package', $thirdPartyPackage)
             ->with('coverDetail', $coverDetail)
             ->with('provinces', $provinces)
             ->with('vehicleBrand', $vehicleBrand)
-            ->with('customerPackage', $customerPackage);
+            ->with('customerPackage', $customerPackage)
+            ->with('plateTypes',$plateTypes);
     }
 
     /** Function to customer to confirm customer information */
@@ -737,6 +744,7 @@ class InsuranceFlowController extends Controller
         $object->engine_number = $req->input('engine_number');
         $object->chassic_number = $req->input('chassic_number');
         $object->registered_province = $req->input('registeredProvince');
+        $object->plate_type = $req->input('plateType');
         $object->payment_confirm = "WAIT_FOR_PAYMENT";
 
         if ($req->file('reference_photo')) {
@@ -826,6 +834,9 @@ class InsuranceFlowController extends Controller
         $inputData = InsuranceInformation::find(session('third_package_id'));
         $inputData->slipUploaded = Storage::disk('local')->put('paymentslips/', $req->file('slipUploaded'));
         $inputData->payment_time = now();
+        $inputData->cus_pay_time = $req->input('transfer_time');
+        $inputData->refer_no = $req->input('refer_no');
+        $inputData->cus_amount = $req->input('transfer_amount');
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
 
         $inputData->save();

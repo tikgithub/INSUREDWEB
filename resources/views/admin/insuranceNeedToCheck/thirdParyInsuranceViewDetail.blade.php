@@ -97,6 +97,30 @@ use App\Utils\ImageServe;
                         {{ $insurance->address }}
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label for="" class="col-sm-4 fw-bold">ຂໍ້ມູນລົດ</label>
+                    <div class="col-sm-8">
+                        {{ $insurance->number_plate }},
+                        {{ \App\Models\Province::find($insurance->registered_province)->province_name }},
+                        /{{ \App\Models\licenseplate::find($insurance->plate_type)->name }}
+                        <div class="row pt-2">
+                            <div class="col-md-12">
+                                <img src="{{ asset('assets/' . \App\Models\licenseplate::find($insurance->plate_type)->image) }}"
+                                    style="width: auto; height: 30px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                <div class="mb-3 row">
+                    <label for="" class="col-sm-4 fw-bold">ຂໍ້ມູນການໂອນເງິນ</label>
+                    <div class="col-sm-8">
+                       ໂອນວັນທີ: {{\Carbon\Carbon::parse($insurance->cus_pay_time)->format('d/m/Y ເວລາ H:m')}} <br><br>
+                       ເລກອ້າງອິງ: {{$insurance->refer_no}} <br><br>
+                       ຈຳນວນໂອນເງິນ: {{number_format($insurance->cus_amount,0)}}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-6 text-center">

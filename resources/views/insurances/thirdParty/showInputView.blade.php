@@ -175,7 +175,20 @@
                                     </select>
                                 </div>
                             </div>
+                            {{-- Select Plate type --}}
+                            <div class="mb-3 row">
+                                <label for="plate"
+                                    class="col-sm-4 text-center align-self-center fs-4 col-form-label">ປະເພດປ້າຍ</label>
+                                <div class="col-sm-8 align-self-center">
+                                    <select name="plateType" id="plateType"
+                                        class="form-select form-select-lg {{ $errors->has('plateType') ? 'border-danger' : '' }}">
+                                        @foreach ($plateTypes as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
+                            </div>
                             {{-- Number plate --}}
                             <div class="mb-3 row">
                                 <label for="number_plate"
@@ -295,12 +308,33 @@
     @include('layouts.footer')
 @endsection
 @section('styles')
-<style>
-    #feedback { font-size: 1.4em; }
-    #selectable .ui-selecting { background: #FECA40; }
-    #selectable .ui-selected { background: #F39814; color: white; }
-    #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-    #selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+    <style>
+        #feedback {
+            font-size: 1.4em;
+        }
+
+        #selectable .ui-selecting {
+            background: #FECA40;
+        }
+
+        #selectable .ui-selected {
+            background: #F39814;
+            color: white;
+        }
+
+        #selectable {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 60%;
+        }
+
+        #selectable li {
+            margin: 3px;
+            padding: 0.4em;
+            font-size: 1.4em;
+            height: 18px;
+        }
     </style>
 @endsection
 

@@ -284,11 +284,14 @@ class AdminInsuranceController extends Controller
             //Car Brand data
             $carBrands = CarBrand::all();
 
+            $plateTypes = licenseplate::all();
+
             return view('admin.insuranceNeedToCheck.editThirdPartyInsurance')
                 ->with('inputData', $inputData)
                 ->with('provinces', $provinces)
                 ->with('carBrands', $carBrands)
-                ->with('districts', $districts);
+                ->with('districts', $districts)
+                ->with('plateTypes',$plateTypes);
         } catch (\Exception | \Throwable $th) {
             Log::error($th);
 
@@ -335,6 +338,7 @@ class AdminInsuranceController extends Controller
             $newInput->registered_province = $req->input('registeredProvince');
             $newInput->chassic_number = $req->input('chassic_number');
             $newInput->engine_number = $req->input('engine_number');
+            $newInput->plate_type = $req->input('plateType');
 
             if ($req->file('front')) {
                 Storage::delete($newInput->front_image);
