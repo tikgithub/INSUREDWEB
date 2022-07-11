@@ -107,7 +107,7 @@ use App\Utils\ImageServe;
                         <div class="mb-3 row">
                             <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                             <div class="col-sm-8">
-                                <input type="text" required
+                                <input type="text" required id="phone"
                                     class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
                                     id="tel" name="tel" value="{{ $customerPackage->tel }}">
                             </div>
@@ -370,5 +370,10 @@ use App\Utils\ImageServe;
                 document.getElementById('img_preview').src = event.target.result;
             };
         }
+        var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry:"la"
+        });
     </script>
 @endsection

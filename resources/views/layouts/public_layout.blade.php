@@ -12,10 +12,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/date_pick/themes/default.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/date_pick/themes/classic.date.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/jqueryui/jquery-ui.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('assets/datepciker/DateTimePicker.css') }}">
+    <link rel="stylesheet" href="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     @yield('style')
 
     <style>
@@ -45,7 +44,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top" style="padding:0px;">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('assets/image/mainlogo.png') }}" width="auto" height="64" class="d-inline-block ">
+                <img src="{{ asset('assets/image/mainlogo.png') }}" width="auto" height="64"
+                    class="d-inline-block ">
             </a>
 
             <a class="navbar-toggler fs-4 pt-2 pb-2" aria-current="page" href="{{ url()->previous() }}"><i
@@ -165,21 +165,22 @@
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ asset('assets/js/toastr.js') }}"></script>
+    <script src="{{ asset('assets/datepciker/DateTimePicker.js') }}"></script>
+    <script src="{{ asset('assets/datepciker/i18n/DateTimePicker-i18n.js') }}"></script>
+    <script>
+        $(document).ready(function() {
 
-    <script src="{{ asset('assets/date_pick/picker.js') }}"></script>
-    <script src="{{ asset('assets/date_pick/picker.date.js') }}"></script>
-    <script src="{{ asset('assets/date_pick/legacy.js') }}"></script>
-    <script src="{{ asset('assets/date_pick/picker.time.js') }}"></script>
-    <script src="{{ asset('assets/jqueryui/jquery-ui.min.js') }}"></script>
+            $("#dtBox").DateTimePicker({
+                'setButtonContent': 'ຕົກລົງ',
+                'clearButtonContent': 'ອອກ',
+                'titleContentDate': 'ເລືອກວັນທີ'
+            });
 
+        });
+    </script>
     @yield('scripting')
 
-    <script>
-        $('.datepicker').pickadate({
-            format: 'dd/mm/yyyy',
-            hiddenName: true
-        })
-    </script>
+
 </body>
 
 </html>

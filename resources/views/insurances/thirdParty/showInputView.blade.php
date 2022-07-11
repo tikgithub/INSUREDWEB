@@ -1,11 +1,13 @@
 @extends('layouts.public_layout')
 @section('content')
+
     <div class="pt-5"></div>
     <div class="row notosanLao">
         <div class="col-md-12">
             <h3 class="text-center">ລາຍການປະກັນໄພບຸກຄົ້ນທີ 3</h3>
         </div>
     </div>
+
     {{-- Show Level detail --}}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb notosanLao">
@@ -88,12 +90,15 @@
                                     </select>
                                 </div>
                             </div>
+                            {{-- For display date picker dialog --}}
+                            <div id="dtBox"></div>
 
                             {{-- DOB --}}
                             <div class="mb-3 row">
                                 <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                                 <div class="col-sm-8">
-                                    <input type="date" required
+
+                                    <input type="date" required data-field="date"
                                         class="form-control form-control-lg datepicker {{ $errors->has('dob') ? 'border-danger' : '' }}"
                                         id="dob" name="dob" value="{{ old('dob') }}">
                                 </div>
@@ -103,9 +108,9 @@
                             <div class="mb-3 row">
                                 <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                                 <div class="col-sm-8">
-                                    <input type="text" required
-                                        class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
-                                        id="tel" name="tel" value="{{ old('tel') }}">
+                                    <input name="phone" type="text" id="phone" class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
+                                    id="tel" name="tel" value="{{ old('tel') }}" required/>
+
                                 </div>
                             </div>
 
@@ -165,7 +170,8 @@
                         <div class="p-2">
                             {{-- VehicleBrand --}}
                             <div class="mb-3 row">
-                                <label for="vehicleBrand" class="col-sm-4 text-center fs-4 col-form-label">ຍີຫໍ້ລົດ</label>
+                                <label for="vehicleBrand"
+                                    class="col-sm-4 text-center fs-4 col-form-label">ຍີຫໍ້ລົດ</label>
                                 <div class="col-sm-8">
                                     <select name="vehicleBrand" id="vehicleBrand" required
                                         class="form-select form-select-lg {{ $errors->has('vehicleBrand') ? 'border-danger' : '' }}">
@@ -249,12 +255,13 @@
                                 <label for="district" class="col-form-label col-sm-3">ຮູບຖ່າຍບັດປະຈຳໂຕ ຫຼື
                                     ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9 align-self-center text-center">
-                                    <input type="file" name="reference_photo" id="reference_photo" class="form-control-file"
-                                        hidden onchange="onPreviewChange()">
+                                    <input type="file" name="reference_photo" id="reference_photo"
+                                        class="form-control-file" hidden onchange="onPreviewChange()">
                                     <button type="button" onclick="selectPhotoOnClick()"
                                         class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
                                         ເລືອກຮູບ</button>
-                                    <img id="img_preview" src="" alt="" srcset="" class="border rounded img-fluid">
+                                    <img id="img_preview" src="" alt="" srcset=""
+                                        class="border rounded img-fluid">
                                 </div>
                             </div>
 
@@ -382,31 +389,10 @@
                 document.getElementById('img_preview').src = event.target.result;
             };
         }
+        var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry:"la"
+        });
     </script>
 @endsection
-
-
-{{-- <div class="card" style="width: 25rem">
-    <img src="{{ asset($package->logo) }}" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">{{ $package->package_name }}</h5>
-        <p class="card-text">{{ $package->vehicle_types }} {{ $package->vehicle_details }}</p>
-        <p class="card-text text-danger fw-bold fs-4">₭ {{ number_format($package->final_price, 0) }}</p>
-        <p class="card-text text-center">
-        <table class="table table-sm table-hover bg-white">
-            <thead>
-                <th>ລາຍການ</th>
-                <th class="text-end">ວົງເງິນຄຸ້ມຄອງ</th>
-            </thead>
-            <tbody>
-                @foreach ($coverDetail as $item)
-                    <tr>
-                        <th>{{ $item->name }}</th>
-                        <th class="text-end">{{ number_format($item->price, 0) }}</th>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        </p>
-    </div>
-</div> --}}
