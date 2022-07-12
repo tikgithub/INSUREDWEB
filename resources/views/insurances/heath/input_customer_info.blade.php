@@ -107,15 +107,17 @@
                                 <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg datepicker" value="{{old('dob')}}">
+                                    {{-- For show date picker --}}
+                                    <div id="dtBox"></div>
+                                    <input type="date" name="dob" id="dob" data-fied="date" class="form-control form-control-lg datepicker" value="{{old('dob')}}">
                                 </div>
                             </div>
 
-                            <div class="row mb-3 fs-4">
-                                <label for="tel" class="col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span
+                            <div class="row mb-3">
+                                <label for="tel" class="fs-4 col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="tel" id="tel" class="form-control form-control-lg"
+                                    <input type="number" name="tel" id="phone" class="form-control form-control-lg"
                                         placeholder="ex: 55998899" value="{{old('tel')}}">
                                 </div>
                             </div>
@@ -183,7 +185,7 @@
                 </div>
             @else
                 {{-- Show Login form --}}
-              
+
                 {{-- Login Session --}}
                 <form action="{{ route('UserController.validateUserBeforeBuying') }}" method="post"
                     class="notosanLao shadow pt-4 p-3 mx-auto text-center">
@@ -221,10 +223,12 @@
 @section('scripting')
     @include('toastrMessage')
     <script>
-        $('.datepicker').pickadate({
-            format: 'dd/mm/yyyy',
-            hiddenName: true
-        })
+        // Date time picker script
+        var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry:"la"
+        });
 
         function selectPhotoOnClick() {
             document.getElementById('reference_photo').click();
@@ -258,5 +262,7 @@
                 console.log(error);
             });
         }
+
+
     </script>
 @endsection

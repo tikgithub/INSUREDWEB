@@ -74,21 +74,21 @@
                         <form action="{{ route('AccidentSaleController.storeInput') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="plan_id" value="{{$plan->id}}">
+                            <input type="hidden" name="plan_id" value="{{ $plan->id }}">
                             <div class="row mb-3">
                                 <label for="firstname" class="col-sm-3 col-form-label fs-4">ຊື່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="text" name="firstname" id="firstname"
-                                        class=" form-control form-control-lg" value="{{old('firstname')}}">
+                                        class=" form-control form-control-lg" value="{{ old('firstname') }}">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="lastname" class="col-sm-3 col-form-label fs-4">ນາມສະກຸນ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="lastname" id="lastname" class=" form-control form-control-lg"
-                                    value="{{old('lastname')}}">
+                                    <input type="text" name="lastname" id="lastname"
+                                        class=" form-control form-control-lg" value="{{ old('lastname') }}">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -97,8 +97,8 @@
                                 <div class="col-sm-9">
                                     <select name="sex" id="sex" class="form-select form-select-lg">
                                         <option>ເລືອກ</option>
-                                        <option value="M" {{old('sex') == "M" ? 'selected':''}}>ຊາຍ</option>ງ
-                                        <option value="F" {{old('sex') == "F" ? 'selected':''}}>ຍິງ</option>
+                                        <option value="M" {{ old('sex') == 'M' ? 'selected' : '' }}>ຊາຍ</option>ງ
+                                        <option value="F" {{ old('sex') == 'F' ? 'selected' : '' }}>ຍິງ</option>
                                     </select>
                                 </div>
                             </div>
@@ -107,16 +107,19 @@
                                 <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg datepicker" value="{{old('dob')}}">
+                                    {{-- For show the date time picker --}}
+                                    <div id="dtBox"></div>
+                                    <input type="date" data-field="date" name="dob" id="dob"
+                                        class="form-control form-control-lg" value="{{ old('dob') }}">
                                 </div>
                             </div>
 
-                            <div class="row mb-3 fs-4">
-                                <label for="tel" class="col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span
+                            <div class="row mb-3">
+                                <label for="tel" class="col-form-label col-sm-3 fs-4">ເບີໂທຕິດຕໍ່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="tel" id="tel" class="form-control form-control-lg"
-                                        placeholder="ex: 55998899" value="{{old('tel')}}">
+                                    <input type="number" name="tel" id="phone" class="form-control form-control-lg"
+                                        placeholder="ex: 55998899" value="{{ old('tel') }}">
                                 </div>
                             </div>
 
@@ -124,8 +127,8 @@
                                 <label for="identity" class="col-form-label col-sm-3">ເລກທີ່ບັດປະຊາຊົນ ຫຼື
                                     ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9 align-self-center">
-                                    <input type="text" name="identity" id="identity" class="form-control form-control-lg"
-                                    value="{{old('identity')}}">
+                                    <input type="text" name="identity" id="identity"
+                                        class="form-control form-control-lg" value="{{ old('identity') }}">
                                 </div>
                             </div>
                             <hr>
@@ -137,7 +140,9 @@
                                         onchange="onSelectedProvince()">
                                         <option>ເລືອກ</option>
                                         @foreach ($provinceData as $item)
-                                            <option value="{{ $item->id }}" {{old('province') == $item->id ? 'selected':''}}>{{ $item->province_name }}</option>
+                                            <option value="{{ $item->id }}"
+                                                {{ old('province') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->province_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -165,12 +170,13 @@
                                 <label for="district" class="col-form-label col-sm-3">ຮູບຖ່າຍບັດປະຈຳໂຕ ຫຼື
                                     ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9 align-self-center text-center">
-                                    <input type="file" name="reference_photo" id="reference_photo" class="form-control-file"
-                                        hidden onchange="onPreviewChange()">
+                                    <input type="file" name="reference_photo" id="reference_photo"
+                                        class="form-control-file" hidden onchange="onPreviewChange()">
                                     <button type="button" onclick="selectPhotoOnClick()"
                                         class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
                                         ເລືອກຮູບ</button>
-                                    <img id="img_preview" src="" alt="" srcset="" class="border rounded img-fluid">
+                                    <img id="img_preview" src="" alt="" srcset=""
+                                        class="border rounded img-fluid">
                                 </div>
                             </div>
                             <hr>
@@ -220,11 +226,6 @@
 @section('scripting')
     @include('toastrMessage')
     <script>
-       $('.datepicker').pickadate({
-        format:'dd/mm/yyyy',
-        hiddenName:true
-       })
-
         function selectPhotoOnClick() {
             document.getElementById('reference_photo').click();
         }
@@ -257,5 +258,11 @@
                 console.log(error);
             });
         }
+        // Date time picker script
+        var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry:"la"
+        });
     </script>
 @endsection

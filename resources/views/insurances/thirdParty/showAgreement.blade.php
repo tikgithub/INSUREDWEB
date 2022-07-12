@@ -97,7 +97,7 @@ use App\Utils\ImageServe;
                         <div class="mb-3 row">
                             <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                             <div class="col-sm-8">
-                                <input type="date" required
+                                <input type="date" required data-field="date"
                                     class="form-control form-control-lg {{ $errors->has('dob') ? 'border-danger' : '' }}"
                                     id="dob" name="dob" value="{{ $customerPackage->dob }}">
                             </div>

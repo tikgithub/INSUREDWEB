@@ -191,12 +191,13 @@
                                     </select>
                                 </div>
                             </div>
-
+                            {{-- For show the date time picker --}}
+                            <div id="dtBox"></div>
                             {{-- DOB --}}
                             <div class="mb-3 row">
                                 <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                                 <div class="col-sm-8">
-                                    <input type="date"
+                                    <input type="date" data-field="date"
                                         class="form-control form-control-lg datepicker {{ $errors->has('dob') ? 'border-danger' : '' }}"
                                         id="dob" name="dob" value="{{ old('dob') }}">
                                 </div>
@@ -208,7 +209,7 @@
                                 <div class="col-sm-8">
                                     <input type="text"
                                         class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
-                                        id="tel" name="tel" value="{{ old('tel') }}">
+                                        id="phone" name="tel" value="{{ old('tel') }}">
                                 </div>
                             </div>
 
@@ -486,5 +487,11 @@
                     console.log(error);
                 });
         }
+        // Date time picker script
+        var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry:"la"
+        });
     </script>
 @endsection

@@ -99,7 +99,7 @@
                                 <div class="col-sm-8">
 
                                     <input type="date" required data-field="date"
-                                        class="form-control form-control-lg datepicker {{ $errors->has('dob') ? 'border-danger' : '' }}"
+                                        class="form-control form-control-lg {{ $errors->has('dob') ? 'border-danger' : '' }}"
                                         id="dob" name="dob" value="{{ old('dob') }}">
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                                 <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                                 <div class="col-sm-8">
                                     <input name="phone" type="text" id="phone" class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
-                                    id="tel" name="tel" value="{{ old('tel') }}" required/>
+                                    name="tel" value="{{ old('tel') }}" required/>
 
                                 </div>
                             </div>
