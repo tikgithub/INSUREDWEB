@@ -118,8 +118,9 @@
                                 <label for="tel" class="col-form-label col-sm-3 fs-4">ເບີໂທຕິດຕໍ່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="tel" id="phone" class="form-control form-control-lg"
-                                        placeholder="" value="{{ old('tel') }}">
+                                    <input type="hidden" id="country_code" name="country_code">
+                                    <input type="text" onblur="onSelectCountry()" name="tel" id="phone"
+                                        class="form-control form-control-lg" value="{{ old('tel') }}">
                                 </div>
                             </div>
 
@@ -260,10 +261,18 @@
         }
         // Date time picker script
         var input = document.querySelector("#phone");
-        window.intlTelInput(input, {
+        var iti = window.intlTelInput(input, {
             separateDialCode: true,
-            initialCountry: "la"
+            initialCountry: "la",
+            autoPlaceholder:'aggressive',
+            utilsScript: "{{asset('assets/telinput/js/utils.js')}}",
         });
-       
+
+
+        function onSelectCountry() {
+            console.log(iti.getSelectedCountryData());
+            document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
+            
+        }
     </script>
 @endsection
