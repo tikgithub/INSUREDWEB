@@ -112,7 +112,8 @@ use App\Utils\ImageServe;
                                 <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg" value="{{$accidentData->dob}}">
+                                    <div id="dtBox"></div>
+                                    <input readonly type="text" data-field="date" name="dob" id="dob" class="form-control form-control-lg" value="{{ date('d-m-Y', strtotime($accidentData->dob)) }}">
                                 </div>
                             </div>
 

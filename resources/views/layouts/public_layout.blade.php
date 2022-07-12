@@ -173,7 +173,9 @@
             $("#dtBox").DateTimePicker({
                 'setButtonContent': 'ຕົກລົງ',
                 'clearButtonContent': 'ອອກ',
-                'titleContentDate': 'ເລືອກວັນທີ'
+                'titleContentDate': 'ເລືອກວັນທີ',
+                'dateFormat':'dd-MM-yyyy',
+                'buttonsToDisplay':["HeaderCloseButton", "SetButton"]
             });
 
         });

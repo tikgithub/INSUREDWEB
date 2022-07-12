@@ -118,7 +118,7 @@
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="number" name="tel" id="phone" class="form-control form-control-lg"
-                                        placeholder="ex: 55998899" value="{{old('tel')}}">
+                                        placeholder="" value="{{old('tel')}}">
                                 </div>
                             </div>
 
@@ -227,7 +227,9 @@
         var input = document.querySelector("#phone");
         window.intlTelInput(input, {
             separateDialCode: true,
-            initialCountry:"la"
+            initialCountry:"la",
+            separateDialCode: true,
+            hiddenInput: "full"
         });
 
         function selectPhotoOnClick() {

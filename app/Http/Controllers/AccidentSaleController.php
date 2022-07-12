@@ -88,6 +88,7 @@ class AccidentSaleController extends Controller
 
     public function storeInput(Request $req)
     {
+        dd($req->all());
         //Validate input data
         //all data should be required
         $sexRequire = ['F', 'M'];
@@ -130,7 +131,7 @@ class AccidentSaleController extends Controller
         //Image upload
         if ($req->file('reference_photo')) {
            // $obj->front_image =   ImageCompress::notCompressImage($req->file('reference_photo'), 'Insurances/people');
-           
+
            $obj->front_image = Storage::disk('local')->put('documents',$req->file('reference_photo'));
 
         } else {
@@ -158,7 +159,7 @@ class AccidentSaleController extends Controller
             INNER JOIN heath_cover_types on accident_plans.cover_type_id = heath_cover_types.id
             INNER JOIN insurance_companies on insurance_companies.id = heath_cover_types.company_id WHERE accident_plans.id = ?;";
             $planData = collect(DB::select($queryAccidentData, [$plan_id]))->first();
-           
+
             //Query Province data
             $provinceData = Province::all();
 

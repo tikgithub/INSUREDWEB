@@ -118,8 +118,8 @@
                                 <label for="tel" class="col-form-label col-sm-3 fs-4">ເບີໂທຕິດຕໍ່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="tel" id="phone" class="form-control form-control-lg"
-                                        placeholder="ex: 55998899" value="{{ old('tel') }}">
+                                    <input type="text" name="tel" id="phone" class="form-control form-control-lg"
+                                        placeholder="" value="{{ old('tel') }}">
                                 </div>
                             </div>
 
@@ -262,7 +262,8 @@
         var input = document.querySelector("#phone");
         window.intlTelInput(input, {
             separateDialCode: true,
-            initialCountry:"la"
+            initialCountry: "la"
         });
+       
     </script>
 @endsection
