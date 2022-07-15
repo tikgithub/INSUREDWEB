@@ -109,8 +109,9 @@
                                 <div class="col-sm-9">
                                     {{-- For show the date time picker --}}
                                     <div id="dtBox"></div>
-                                    <input type="date" data-field="date" name="dob" id="dob"
-                                        class="form-control form-control-lg" value="{{ old('dob') }}">
+                                    <input type="text" data-field="date" name="dob" id="dob"
+                                        class="form-control form-control-lg" value=" {{ old('dob')? date('d-m-Y', strtotime(old('dob'))):'' }}">
+
                                 </div>
                             </div>
 
@@ -272,7 +273,7 @@
         function onSelectCountry() {
             console.log(iti.getSelectedCountryData());
             document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
-            
+
         }
     </script>
 @endsection

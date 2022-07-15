@@ -404,7 +404,7 @@ class AdminInsuranceController extends Controller
             $newInput->firstname = trim($req->input('firstname'));
             $newInput->lastname = trim($req->input('lastname'));
             $newInput->sex = $req->input('sex');
-            $newInput->dob = $req->input('dob');
+            $newInput->dob = date('Y-m-d',strtotime($req->input('dob')));
             $newInput->tel = $req->input('tel');
             $newInput->identity = trim($req->input('identity'));
             $newInput->province = $req->input('province');

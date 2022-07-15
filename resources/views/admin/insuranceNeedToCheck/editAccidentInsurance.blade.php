@@ -13,7 +13,7 @@ use App\Utils\ImageServe;
             </h3>
         </div>
     </div>
-  
+
     {{-- Body Data --}}
     <div class="row">
         <div class="col-md-6 offset-md-3">
@@ -56,8 +56,9 @@ use App\Utils\ImageServe;
                         <div class="mb-3 row">
                             <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                             <div class="col-sm-8">
-                                <input type="date" class="form-control form-control-lg {{($errors->has('dob')? 'border-danger':'')}}" id="dob" name="dob"
-                                    value="{{$inputData->dob}}">
+                                <div id="dtBox"></div>
+                                <input type="text" data-field="date" class="form-control form-control-lg {{($errors->has('dob')? 'border-danger':'')}}" id="dob" name="dob"
+                                    value="{{(date('d-m-Y',strtotime($inputData->dob)))}}">
                             </div>
                         </div>
 
@@ -65,6 +66,7 @@ use App\Utils\ImageServe;
                         <div class="mb-3 row">
                             <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                             <div class="col-sm-8">
+                                <input type="hidden" name="country_code" id="country_code">
                                 <input type="text" class="form-control form-control-lg {{($errors->has('tel')? 'border-danger':'')}}" id="tel" name="tel"
                                     value="{{$inputData->tel}}">
                             </div>
@@ -122,11 +124,11 @@ use App\Utils\ImageServe;
                         <h4 class="notosanLao text-center">
                             ຮູບພາບ
                         </h4>
-              
+
                         {{-- Car Side Front Image --}}
                         <div class="mb-3 row">
                             <div class="col-sm-6 text-center">
-                               
+
                                 <img class="ms-2" src="{{ImageServe::Base64($inputData->front_image)}}" style="width: auto; height: 100px;" alt="" srcset="">
                             </div>
                             <div class="col-sm-6 align-self-center">
@@ -135,7 +137,7 @@ use App\Utils\ImageServe;
                         </div>
 
                         <hr>
-                       
+
                          {{-- Acception Check Box --}}
                          <div class="mb-3 row">
                             <div class="col-md-12">
@@ -173,6 +175,12 @@ use App\Utils\ImageServe;
 @include('toastrMessage')
     <script>
         var baseURL = "{{ env('BASE_ROUTE') }}";
+
+        //When load page ok
+        window.onload = function(){
+            onSelectCountry();
+        }
+
         //Function on select the accepts term and condition
         function onClickAccepted(){
             var acceptCheckBox = document.getElementById('acceptCheckbox');
@@ -222,5 +230,19 @@ use App\Utils\ImageServe;
                 }
             };
         })();
+
+        // Date time picker script
+        var input = document.querySelector("#tel");
+        var iti = window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry: "la",
+            autoPlaceholder:'aggressive',
+            utilsScript: "{{asset('assets/telinput/js/utils.js')}}",
+        });
+
+        function onSelectCountry() {
+            document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
+        }
+
     </script>
 @endsection

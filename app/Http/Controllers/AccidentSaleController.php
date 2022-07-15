@@ -88,7 +88,7 @@ class AccidentSaleController extends Controller
 
     public function storeInput(Request $req)
     {
-       
+
         //Validate input data
         //all data should be required
         $sexRequire = ['F', 'M'];
@@ -96,7 +96,7 @@ class AccidentSaleController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'sex' => 'required|in:' . implode(',', $sexRequire),
-            'tel' => 'required',
+            'tel' => 'required|numeric',
             'dob' => 'required',
             'identity' => 'required',
             'province' => 'required',
@@ -113,7 +113,7 @@ class AccidentSaleController extends Controller
         $obj->firstname = $req->input('firstname');
         $obj->lastname = $req->input('lastname');
         $obj->sex = $req->input('sex');
-        $obj->tel = $req->input('country_code') . $req->input('tel');
+        $obj->tel = $req->input('country_code') . ' ' . $req->input('tel');
         $obj->identity = $req->input('identity');
         $obj->dob = date('Y-m-d', strtotime($req->input('dob')));
         $obj->province = $req->input('province');
@@ -215,9 +215,9 @@ class AccidentSaleController extends Controller
             $obj->firstname = $req->input('firstname');
             $obj->lastname = $req->input('lastname');
             $obj->sex = $req->input('sex');
-            $obj->tel = $req->input('tel');
+            $obj->tel =$req->input('country_code') . ' ' . $req->input('tel');
             $obj->identity = $req->input('identity');
-            $obj->dob = $req->input('dob');
+            $obj->dob = date('Y-m-d', strtotime($req->input('dob')));
             $obj->province = $req->input('province');
             $obj->district = $req->input('district');
             $obj->address = $req->input('address');

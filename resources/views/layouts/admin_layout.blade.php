@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\DB;
 
     {{-- Toastr CDN --}}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="{{asset('assets/telinput/css/intlTelInput.css')}}" />
+    <script src="{{asset('assets/telinput/js/intlTelInput.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/datepciker/DateTimePicker.css') }}">
 
     <title>{{ config('app.name') }}</title>
     <style>
@@ -104,7 +107,7 @@ use Illuminate\Support\Facades\DB;
                             <i class="bi bi-envelope me-2"></i> ກ່ອງຂໍ້ຄວາມ
                             @php
                                 $unReadCount = collect(DB::select('select count(id) as counter from messages_to_us where status = 0; '))->first();
-                                
+
                             @endphp
                             @if ($unReadCount->counter > 0)
                                 <span
@@ -197,7 +200,21 @@ use Illuminate\Support\Facades\DB;
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ asset('assets/js/toastr.js') }}"></script>
+    <script src="{{ asset('assets/datepciker/DateTimePicker.js') }}"></script>
+    <script src="{{ asset('assets/datepciker/i18n/DateTimePicker-i18n.js') }}"></script>
+    <script>
+        $(document).ready(function() {
 
+            $("#dtBox").DateTimePicker({
+                'setButtonContent': 'ຕົກລົງ',
+                'clearButtonContent': 'ອອກ',
+                'titleContentDate': 'ເລືອກວັນທີ',
+                'dateFormat':'dd-MM-yyyy',
+                'buttonsToDisplay':["HeaderCloseButton", "SetButton"]
+            });
+
+        });
+    </script>
     @yield('scripting')
 
 </body>

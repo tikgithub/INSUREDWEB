@@ -117,12 +117,13 @@ use App\Utils\ImageServe;
                                 </div>
                             </div>
 
-                            <div class="row mb-3 fs-4">
-                                <label for="tel" class="col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span
+                            <div class="row mb-3">
+                                <label for="tel" class=" fs-4 col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="tel" id="tel" class="form-control form-control-lg"
-                                        placeholder="ex: 55998899" value="{{$accidentData->tel}}">
+                                    <input type="hidden" id="country_code" name="country_code">
+                                    <input type="tel" onblur="onSelectCountry()" name="tel" id="phone" class="form-control form-control-lg"
+                                        value="{{$accidentData->tel}}">
                                 </div>
                             </div>
 
@@ -250,6 +251,10 @@ use App\Utils\ImageServe;
 @section('scripting')
     @include('toastrMessage')
     <script>
+        //When page load completed
+        window.onload = function(){
+            onSelectCountry();
+        }
         function selectPhotoOnClick() {
             document.getElementById('reference_photo').click();
         }
@@ -282,5 +287,18 @@ use App\Utils\ImageServe;
                 console.log(error);
             });
         }
+
+        var input = document.querySelector("#phone");
+        var iti = window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry: "la",
+            utilsScript: "{{asset('assets/telinput/js/utils.js')}}",
+
+        });
+
+        function onSelectCountry() {
+            document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
+        }
+
     </script>
 @endsection
