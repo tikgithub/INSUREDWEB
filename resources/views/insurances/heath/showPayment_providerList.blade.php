@@ -12,13 +12,17 @@
     <div class="col-md-6 offset-md-3">
         @foreach ($paymentProviders as $item)
             <div class="d-grid pt-5">
-                <a href="{{route('HeathSaleController.ShowPaymentSubmitPage',['id'=>$item->id])}}" class="btn btn-light border p-3 shadow zoom ps-5 pe-5">
-                    <img style="width: auto;height: 80px;" src="{{asset($item->logo)}}" class="provider-logo">
-                    <h3 class="notosanLao text-center"><u>{{$item->name}}</u></h3>
-                    <div class="pt-2"></div>
-                    <span><b class="fs-5">{{$item->account}}</b></span>
-                </a>
-               
+       
+                <div class="d-grid pt-3">
+                    <a href="{{route('HeathSaleController.ShowPaymentSubmitPage',['id'=>$item->id])}}" class="btn btn-light border p-3">
+                        <img src="{{asset($item->logo)}}" class="provider-logo">
+                        <h3 class="notosanLao text-center"><u>{{$item->name}}</u></h3>
+                        <div class="pt-2"></div>
+                        <span><b class="fs-5">{{$item->account}}</b></span>
+                    </a>
+
+                </div>
+
             </div>
         @endforeach
     </div>

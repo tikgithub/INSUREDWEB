@@ -40,8 +40,8 @@
                         <img src="{{ asset('assets/image/200x120.png') }}" class="rounded img-fluid me-2" alt="200x12"
                             srcset="" style="width: 300px; height: 200px;">
                     @else
-                        <img src="{{ asset($company->logo) }}" alt="200x12" srcset="" style="width: 300px; height: 200px;"
-                            class="rounded img-fluid me-2">
+                        <img src="{{ asset($company->logo) }}" alt="200x12" srcset=""
+                            style="width: 300px; height: 200px;" class="rounded img-fluid me-2">
                     @endif
                     <div class="card-body notosanLao">
 
@@ -197,8 +197,8 @@
                             <div class="mb-3 row">
                                 <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                                 <div class="col-sm-8">
-                                    <input type="date" data-field="date"
-                                        class="form-control form-control-lg datepicker {{ $errors->has('dob') ? 'border-danger' : '' }}"
+                                    <input type="text" data-field="date"
+                                        class="form-control form-control-lg {{ $errors->has('dob') ? 'border-danger' : '' }}"
                                         id="dob" name="dob" value="{{ old('dob') }}">
                                 </div>
                             </div>
@@ -207,9 +207,11 @@
                             <div class="mb-3 row">
                                 <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                                 <div class="col-sm-8">
+                                    <input type="hidden" id="country_code" name="country_code">
                                     <input type="text"
                                         class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
-                                        id="phone" name="tel" value="{{ old('tel') }}">
+                                        id="phone" name="tel" value="{{ old('tel') }}"
+                                        onblur="onSelectCountry()">
                                 </div>
                             </div>
 
@@ -268,7 +270,8 @@
                         <div class="p-2">
                             {{-- VehicleBrand --}}
                             <div class="mb-3 row">
-                                <label for="vehicleBrand" class="col-sm-4 text-center fs-4 col-form-label">ຍີຫໍ້ລົດ</label>
+                                <label for="vehicleBrand"
+                                    class="col-sm-4 text-center fs-4 col-form-label">ຍີຫໍ້ລົດ</label>
                                 <div class="col-sm-8">
                                     <select name="vehicleBrand" id="vehicleBrand"
                                         class="form-select form-select-lg {{ $errors->has('vehicleBrand') ? 'border-danger' : '' }}">
@@ -283,11 +286,12 @@
                                 <label for="plate"
                                     class="col-sm-4 text-center align-self-center fs-4 col-form-label">ປະເພດປ້າຍ</label>
                                 <div class="col-sm-8 align-self-center">
-                                   <select name="plateType" id="plateType" class="form-select form-select-lg {{ $errors->has('plateType') ? 'border-danger' : '' }}">
+                                    <select name="plateType" id="plateType"
+                                        class="form-select form-select-lg {{ $errors->has('plateType') ? 'border-danger' : '' }}">
                                         @foreach ($plateTypes as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
-                                   </select>
+                                    </select>
                                 </div>
 
                             </div>
@@ -447,12 +451,33 @@
 @endsection
 
 @section('style')
-<style>
-    #feedback { font-size: 1.4em; }
-    #selectable .ui-selecting { background: #FECA40; }
-    #selectable .ui-selected { background: #F39814; color: white; }
-    #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-    #selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+    <style>
+        #feedback {
+            font-size: 1.4em;
+        }
+
+        #selectable .ui-selecting {
+            background: #FECA40;
+        }
+
+        #selectable .ui-selected {
+            background: #F39814;
+            color: white;
+        }
+
+        #selectable {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 60%;
+        }
+
+        #selectable li {
+            margin: 3px;
+            padding: 0.4em;
+            font-size: 1.4em;
+            height: 18px;
+        }
     </style>
 @endsection
 
@@ -489,9 +514,17 @@
         }
         // Date time picker script
         var input = document.querySelector("#phone");
-        window.intlTelInput(input, {
+        var iti = window.intlTelInput(input, {
             separateDialCode: true,
-            initialCountry:"la"
+            initialCountry: "la",
+            autoPlaceholder: 'aggressive',
+            utilsScript: "{{ asset('assets/telinput/js/utils.js') }}",
         });
+
+        function onSelectCountry() {
+            console.log(iti.getSelectedCountryData());
+            document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
+
+        }
     </script>
 @endsection

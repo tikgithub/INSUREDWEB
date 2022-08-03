@@ -54,8 +54,8 @@ use App\Utils\ImageServe;
             <div style="width: 500px; margin:auto" class="">
                 @include('flashMessage')
             </div>
-            <form autocomplete="off" method="POST" action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}"
-                enctype="multipart/form-data">
+            <form autocomplete="off" method="POST" id="formSubmit"
+                action="{{ route('InsuranceFlowController.updateConfirmThirdParty') }}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="package_id" value="{{ $package->id }}">
                 <fieldset class="border notosanLao">
@@ -87,8 +87,10 @@ use App\Utils\ImageServe;
                             <div class="col-sm-8">
                                 <select name="sex" id="sex" required
                                     class="form-select form-select-lg {{ $errors->has('sex') ? 'border-danger' : '' }}">
-                                    <option value="M" {{ $customerPackage->sex == 'M' ? 'selected' : '' }}>ຊາຍ</option>
-                                    <option value="F" {{ $customerPackage->sex == 'F' ? 'selected' : '' }}>ຍິງ</option>
+                                    <option value="M" {{ $customerPackage->sex == 'M' ? 'selected' : '' }}>ຊາຍ
+                                    </option>
+                                    <option value="F" {{ $customerPackage->sex == 'F' ? 'selected' : '' }}>ຍິງ
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -97,9 +99,11 @@ use App\Utils\ImageServe;
                         <div class="mb-3 row">
                             <label for="dob" class="col-sm-4 text-center fs-4 col-form-label">ວັນເກີດ</label>
                             <div class="col-sm-8">
-                                <input type="date" required data-field="date"
+                                <div id="dtBox"></div>
+                                <input type="text" required data-field="date"
                                     class="form-control form-control-lg {{ $errors->has('dob') ? 'border-danger' : '' }}"
-                                    id="dob" name="dob" value="{{ $customerPackage->dob }}">
+                                    id="dob" name="dob"
+                                    value="{{ date('d-m-Y', strtotime($customerPackage->dob)) }}">
                             </div>
                         </div>
 
@@ -107,9 +111,10 @@ use App\Utils\ImageServe;
                         <div class="mb-3 row">
                             <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                             <div class="col-sm-8">
-                                <input type="text" required id="phone"
+                                <input type="hidden" name="country_code" id="country_code" value="{{substr($customerPackage->tel,0,4)}}">
+                                <input type="text" required id="phone" onblur="onSelectCountry()"
                                     class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
-                                    id="tel" name="tel" value="{{ $customerPackage->tel }}">
+                                    name="tel" value="{{ $customerPackage->tel }}">
                             </div>
                         </div>
 
@@ -189,7 +194,9 @@ use App\Utils\ImageServe;
                                 <select name="plateType" id="plateType"
                                     class="form-select form-select-lg {{ $errors->has('plateType') ? 'border-danger' : '' }}">
                                     @foreach ($plateTypes as $item)
-                                        <option value="{{ $item->id }}" {{($customerPackage->plate_type == $item->id? 'selected':'')}}>{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}"
+                                            {{ $customerPackage->plate_type == $item->id ? 'selected' : '' }}>
+                                            {{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -202,12 +209,14 @@ use App\Utils\ImageServe;
                             <div class="col-sm-8 align-self-center">
                                 <input type="text" required
                                     class="form-control form-control-lg {{ $errors->has('number_plate') ? 'border-danger' : '' }}"
-                                    id="number_plate" name="number_plate" value="{{ $customerPackage->number_plate }}">
+                                    id="number_plate" name="number_plate"
+                                    value="{{ $customerPackage->number_plate }}">
                             </div>
                         </div>
                         {{-- Color --}}
                         <div class="mb-3 row">
-                            <label for="color" class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
+                            <label for="color"
+                                class="col-sm-4 text-center align-self-center fs-4 col-form-label">ສີ</label>
                             <div class="col-sm-8 align-self-center">
                                 <input type="text" required
                                     class="form-control form-control-lg {{ $errors->has('color') ? 'border-danger' : '' }}"
@@ -258,10 +267,10 @@ use App\Utils\ImageServe;
                             <label for="district" class="col-form-label col-sm-3">ຮູບຖ່າຍບັດປະຈຳໂຕ ຫຼື
                                 ໜັງສືຜ່ານແດນ<span class="text-danger fs-6">*</span></label>
                             <div class="col-sm-9 align-self-center text-center">
-                                <input type="file" name="reference_photo" id="reference_photo" class="form-control-file"
-                                    hidden onchange="onPreviewChange()">
-                                <button type="button" onclick="selectPhotoOnClick()" class="btn btn-warning btn-lg mb-2"><i
-                                        class="bi bi-image-alt"></i>
+                                <input type="file" name="reference_photo" id="reference_photo"
+                                    class="form-control-file" hidden onchange="onPreviewChange()">
+                                <button type="button" onclick="selectPhotoOnClick()"
+                                    class="btn btn-warning btn-lg mb-2"><i class="bi bi-image-alt"></i>
                                     ເລືອກຮູບ</button>
                                 <img id="img_preview" src="{{ ImageServe::Base64($customerPackage->front_image) }}"
                                     class="border rounded img-fluid">
@@ -269,28 +278,33 @@ use App\Utils\ImageServe;
                         </div>
 
 
-                        {{-- Term and Condition --}}
-                        <div class="mb-3 row">
-                            <label class="text-center fs-4 col-form-label">ເງືອນໄຂການໃຫ້ບໍລິການ</label>
-                            <div class="col-sm-12">
-                                <textarea name="term" id="term" rows="20" class="form-control bg-white" readonly>
-                                   {{ $package->term }}
-                               </textarea>
+                        {{-- Term and Condition DialogBox --}}
+                        <div class="modal fade" id="termModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" aria-labelledby="termModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-fullscreen">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="termModalLabel">ເງືອນໄຂ</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ $package->term }}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger btn-lg"
+                                            data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> ອອກ</button>
+                                        <button type="button" onclick="onFormSubmit()" class="btn btn-lg bg-blue text-white"><i class="bi bi-check-circle"></i> ຕົກລົງ</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        {{-- CheckBox --}}
-                        <div class="form-check">
-                            <input onchange="onAcceptCheck()" class="form-check-input" type="checkbox" id="acceptBox"
-                                style="cursor: pointer">
-                            <label class="form-check-label" for="acceptBox">
-                                ຂ້ອຍຍອມຮັບ ແລະ ເຂົ້າໃຈ
-                            </label>
-                        </div>
+
                         {{-- Submit Botton --}}
                         <div class="mb-3 row">
                             <div class="col-md-12 d-flex justify-content-center">
-                                <button disabled id="btnSubmit" type="submit" class="btn bg-blue btn-lg text-white"><i
-                                        class="bi bi-wallet-fill"></i>
+                                <button type="button" id="btnSubmit" data-bs-toggle="modal" data-bs-target="#termModal"
+                                    class="btn bg-blue btn-lg text-white"><i class="bi bi-wallet-fill"></i>
                                     ຕົກລົງ</button>
                             </div>
                         </div>
@@ -370,10 +384,23 @@ use App\Utils\ImageServe;
                 document.getElementById('img_preview').src = event.target.result;
             };
         }
+        // Date time picker script
         var input = document.querySelector("#phone");
-        window.intlTelInput(input, {
+        var iti = window.intlTelInput(input, {
             separateDialCode: true,
-            initialCountry:"la"
+            initialCountry: "la",
+            autoPlaceholder: 'aggressive',
+            utilsScript: "{{ asset('assets/telinput/js/utils.js') }}",
         });
+
+        function onSelectCountry() {
+            console.log(iti.getSelectedCountryData());
+            document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
+
+        }
+
+        function onFormSubmit(){
+            document.getElementById('formSubmit').submit();
+        }
     </script>
 @endsection

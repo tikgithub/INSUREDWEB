@@ -225,7 +225,7 @@ class InsuranceFlowController extends Controller
         $newInput->lastname = trim($req->input('lastname'));
         $newInput->sex = $req->input('sex');
         $newInput->dob = date('Y-m-d', strtotime($req->input('dob')));
-        $newInput->tel = $req->input('tel');
+        $newInput->tel = $req->input('country_code') . $req->input('tel');
         $newInput->identity = trim($req->input('identity'));
         $newInput->province = $req->input('province');
         $newInput->district = $req->input('district');
@@ -340,8 +340,8 @@ class InsuranceFlowController extends Controller
         $newInput->firstname = trim($req->input('firstname'));
         $newInput->lastname = trim($req->input('lastname'));
         $newInput->sex = $req->input('sex');
-        $newInput->dob = $req->input('dob');
-        $newInput->tel = $req->input('tel');
+        $newInput->dob = date('Y-m-d', strtotime($req->input('dob')));
+        $newInput->tel = $req->input('country_code') . $req->input('tel');
         $newInput->identity = trim($req->input('identity'));
         $newInput->province = $req->input('province');
         $newInput->district = $req->input('district');
@@ -466,7 +466,7 @@ class InsuranceFlowController extends Controller
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
         $inputData->cus_pay_time = $req->input('transfer_time');
         $inputData->refer_no = $req->input('refer_no');
-        $inputData->cus_amount = $req->input('transfer_amount');
+        $inputData->cus_amount = (float)str_replace(',','',$req->input('transfer_amount'));
 
         $inputData->save();
 
@@ -629,7 +629,7 @@ class InsuranceFlowController extends Controller
         $object->lastname = $req->input('lastname');
         $object->sex = $req->input('sex');
         $object->dob = date('Y-m-d', strtotime($req->input('dob')));
-        $object->tel = $req->input('tel');
+        $object->tel = $req->input('country_code').$req->input('tel');
         $object->identity = $req->input('identity');
         $object->province = $req->input('province');
         $object->district = $req->input('district');
@@ -732,8 +732,8 @@ class InsuranceFlowController extends Controller
         $object->firstname = $req->input('firstname');
         $object->lastname = $req->input('lastname');
         $object->sex = $req->input('sex');
-        $object->dob = $req->input('dob');
-        $object->tel = $req->input('tel');
+        $object->dob = date('Y-m-d',strtotime($req->input('dob')));
+        $object->tel = $req->input('country_code'). $req->input('tel');
         $object->identity = $req->input('identity');
         $object->province = $req->input('province');
         $object->district = $req->input('district');
@@ -821,7 +821,10 @@ class InsuranceFlowController extends Controller
         //Validate the image should be upload
 
         $req->validate([
-            'slipUploaded' => 'required'
+            'slipUploaded' => 'required',
+            'transfer_time'=>'required',
+            'refer_no' => 'required',
+            'transfer_amount' => 'required'
         ]);
         $thirdPackageID = session('third_package_id');
 
@@ -836,7 +839,7 @@ class InsuranceFlowController extends Controller
         $inputData->payment_time = now();
         $inputData->cus_pay_time = $req->input('transfer_time');
         $inputData->refer_no = $req->input('refer_no');
-        $inputData->cus_amount = $req->input('transfer_amount');
+        $inputData->cus_amount = (float)str_replace(",","",$req->input('transfer_amount'));
         $inputData->payment_confirm = "WAIT_FOR_APPROVED";
 
         $inputData->save();

@@ -113,17 +113,19 @@
                                 <label for="dob" class="col-sm-3 col-form-label">ວັນເດືອນປິເກີດ<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="date" name="dob" id="dob" class="form-control form-control-lg"
-                                        value="{{ $heathData->dob }}">
+                                    <div id="dtBox"></div>
+                                    <input type="text" data-field="date" name="dob" id="dob" class="form-control form-control-lg"
+                                        value="{{ date('d-m-Y',strtotime($heathData->dob))}}">
                                 </div>
                             </div>
 
-                            <div class="row mb-3 fs-4">
-                                <label for="tel" class="col-form-label col-sm-3">ເບີໂທຕິດຕໍ່<span
+                            <div class="row mb-3">
+                                <label for="tel" class="col-form-label col-sm-3 fs-4">ເບີໂທຕິດຕໍ່<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="tel" id="tel" class="form-control form-control-lg"
-                                        placeholder="ex: 55998899" value="{{ $heathData->tel }}">
+                                    <input type="hidden" name="country_code" id="country_code" value="{{substr($heathData->tel,0,4)}}">
+                                    <input type="text" name="tel" id="phone" class="form-control form-control-lg" onblur="onSelectCountry()"
+                                        placeholder="" value="{{ $heathData->tel }}">
                                 </div>
                             </div>
 
@@ -230,20 +232,20 @@
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">ເງືອນໄຂຂອງປະກັນໄພ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <textarea name="" id="" cols="30" rows="10" class="form-control">
+
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde molestiae labore sapiente quam, iusto voluptas. Dolore ea consequatur sapiente autem culpa, rerum dolor ut voluptas quisquam quibusdam corrupti magnam odit.
-                </textarea>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">ອອກ</button>
-                    <button type="submit" form="updateForm" class="btn btn-primary btn-lg">ຕົກລົງ</button>
+                    <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> ອອກ</button>
+                    <button type="submit" form="updateForm" class="btn bg-blue text-white btn-lg"><i class="bi bi-check-circle"></i> ຕົກລົງ</button>
                 </div>
             </div>
         </div>
@@ -289,5 +291,18 @@
                 console.log(error);
             });
         }
+
+        var input = document.querySelector("#phone");
+        var iti = window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry: "la",
+            utilsScript: "{{asset('assets/telinput/js/utils.js')}}",
+
+        });
+
+        function onSelectCountry() {
+            document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
+        }
+
     </script>
 @endsection

@@ -73,8 +73,9 @@
                             placeholder="ເລກທີອ້າງອິງ(ສີ່ໂຕສຸດທ້າຍ)">
                     </div>
                     <div class="mb-3">
-                        <input type="number" name="transfer_amount" id="transfer_amount"
-                            value="{{ $saleOption->sale_price }}" placeholder="ຈຳນວນເງິນທີ່ໂອນ"
+                        <input type="text" name="transfer_amount" id="transfer_amount"
+                            onkeypress="return onlyNumberKey(event)" onkeyup="formatNumber('transfer_amount')"
+                            value="{{ number_format($saleOption->sale_price,0) }}" placeholder="ຈຳນວນເງິນທີ່ໂອນ"
                             class="form-control text-center fs-4 fw-bold">
                     </div>
                     <div class="mb-3 text-center">

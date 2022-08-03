@@ -108,8 +108,10 @@
                             <div class="mb-3 row">
                                 <label for="tel" class="col-sm-4 text-center fs-4 col-form-label">ເບີໂທຕິດຕໍ່</label>
                                 <div class="col-sm-8">
-                                    <input name="phone" type="text" id="phone" class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
-                                    name="tel" value="{{ old('tel') }}" required/>
+                                    <input type="hidden" id="country_code" name="country_code">
+                                    <input type="text" id="phone"
+                                        class="form-control form-control-lg {{ $errors->has('tel') ? 'border-danger' : '' }}"
+                                        name="tel" value="{{ old('tel') }}" required />
 
                                 </div>
                             </div>
@@ -389,10 +391,19 @@
                 document.getElementById('img_preview').src = event.target.result;
             };
         }
+        // Date time picker script
         var input = document.querySelector("#phone");
-        window.intlTelInput(input, {
+        var iti = window.intlTelInput(input, {
             separateDialCode: true,
-            initialCountry:"la"
+            initialCountry: "la",
+            autoPlaceholder: 'aggressive',
+            utilsScript: "{{ asset('assets/telinput/js/utils.js') }}",
         });
+
+        function onSelectCountry() {
+            console.log(iti.getSelectedCountryData());
+            document.getElementById("country_code").value = "+" + iti.getSelectedCountryData().dialCode;
+
+        }
     </script>
 @endsection

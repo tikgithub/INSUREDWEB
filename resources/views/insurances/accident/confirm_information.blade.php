@@ -224,20 +224,20 @@ use App\Utils\ImageServe;
     </div>
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content ">
             <div class="modal-header">
               <h5 class="modal-title" id="staticBackdropLabel">ເງືອນໄຂຂອງປະກັນໄພ</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <textarea name="" id="" cols="30" rows="10" class="form-control">
+
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde molestiae labore sapiente quam, iusto voluptas. Dolore ea consequatur sapiente autem culpa, rerum dolor ut voluptas quisquam quibusdam corrupti magnam odit.
-                </textarea>
+
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">ອອກ</button>
-              <button type="submit" form="updateForm" class="btn btn-primary btn-lg">ຕົກລົງ</button>
+              <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> ອອກ</button>
+              <button type="submit" form="updateForm" class="btn bg-blue text-white btn-lg"><i class="bi bi-check-circle"></i> ຕົກລົງ</button>
             </div>
           </div>
         </div>

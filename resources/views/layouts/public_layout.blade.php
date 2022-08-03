@@ -167,6 +167,7 @@
     <script src="{{ asset('assets/js/toastr.js') }}"></script>
     <script src="{{ asset('assets/datepciker/DateTimePicker.js') }}"></script>
     <script src="{{ asset('assets/datepciker/i18n/DateTimePicker-i18n.js') }}"></script>
+    <script src="{{asset('assets/js/app.js')}}"></script>
     <script>
         $(document).ready(function() {
 

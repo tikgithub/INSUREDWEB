@@ -35,37 +35,37 @@
         </div>
         {{-- Padding --}}
         <div class="pt-5"></div>
-       <div class="row">
-        <div class="col-md-4 offset-md-4">
-            <div class="card mb-3" style="width: 25rem">
-                <img src="{{ asset($package->logo) }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{ $package->package_name }}</h5>
-                    <p class="card-text">{{ $package->vehicle_types }} {{ $package->vehicle_details }}</p>
-                    <p class="card-text text-center">
-                    <table class="table table-sm table-hover bg-white">
-                        <thead>
-                            <th>ລາຍການ</th>
-                            <th class="text-end">ວົງເງິນຄຸ້ມຄອງ</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($coverDetail as $item)
-                                <tr>
-                                    <th>{{ $item->name }}</th>
-                                    <th class="text-end">{{ number_format($item->price, 0) }}</th>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    </p>
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="card mb-3" style="width: 25rem">
+                    <img src="{{ asset($package->logo) }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $package->package_name }}</h5>
+                        <p class="card-text">{{ $package->vehicle_types }} {{ $package->vehicle_details }}</p>
+                        <p class="card-text text-center">
+                        <table class="table table-sm table-hover bg-white">
+                            <thead>
+                                <th>ລາຍການ</th>
+                                <th class="text-end">ວົງເງິນຄຸ້ມຄອງ</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($coverDetail as $item)
+                                    <tr>
+                                        <th>{{ $item->name }}</th>
+                                        <th class="text-end">{{ number_format($item->price, 0) }}</th>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        </p>
 
-                    <p class="card-text text-dark fw-bold fs-5">
-                        ລວມຄ່າທຳນຽມ:{{ number_format($customerPackage->fee_charge, 0) }}</p>
-                    <p class="card-text text-danger fw-bold fs-4">₭ {{ number_format($package->final_price, 0) }}</p>
+                        <p class="card-text text-dark fw-bold fs-5">
+                            ລວມຄ່າທຳນຽມ:{{ number_format($customerPackage->fee_charge, 0) }}</p>
+                        <p class="card-text text-danger fw-bold fs-4">₭ {{ number_format($package->final_price, 0) }}</p>
+                    </div>
                 </div>
             </div>
         </div>
-       </div>
         {{-- Form Submit --}}
         <div class="row">
             <div class="col-md-4 offset-md-4 text-center">
@@ -83,9 +83,9 @@
                             placeholder="ເລກທີອ້າງອິງ(ສີ່ໂຕສຸດທ້າຍ)">
                     </div>
                     <div class="mb-3">
-                        <input type="number" name="transfer_amount" id="transfer_amount"
-                            value="{{ $package->final_price }}" placeholder="ຈຳນວນເງິນທີ່ໂອນ"
-                            class="form-control text-center fs-4 fw-bold">
+                        <input type="text" onkeypress="return onlyNumberKey(event)" onkeyup="formatNumber('transfer_amount')" name="transfer_amount"
+                            id="transfer_amount"  value="{{ number_format($package->final_price, 0) }}"
+                            placeholder="ຈຳນວນເງິນທີ່ໂອນ" class="form-control text-center fs-4 fw-bold">
                     </div>
 
                     <button onclick="onConfirmClick()" type="button" class="btn bg-blue text-white notosanLao btn-lg"><i
@@ -122,7 +122,6 @@
             width: auto;
             height: 500px;
         }
-
     </style>
 @endsection
 @section('scripting')
