@@ -123,8 +123,12 @@ use App\Utils\ImageServe;
         @break
 
         @case('APPROVED_OK')
+        @php
+            $reportData = collect(DB::select('select ht.report_path from insurance_companies ic inner join heath_cover_types ht on ic.id = ht.company_id where ht.id = ?',[$insurance->insurance_type_id]))->first();
+        @endphp
+
             <div class=" fs-4 fw-bold me-2 text-center" role="">
-                <a href="" class="btn btn-success"><i class="bi bi-book me-2"></i> ເບິ່ງສັນຍາ</a>
+                <a href="{{env('BASE_URL')}}{{$reportData->report_path}}?id={{$insurance->id}}" target="_blank" class="btn btn-success"><i class="bi bi-book me-2"></i> ເບິ່ງສັນຍາ</a>
             </div>
         @break
     @endswitch
