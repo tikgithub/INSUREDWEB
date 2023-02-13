@@ -34,7 +34,8 @@ class ThirdPartyInsuranceController extends Controller
             'vehicle_detail'=>'required',
             'fee'=>'required',
             'final_price'=>'required',
-            'term'=>'required'
+            'term'=>'required',
+            'report_path' => 'required'
         ]);
 
         //Create new Object
@@ -46,6 +47,7 @@ class ThirdPartyInsuranceController extends Controller
         $thirdParty->final_price = $req->input('final_price');
         $thirdParty->vehicle_detail =$req->input('vehicle_detail');
         $thirdParty->term = $req->input('term');
+        $thirdParty->report_path = $req->input('report_path');
         $thirdParty->status = 0; // not active yet until the admin complete the setting
 
         if($thirdParty->save()){

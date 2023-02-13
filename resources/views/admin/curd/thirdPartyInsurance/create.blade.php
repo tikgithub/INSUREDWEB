@@ -95,6 +95,12 @@
                             required></textarea>
                     </div>
 
+                    {{-- Report Path --}}
+                    <div class="mb-3">
+                        <label for="" class="form-lable">Report Path</label>
+                        <input type="text" name="report_path" id="report_path" class="form-control">
+                    </div>
+
                     {{-- Save Button --}}
                     <div class="mb-3 text-center d-grid gap-2">
                         <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-save"></i> ເພີ່ມ</button>
